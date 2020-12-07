@@ -46,7 +46,7 @@ header = dbc.NavbarSimple(
             label='More',
         ),
     ],
-    brand='OpenModex Visualization',
+    brand='OpenModex Visualization Julian',
     brand_href='#',
     color='primary',
     dark=True,
@@ -95,8 +95,8 @@ def update_figure(scenario_id):
     fig = px.bar(
         df,
         x="hour",
-        y="wind turbine",
-        hover_name="wind turbine",
+        y="electricity",
+        hover_name="electricity",
     )
     fig.update_layout(transition_duration=500)
 
@@ -104,5 +104,4 @@ def update_figure(scenario_id):
 
 
 if __name__ == '__main__':
-    
     app.run_server(debug=True)
