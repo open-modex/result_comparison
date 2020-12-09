@@ -12,3 +12,4 @@ def get_scenario_data(scenario_id):
     data = {timeseries["output_energy_vector"]: timeseries["series"] for timeseries in json_data["oed_timeseries"]}
     data["hour"] = range(8784)
     return pandas.DataFrame(data)
+

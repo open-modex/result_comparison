@@ -7,6 +7,9 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 
 from data.oep_example import get_scenario_data
+import urllib3
+
+urllib3.disable_warnings()
 
 external_stylesheets = [
     'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
@@ -46,7 +49,7 @@ header = dbc.NavbarSimple(
             label='More',
         ),
     ],
-    brand='OpenModex Visualization Julian',
+    brand='OpenModex Visualization',
     brand_href='#',
     color='primary',
     dark=True,
@@ -92,11 +95,11 @@ def update_scenario(input_value):
 def update_figure(scenario_id):
     df = get_scenario_data(scenario_id)
 
-    fig = px.bar(
+    fig = px.line(
         df,
         x="hour",
         y="electricity",
-        hover_name="electricity",
+        hover_name="electricity"
     )
     fig.update_layout(transition_duration=500)
 
