@@ -7,7 +7,7 @@ import plotly.express as px
 import json
 import requests
 import  pandas
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import urllib3
 
 urllib3.disable_warnings()
@@ -16,11 +16,11 @@ URL='https://modex.rl-institut.de/scenario/id/3?source=modex_output&mapping=conc
 response = requests.get(URL, timeout=10000, verify=False)
 json_data = json.loads(response.text)
 scalar=json_data['oed_scalars']
-scalar1=scalar[1540:1556]
-#mit dem unteren Slice wird das Framework Balmorel mitgenommen
-#scalar1=scalar[1540:1561]
-df=pandas.DataFrame(scalar1)
-df=df[df["parameter_name"]=="cost system"]
+scalar=scalar[1540:1561]
+#scalar=scalar[1540:1556]
+df=pandas.DataFrame(scalar)
+#df=df[df["parameter_name"]=="cost system"]
+available_parameter=df['parameter_name'].unique()
 
 
 
@@ -55,30 +55,49 @@ header = dbc.NavbarSimple(
     dark=True,
 )
 
-
-
-fig = px.bar(
-        df,
-        x="source",
-        y="value",
-        hover_name="id",
-        labels= {"value": "costs in trillion €'s",
-                 "source":"Simulation Framework"},
-        color='value'
-    )
-fig.update_layout(barmode='stack', xaxis={'categoryorder':'total descending'})
-#fig.update_traces(marker_color='green')
-fig.update_xaxes(tickangle=10, tickfont=dict(family='Rockwell', color='black', size=14),showgrid=True)
-fig.update_yaxes(showgrid=True)
-fig.update_layout(transition_duration=500)
+body = html.Div([
+            dcc.Dropdown(
+                id='parameter',
+                options=[{'label': i, 'value': i} for i in available_parameter],
+                value='emissions'
+            ),
+            dcc.RadioItems(
+                id='yaxis-type',
+                options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
+                value='Linear',
+                labelStyle={'display': 'inline-block'}
+            )],style={'width': '48%', 'display': 'inline-block'})
 
 app.layout = html.Div([
     header,
-    dcc.Graph(
-        id='honeychu',
-        figure=fig
-    )
+    body,
+    dcc.Graph(id='honeychu', figure={}, style={})
 ])
+
+@app.callback(
+    Output(component_id='honeychu', component_property='figure'),
+    [Input(component_id='parameter', component_property='value'),
+     Input(component_id='yaxis-type', component_property='value')])
+def update_graph(parameter,yaxis_type):
+    dff=df[df["parameter_name"] == parameter]
+    #avg=(dff['value']).sum()/4
+    #print(avg)
+    unit=dff["unit"].tolist()
+    fig = px.bar(
+            dff,
+            x="source",
+            y="value",
+            hover_name='region',
+            labels={"source":"Simulation Framework"},
+    )
+    fig.update_layout(margin={'l': 40, 'b': 40, 't': 10, 'r': 0})
+    fig.update_traces(marker_color = "orange")
+    fig.update_yaxes(title=parameter + "in" + unit[0],
+                     type='linear' if yaxis_type == 'Linear' else 'log')
+
+    #print(fig)
+    return fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
