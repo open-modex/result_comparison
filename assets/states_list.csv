@@ -1,0 +1,17 @@
+id;Bundesland;Area (sq. km);Population;Capital;abbrev
+1;Baden-Wurttemberg;35752;10755000;Stuttgart;BW
+2;Bayern;70552;12542000;Munich;BY
+3;Berlin;892;3469000;Berlin;BE
+4;Brandenburg;29479;2500000;Potsdam;BB
+5;Bremen;419;661000;Bremen;HB
+6;Hamburg;755;1788000;Hamburg;HH
+7;Hessen;21115;6066000;Wiesbaden;HE
+8;Niedersachsen;47609;7914000;Hanover;NI
+9;Mecklenburg-Vorpommern;2318;1639000;Schwerin;MV
+10;Nordrhein-Westfalen;34085;17837000;Dusseldorf;NW
+11;Rheinland-Pfalz;19853;3999000;Mainz;RP
+12;Saarland;2569;1018000;Saarbrucken;SL
+13;Sachsen;18416;4143000;Dresden;SN
+14;Sachsen-Anhalt;20446;2331000;Magdeburg;ST
+15;Schleswig-Holstein;15799;2833000;Kiel;SH
+16;Thuringen;16172;2231000;Erfurt;TH

@@ -6,17 +6,18 @@ import dash_html_components as html
 import plotly.express as px
 import json
 import requests
-import pandas
 import pandas as pd
 import numpy as np
 from dash.dependencies import Input, Output, State
-from dash.exceptions import PreventUpdate
 import urllib3
+from dash.exceptions import PreventUpdate
+from urllib.request import urlopen
 
 urllib3.disable_warnings()
 
-# Initialize app
+print('Hello World')
 
+# Initialize app
 app = dash.Dash(
     __name__,
     meta_tags=[
@@ -29,9 +30,11 @@ server = app.server
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
+from data_scalars import scalars
+scalar=scalars[0:1540]
+from data_timeseries import timeseries
 
 YEARS = [2020,2030,2050]
-
 
 
 DEFAULT_COLORSCALE = ["#f2fffb","#bbffeb","#98ffe0","#79ffd6","#6df0c8","#69e7c0","#59dab2","#45d0a5",
@@ -45,34 +48,31 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns',None)
 
 
-#scalar=scalar[1540:1556]
-#df=df[df["parameter_name"]!="cost system"]
-
-
-URL='https://modex.rl-institut.de/scenario/id/3?source=modex_output&mapping=concrete'
+'''URL='https://modex.rl-institut.de/scenario/id/3?source=modex_output&mapping=concrete'
 response = requests.get(URL, timeout=10000, verify=False)
 json_data = json.loads(response.text)
 scalar=json_data['oed_scalars']
 scalar=scalar[0:1540]
-df=pd.DataFrame(scalar)
+timeseries=json_data['oed_timeseries']'''
 
-'''dff = df[df["technology"] == 'battery storage']
-dff = df[df["parameter_name"] == 'input energy']
-
-#print(dff)
 
 #available_parameter=df['parameter_name'].unique()
 #available_energy=df['input_energy_vector'].unique()
-#options=[{'label':i, 'value': i} for i in available_energy]
+#options=[{'label':i, 'value': i} for i in available_energy]'''
 
-fig = px.bar(
-        dff,
-        orientation='h',
-        x="value",
-        y="source",
-        hover_name="region",
-        labels={"source": "Simulation Framework"},
-    )'''
+
+map=pd.read_csv("assets/states_list.csv", engine="python", index_col=False, delimiter='\;', dtype={"abbrev": str})
+
+'''germany = json.load(open("assets/alles.geojson", "r"))
+fig = px.choropleth_mapbox(map, geojson=germany, locations='abbrev',
+                           mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
+                           color_continuous_scale="Viridis", hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                           zoom=5, center={"lat": 51.3, "lon": 10}, opacity=0.2)
+fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)'''
+
+
+
+
 
 
 # App layout
@@ -89,10 +89,7 @@ html.Div(
                 html.H4(children="Energy Frameworks to Germany"),
                 html.P(id="description",children="How to efficiently sustain Germany's energy "
                                                  "\n usage with efficient parameters based on regions.")]),
-        html.Div(
-            dcc.Tabs(id="folder", value='timeseries', children=[
-                dcc.Tab(label='scalars', value='scalars', style={'background-color': "#1B2129"}),
-                dcc.Tab(label='timeseries', value='timeseries', style={'background-color': "#1B2129"})]))
+
     ]
 ),
 html.Div(
@@ -115,9 +112,10 @@ html.Div(
                             id="slider-container",
                             children=[
                                 html.P(id="slider-text", children="Drag the slider to change the scenario:"),
-                                dcc.Slider(id="years-slider", min=min(YEARS), max=max(YEARS), value=min(YEARS),
-                                           marks={str(year): {"label": str(year), "style": {"color": "#7fafdf"}}
-                                                  for year in YEARS})]),
+                                dcc.Slider(id="years-slider", min=3, max=5, step=None, value=3,disabled=True,
+                                            marks={3: {"label": '2020', "style": {"color": "#7fafdf"}},
+                                                   4: {"label": '2030', "style": {"color": "#7fafdf"}},
+                                                   5: {"label": '2050', "style": {"color": "#7fafdf"}}})]),
                         html.Div(
                             id="deutschland",
                             children=[
@@ -129,12 +127,7 @@ html.Div(
                                     dcc.Dropdown(options=[], value=[],
                                             multi=True,id="state-dropdown"),
                                     dcc.Graph(id="country-choropleth",
-                                          figure=dict(
-                                            layout=dict(
-                                                mapbox=dict(layers=[],accesstoken=mapbox_access_token,
-                                                        style=mapbox_style,center=dict(lat=38.72490, lon=-95.61446),
-                                                        pitch=0,zoom=3.5),
-                                            autosize=True)))]),
+                                          figure={})]),
                 ]),
                 #das ist die komplette rechte Seite
                 html.Div(
@@ -143,8 +136,10 @@ html.Div(
                         html.Div(
                             id="headerr",
                             children=[
-                                html.H5("Info"),
-                                html.P("With renewable energy sources, here you can put in a bunch of text")
+                                html.H5("Scalars"),
+                                html.P("With renewable energy sources, here you can put in a bunch of text \n"
+                                       "links kann man kein Szenario auswählen, da im dummy dataset es nur \n"
+                                       "Daten mit Basisszenario 1 gibt")
                                 ]),
                         html.Div(
                             id="graph-container",
@@ -167,8 +162,60 @@ html.Div(
                                     options=[],value=[],
                                     labelStyle={'display': 'inline-block'},id='parameter_id'),
                                 dcc.RadioItems(id='experiment',options=[],value=''),
-                                html.Button('Start',id='start',n_clicks=0),
                                 dcc.Graph(id="selected-data",figure={},style={})
+                            ]
+                        )
+                    ]
+                )
+            ]
+        ),
+        html.Div(
+            id="root_2",
+            children=[
+                html.Div(id="tab_2", children=[
+                    dcc.Tabs(id="tabs_3", value='photovoltaics', children=[
+                        dcc.Tab(label='Photovoltaics', value='photovoltaics', style={'background-color': "#1B2129"}),
+                        dcc.Tab(label='Generator', value='generator', style={'background-color': "#1B2129"}),
+                        dcc.Tab(label='Battery Storage', value='battery storage',
+                                style={'background-color': "#1B2129"}),
+                        dcc.Tab(label='All', value='ALL', style={'background-color': "#1B2129"})])]),
+                html.Br(id='filler_2', children=[]),
+                html.Div(
+                    id="app-container_2",
+                    children=[
+                        html.Div(
+                            id="abc_2",
+                            children=[
+                                html.Div(
+                                    id="headerr_2",
+                                    children=[
+                                        html.H5("Timeseries"),
+                                        html.P("You can visualise the timeseries here \n"
+                                               "es gibt Überschneidungen der Daten mit Regions mit den Skalaren \n"
+                                               "daher funktionieren nur Regionen BE/Berlin, BB/Brandenburg & HE/Hessen. \n"
+                                               "Außerdem kann man nur eine Einzige Region auswählen. \n"
+                                               "Des Weiteren, wenn der tab ALL ausgewählt ist, müssen alle \n"
+                                               "Regionen gewählt werden \n"
+                                               "Letzlich, sind automatisch ALLE Regionen gewählt, wenn der tab \n"
+                                               "ALL gewählt wurde")
+                                    ]),
+                                html.Div(
+                                    id="graph-container_2",
+                                    children=[
+                                        # parameter name
+                                        dcc.Dropdown(
+                                            options=[], value=[],
+                                            id="parameter_id_2", multi=False, clearable=False),
+                                        dcc.Checklist(
+                                            options=[{'label': 'Urbs', 'value': 'Urbs'},
+                                                     {'label': 'GENESYS-2', 'value': 'GENESYS-2'},
+                                                     {'label': 'Oemof', 'value': 'Oemof'},
+                                                     {'label': 'Genesys-mod', 'value': 'Genesys-mod'},
+                                                     {'label': 'Balmorel', 'value': 'Balmorel'}, ], value=['Urbs'],
+                                            labelStyle={'display': 'inline-block'}, id='source'),
+                                        dcc.Graph(id="selected-data_2", figure={}, style={})
+                                    ]
+                                )
                             ]
                         )
                     ]
@@ -177,37 +224,6 @@ html.Div(
         )
     ]
 )])
-
-'''@app.callback(
-    [Output(component_id='tabs', component_property='children'),
-     Output(component_id='filler', component_property='children'),
-     ],
-    [Input(component_id='folder', component_property='value')])
-def base(basic):
-    child_tab=[]
-    child_filler = []
-
-
-    if basic=='scalars':
-        child_tab=[
-                    dcc.Tab(label='Generation', value='generation', style={'background-color':"#1B2129"}),
-                    dcc.Tab(label='Battery Storage', value='battery storage',style={'background-color':"#1B2129"}),
-                    dcc.Tab(label='Transmission', value='transmission',style={'background-color':"#1B2129"})],
-        child_filler=[],
-
-
-    elif basic=='timeseries':
-        child_tab=[html.Div(id="ok",children=[
-            html.Button('Start', id='sssart', n_clicks=0),
-            html.Div(id="dd",children=[
-                dcc.Graph(id="tdimes",figure={},style={}),
-                dcc.Graph(id="times",figure={},style={})])])]
-        child_filler=[]
-
-
-    return child_tab,child_filler'''
-
-
 
 
 #von 1 auf 2
@@ -237,14 +253,21 @@ def one_two(tabs):
 @app.callback(
     [Output(component_id='radio', component_property='options'),
      Output(component_id='radio', component_property='value')],
-    [Input(component_id='tabs_2', component_property='value')])
-def two_three(tabs_2):
+    [Input(component_id='tabs_2', component_property='value'),
+     Input(component_id='tabs_3', component_property='value')])
+def two_three(tabs_2,tabs_3):
     opt=[]
     value=[]
-    if tabs_2=='energy_transmission':
+    if tabs_3=='ALL':
+        opt = [{'label': 'All', 'value': 'ALL'},
+               {'label': 'Customize', 'value': 'choose', 'disabled':True}]
+        value = 'ALL'
+
+    elif tabs_2=='energy_transmission':
         opt=[{'label': 'All', 'value': 'All','disabled':True},
               {'label': 'Customize', 'value': 'choose'}]
         value='choose'
+
     else:
         opt = [{'label': 'All', 'value': 'All'},
                {'label': 'Customize', 'value': 'choose'}]
@@ -254,22 +277,22 @@ def two_three(tabs_2):
 
 
 
-
-
 #callback for selecting regions
 #REGIONS_FOUR
 @app.callback(
     [Output(component_id='state-dropdown', component_property='options'),
-     Output(component_id='state-dropdown', component_property='value')],
+     Output(component_id='state-dropdown', component_property='value'),
+     Output(component_id='state-dropdown', component_property='multi')],
     [Input(component_id='tabs_2', component_property='value'),
      Input(component_id='radio', component_property='value')])
 def three_four(tabs_2,selector):
     opt=[]
     value=[]
+    multi=True
 
     if tabs_2=='energy_transmission':
-        opt = [{'label': 'Brandenburg to Berlin', 'value': 'BB to BE'},
-                 {'label': 'Berlin to Brandenburg', 'value': 'BE to BB'},
+        '''opt = [{'label': 'Brandenburg to Berlin', 'value': 'a'},
+                 {'label': 'Berlin to Brandenburg', 'value': 'b'},
                  {'label': 'Brandenburg to Mecklenburg-Vorpommern', 'value': 'BB to MV'},
                  {'label': 'Mecklenburg-Vorpommern to Brandenburg', 'value': 'MV to BB'},
                  {'label': 'Brandenburg to Thüringen', 'value': 'BB to TH'},
@@ -286,15 +309,27 @@ def three_four(tabs_2,selector):
                  {'label': 'Baden-Württemberg to Hessen', 'value': 'BW to HE'},
                  {'label': 'Baden-Württemberg to Bayern', 'value': 'BW to BY'},
                  {'label': 'Bayern to Baden-Württemberg', 'value': 'BY to BW'}]
-
-
-        if selector =='choose':
+        value='b'
+        multi=False
+        if value[0]=='a':
             opt=opt
-            value = ['BB to BE']
-        else:
-            opt = opt
-            value= ['BB to BE']
-        return opt, value
+            value=['BB','BE']
+            multi = False
+        elif value[0]=='b':
+            opt=opt
+            value=['BE','BB']
+            multi= False
+        return opt,value,multi'''
+        opt = [{'label': 'Brandenburg', 'value': 'BB'}, {'label': 'Berlin', 'value': 'BE'},
+               {'label': 'Baden-Württemberg', 'value': 'BW'}, {'label': 'Bayern', 'value': 'BY'},
+               {'label': 'Bremen', 'value': 'HB','disabled':True}, {'label': 'Hessen', 'value': 'HE'},
+               {'label': 'Hamburg', 'value': 'HH'}, {'label': 'Mecklenburg-Vorpommern', 'value': 'MV'},
+               {'label': 'Niedersachsen', 'value': 'NI','disabled':True}, {'label': 'Nordrhein-Westfalen', 'value': 'NW'},
+               {'label': 'Rheinland-Pfalz', 'value': 'RP','disabled':True}, {'label': 'Schleswig-Holstein', 'value': 'SH'},
+               {'label': 'Saarland', 'value': 'SL','disabled':True}, {'label': 'Sachsen', 'value': 'SN','disabled':True},
+               {'label': 'Sachsen-Anhalt', 'value': 'ST','disabled':True}, {'label': 'Thüringen', 'value': 'TH'}]
+        value = ['BB']
+        multi=True
 
     else:
         opt = [{'label': 'Brandenburg', 'value': 'BB'}, {'label': 'Berlin', 'value': 'BE'},
@@ -306,16 +341,73 @@ def three_four(tabs_2,selector):
                {'label': 'Saarland', 'value': 'SL'}, {'label': 'Sachsen', 'value': 'SN'},
                {'label': 'Sachsen-Anhalt', 'value': 'ST'}, {'label': 'Thüringen', 'value': 'TH'}]
         value = ['BB']
+        multi = True
 
         if selector =='choose':
             opt=opt
             value = ['BB']
+            multi = True
         else:
             opt = opt
             value= ['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH']
-        return opt, value
+            multi = True
+        return opt, value,multi
 
-    return opt,value
+    return opt,value,multi
+
+#interaktive Karte
+@app.callback(
+    [Output(component_id='country-choropleth', component_property='figure'),
+    Output(component_id='country-choropleth', component_property='config')],
+    [Input(component_id='state-dropdown', component_property='value')])
+def finale(region):
+    germany = json.load(open("assets/Karte.geojson", "r"))
+    fig = px.choropleth_mapbox(map, geojson=germany, locations='abbrev',
+                               mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
+                               color_continuous_scale="Viridis", hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                               zoom=5, center={"lat": 51.3, "lon": 10}, opacity=0.1)
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
+    config = dict({'scrollZoom': False})
+    if len(region)>0:
+
+        if len(region)==16:
+            alles = json.load(open("assets/karte.geojson", "r"))
+            fig = px.choropleth_mapbox(map, geojson=alles, locations='abbrev',
+                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
+                                       color_continuous_scale="Viridis",
+                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
+            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
+        elif region[0]=='BW':
+            Baden_Württemberg = json.load(open("assets/Badenwürttemberg.geojson", "r"))
+            fig = px.choropleth_mapbox(map, geojson=Baden_Württemberg, locations='abbrev',
+                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
+                                       color_continuous_scale="Viridis",
+                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
+            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
+        elif region[0]=='BB':
+            Brandenburg = json.load(open("assets/Brandenburg.geojson", "r"))
+            fig = px.choropleth_mapbox(map, geojson=Brandenburg, locations='abbrev',
+                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
+                                       color_continuous_scale="Viridis",
+                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
+            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
+        elif region[0] == 'BE':
+            Berlin = json.load(open("assets/Berlin.geojson", "r"))
+            fig = px.choropleth_mapbox(map, geojson=Berlin, locations='abbrev',
+                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
+                                       color_continuous_scale="Viridis",
+                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
+            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
+            return fig
+    else:
+        raise PreventUpdate
+
+
+    return fig,config
 
 
 #von regions auf checkboxes
@@ -380,6 +472,10 @@ def five_six(technology,tabs_2):
         opt = [{'label': 'energy', 'value': 'energy'},
                  {'label': 'costs', 'value': 'costs'}]
         value = 'energy'
+    elif technology==['photovoltaics','generator']:
+        opt = [{'label': 'generation', 'value': 'generation'},
+               {'label': 'costs', 'value': 'costs_combo'}]
+        value = 'generation'
 
     return opt,value
 
@@ -410,6 +506,11 @@ def six_seven (dropdown):
                {'label': 'variable costs', 'value': 'variable cost'}]
         value = ['deprecated fixed cost']
 
+    elif dropdown=='costs_combo':
+        opt = [{'label': 'deprecated fixed costs', 'value': 'deprecated fixed cost'},
+               {'label': 'variable costs', 'value': 'variable cost'}]
+        value = ['deprecated fixed cost']
+
     elif dropdown=='costs':
         opt = [{'label': 'deprecated investment costs', 'value': 'deprecated investment cost'},
                {'label': 'deprecated fixed costs', 'value': 'deprecated fixed cost'},
@@ -424,65 +525,225 @@ def six_seven (dropdown):
         opt = [{'label': 'emissions', 'value': 'emissions'},
                {'label': 'primary energy consumption', 'value': 'primary energy consumption'}]
         value = ['emissions']
+
     elif dropdown=='energy_transmission': #energy in transmission
-        opt = [{'label': 'energy flow', 'value': 'energy flow'},
+        opt = [{'label': 'outgoing energy flow', 'value': 'energy flow'},
                   {'label': 'losses', 'value': 'losses'}]
         value = ['energy flow']
+
     elif dropdown=='costs_transmission': #costs in transmission
         opt = [{'label': 'deprecated investment costs', 'value': 'deprecated investment cost'},
                   {'label': 'deprecated fixed costs', 'value': 'deprecated fixed cost'}]
         value = ['deprecated investment cost']
-    #print('paramter name=', value)
+
     return opt,value
+
 
 
 @app.callback(
     Output(component_id='selected-data', component_property='figure'),
-    [Input(component_id='start', component_property='n_clicks')],
-     [State(component_id='technology_id', component_property='value'),
-     State(component_id='parameter_id', component_property='value')])
-def masterclass (n_clicks,technology,parameter):
-    if len(technology) >0:
-        dff = df[df["technology"] == technology[0]]
-        dfff = dff[dff["parameter_name"] == parameter[0]]
+    [Input(component_id='years-slider', component_property='value'),
+     Input(component_id='technology_id', component_property='value'),
+     Input(component_id='parameter_id', component_property='value'),
+     Input(component_id='state-dropdown', component_property='value')])
+def masterclass (year,technology,parameter,region):
+    if len(technology) >0 and len(region)>0 and len(parameter)>0:
+        liste=[]
+        for i in scalar:
+            for j in range(len(region)):
+                if len(region) > j and i['region'][0] == region[j]:
+
+                    for k in range(len(technology)):
+                        if len(technology) > k and i['technology'] == technology[k]:
+
+                            for l in range(len(parameter)):
+                                if len(parameter) > l and i['parameter_name'] == parameter[l]:
+                                    liste.append(i)
+
+        df = pd.DataFrame(liste, columns=['scenario_id','region', 'parameter_name', 'technology', 'value','unit','source'])
+        df = df[df["scenario_id"] == year]
         print('')
-        print('Technology is',technology[0])
-        print('Parameter is',parameter[0])
-        print('Button has been clicked',n_clicks)
+        print('Technology is',technology)
+        print('Parameter is',parameter)
+        print('Region is',region)
+        print('years is',year)
         print('')
+        #print(df)
+        print(len(technology))
 
-        unit = dfff["unit"].tolist()
-        fig = px.bar(
-            dfff,
-            orientation='h',
-            x="value",
-            y="source",
-            #color="regions[0]",
-            hover_name="region",
-            hover_data=["technology","input_energy_vector","parameter_name","unit"],
-            labels={"source": "Simulation Framework"},
 
-        )
-        fig_layout = fig["layout"]
-        fig_layout["paper_bgcolor"] = "#1f2630"
-        fig_layout["plot_bgcolor"] = "#1f2630"
-        fig_layout["font"]["color"] = "#3391CF"
-        fig_layout["title"]["font"]["color"] = "#3391CF"
-        fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
-        fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
-        fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
-        fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
-        fig_layout["margin"]["t"] = 75
-        fig_layout["margin"]["r"] = 50
-        fig_layout["margin"]["b"] = 100
-        fig_layout["margin"]["l"] = 50
-        fig.update_layout(transition_duration=500)
-        fig.update_traces(marker_color="#3391CF")
-        fig.update_xaxes(title=parameter[0] + "\n in \n" + unit[0])
+        unit = df["unit"].tolist()
+        '''for i in range(len(parameter)):
+            print('Unit is',unit[i])'''
+        if len(unit)>0:
 
-        return fig
+            if len(technology)==1:
+                farbe = "parameter_name"
+            elif len(technology)==2:
+                farbe = "technology"
+
+            print(farbe)
+            fig = px.bar(
+                df,
+                orientation='h',
+                x="value",
+                y="source",
+                color=farbe,
+                hover_name="region",
+                hover_data=["region","technology","parameter_name","unit"],
+                labels={"source": "Simulation Framework"},
+                color_discrete_map={'generation': "#3391CF",
+                                    'emissions': "#3391CF",
+                                    'deprecated investment cost': "#3391CF",
+                                    'input energy': "#3391CF",
+                                    'energy flow': "#3391CF",
+                                    'photovoltaics': "#3391CF",}
+
+            )
+            fig_layout = fig["layout"]
+            fig_layout["paper_bgcolor"] = "#1f2630"
+            fig_layout["plot_bgcolor"] = "#1f2630"
+            fig_layout["font"]["color"] = "#3391CF"
+            fig_layout["title"]["font"]["color"] = "#3391CF"
+            fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
+            fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
+            fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+            fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+            fig_layout["margin"]["t"] = 50
+            fig_layout["margin"]["r"] = 50
+            fig_layout["margin"]["b"] = 50
+            fig_layout["margin"]["l"] = 50
+
+            fig.update_layout(transition_duration=500,legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            ))
+            #fig.update_traces(marker_color="#3391CF")
+
+            if len(parameter)==1:
+                fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']',nticks=20)
+            if len(parameter)==2:
+                fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                       parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']',nticks=20)
+            if len(parameter)==3:
+                fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                       parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                       parameter[2] + "\n in \n" + '[' + unit[2].replace('â‚¬/a', '€/a') + ']',nticks=20)
+
+
+            return fig
+        else:
+            raise PreventUpdate
     else:
-        raise dash.exceptions.PreventUpdate
+        raise PreventUpdate
+
+#selecting parameter_name
+@app.callback(
+    [Output(component_id='parameter_id_2', component_property='options'),
+     Output(component_id='parameter_id_2', component_property='value')],
+    [Input(component_id='tabs_3', component_property='value')])
+def three_four (dropdown):
+    opt = []
+    value = ''
+    if dropdown=='photovoltaics':
+        opt = [{'label': 'generation', 'value': 'generation'}]
+        value='generation'
+
+    elif dropdown=='generator':
+        opt = [{'label': 'generation', 'value': 'generation'}]
+        value = 'generation'
+
+    elif dropdown=='battery storage':
+        opt = [{'label': 'electricity', 'value': 'input energy'}]
+        value = 'input energy'
+
+    elif dropdown=='ALL':
+        opt = [{'label': 'emissions', 'value': 'emissions'},
+               {'label': 'cost system', 'value': 'cost system'},
+               {'label': 'curtailment', 'value': 'curtailment'},
+               {'label': 'slack', 'value': 'slack'}]
+        value = 'emissions'
+
+    return opt,value
+
+
+
+@app.callback(
+    Output(component_id='selected-data_2', component_property='figure'),
+    [Input(component_id='years-slider', component_property='value'),
+     Input(component_id='tabs_3', component_property='value'),
+     Input(component_id='parameter_id_2', component_property='value'),
+     Input(component_id='state-dropdown', component_property='value'),
+     Input(component_id='source', component_property='value')])
+def masterclasss (year,technology,parameter,region,source):
+    liste=[]
+    fig={}
+    for i in timeseries:
+        for j in range(len(region)):
+            if len(region) > j \
+                    and i['region'][0] == region[j] \
+                    and i['technology'] == technology \
+                    and i['parameter_name'] == parameter \
+                    and i['scenario_id'] == year:
+                liste.append(i)
+            elif i['region'][0] == region \
+                    and i['technology'] == technology \
+                    and i['parameter_name'] == parameter \
+                    and i['scenario_id'] == year:
+                liste.append(i)
+
+    if len(liste)>0 and len(parameter)>0:
+        data = {timeseriess["source"]: timeseriess["series"] for timeseriess in liste}
+        data["hour"] = range(201)  # hier wird ein neuer key eingefügt
+        df=pd.DataFrame(data)
+        help=[]
+
+        if len(df)>0:
+            print('')
+            print('Technology is',technology)
+            print('Parameter is',parameter)
+            print('Region is',region)
+            print('years is',year)
+            print("Source/s is/are", source)
+            print('')
+            y=[]
+            for i in range(len(source)):
+                y.append(source[i])
+                fig = px.line(
+                    df,
+                    x="hour",
+                    y=y,
+                    color_discrete_map={'Urbs': "#3391CF",
+                                        'Balmorel':"red"}
+                )
+            fig_layout = fig["layout"]
+            fig_layout["paper_bgcolor"] = "#1f2630"
+            fig_layout["plot_bgcolor"] = "#1f2630"
+            fig_layout["font"]["color"] = "#3391CF"
+            fig_layout["title"]["font"]["color"] = "#3391CF"
+            fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
+            fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
+            fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+            fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+            fig_layout["margin"]["t"] = 20
+            fig_layout["margin"]["r"] = 50
+            fig_layout["margin"]["b"] = 50
+            fig_layout["margin"]["l"] = 50
+            fig.update_layout(transition_duration=100)
+            #fig.update_traces(line_color="#3391CF")
+            fig.update_xaxes( nticks=40)
+            if parameter==parameter:
+                fig.update_yaxes(title= parameter,nticks=20)
+            else:
+                raise PreventUpdate
+            return fig
+        else:
+            raise PreventUpdate
+    else:
+        raise PreventUpdate
 
 if __name__ == "__main__":
     app.run_server(debug=True)

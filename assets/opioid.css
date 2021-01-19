@@ -805,6 +805,24 @@ hr {
         padding:0rem 1rem 0rem 5rem;
         margin-left:5rem;
     }
+#parameter_id_2 {
+        font-size: 1.7rem;
+        padding:1rem 1rem 1rem 2rem;
+    }
+#source {
+        font-size: 1.7rem;
+        padding:1rem 1rem 1rem 5rem;
+        margin-left:5rem;
+    }
+#tabs_3 {
+        font-size: 1.5rem;
+        color:#FFFFFF;
+        background-color: #1B2129;
+        border-style: solid;
+        border-width: thin;
+        border-color: #374147;
+        margin-top:15rem;
+    }
 #solo {
         font-size: 1.9rem;
         padding:0rem 1rem 1rem 3rem;
