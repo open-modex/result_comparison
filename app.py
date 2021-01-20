@@ -1,17 +1,13 @@
-import os
 import pathlib
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import json
-import requests
 import pandas as pd
-import numpy as np
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import urllib3
 from dash.exceptions import PreventUpdate
-from urllib.request import urlopen
 
 urllib3.disable_warnings()
 
@@ -29,10 +25,6 @@ server = app.server
 # Load data
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
-
-from data_scalars import scalars
-scalar=scalars[0:1540]
-from data_timeseries import timeseries
 
 YEARS = [2020,2030,2050]
 
@@ -55,6 +47,13 @@ scalar=json_data['oed_scalars']
 scalar=scalar[0:1540]
 timeseries=json_data['oed_timeseries']'''
 
+from assets.data.data_scalars import scalars
+scalar=scalars[0:1540]
+from assets.data.data_timeseries import timeseries
+from assets.data.data_karte import features
+
+
+
 
 #available_parameter=df['parameter_name'].unique()
 #available_energy=df['input_energy_vector'].unique()
@@ -63,12 +62,6 @@ timeseries=json_data['oed_timeseries']'''
 
 map=pd.read_csv("assets/states_list.csv", engine="python", index_col=False, delimiter='\;', dtype={"abbrev": str})
 
-'''germany = json.load(open("assets/alles.geojson", "r"))
-fig = px.choropleth_mapbox(map, geojson=germany, locations='abbrev',
-                           mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
-                           color_continuous_scale="Viridis", hover_data=['Population', 'Capital', 'Area (sq. km)'],
-                           zoom=5, center={"lat": 51.3, "lon": 10}, opacity=0.2)
-fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)'''
 
 
 
@@ -127,7 +120,7 @@ html.Div(
                                     dcc.Dropdown(options=[], value=[],
                                             multi=True,id="state-dropdown"),
                                     dcc.Graph(id="country-choropleth",
-                                          figure={})]),
+                                          figure={},config = dict({'scrollZoom': False}))]),
                 ]),
                 #das ist die komplette rechte Seite
                 html.Div(
@@ -357,57 +350,38 @@ def three_four(tabs_2,selector):
 
 #interaktive Karte
 @app.callback(
-    [Output(component_id='country-choropleth', component_property='figure'),
-    Output(component_id='country-choropleth', component_property='config')],
+    Output(component_id='country-choropleth', component_property='figure'),
     [Input(component_id='state-dropdown', component_property='value')])
 def finale(region):
-    germany = json.load(open("assets/Karte.geojson", "r"))
-    fig = px.choropleth_mapbox(map, geojson=germany, locations='abbrev',
-                               mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
-                               color_continuous_scale="Viridis", hover_data=['Population', 'Capital', 'Area (sq. km)'],
-                               zoom=5, center={"lat": 51.3, "lon": 10}, opacity=0.1)
-    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
-    config = dict({'scrollZoom': False})
+    liste=[]
     if len(region)>0:
+        for i in features:
+            for k in range(len(region)):
+                if i['id'] == region[k]:
+                    liste.append(i)
 
-        if len(region)==16:
-            alles = json.load(open("assets/karte.geojson", "r"))
-            fig = px.choropleth_mapbox(map, geojson=alles, locations='abbrev',
-                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
-                                       color_continuous_scale="Viridis",
-                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
-                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
-            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
-        elif region[0]=='BW':
-            Baden_Württemberg = json.load(open("assets/Badenwürttemberg.geojson", "r"))
-            fig = px.choropleth_mapbox(map, geojson=Baden_Württemberg, locations='abbrev',
-                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
-                                       color_continuous_scale="Viridis",
-                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
-                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
-            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
-        elif region[0]=='BB':
-            Brandenburg = json.load(open("assets/Brandenburg.geojson", "r"))
-            fig = px.choropleth_mapbox(map, geojson=Brandenburg, locations='abbrev',
-                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
-                                       color_continuous_scale="Viridis",
-                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
-                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
-            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
-        elif region[0] == 'BE':
-            Berlin = json.load(open("assets/Berlin.geojson", "r"))
-            fig = px.choropleth_mapbox(map, geojson=Berlin, locations='abbrev',
-                                       mapbox_style="carto-darkmatter", hover_name='Bundesland', color='Area (sq. km)',
-                                       color_continuous_scale="Viridis",
-                                       hover_data=['Population', 'Capital', 'Area (sq. km)'],
-                                       zoom=5, center={"lat": 51.3, "lon": 10}, opacity=1)
-            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
-            return fig
+        card= json.load(open("assets/card.geojson", "r"))
+        card["features"]=liste
+        fig = px.choropleth_mapbox(map, geojson=card, locations='abbrev',
+                                   mapbox_style="carto-darkmatter", hover_name='Bundesland', color='abbrev',
+                                   #color_continuous_scale="Viridis",
+                                   hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                                   zoom=5, center={"lat": 51.3, "lon": 10}, opacity=0.7,
+                                   color_discrete_map={'BB':'blue',
+                                                       'SN':'orange',
+                                                       'MV':'red',
+                                                       'BY':'yellow',
+                                                       'NI':'green',
+                                                       'HB':'yellow'}
+                                   )
+        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
+        return fig
+
     else:
         raise PreventUpdate
 
 
-    return fig,config
+    return fig
 
 
 #von regions auf checkboxes
@@ -733,7 +707,6 @@ def masterclasss (year,technology,parameter,region,source):
             fig_layout["margin"]["b"] = 50
             fig_layout["margin"]["l"] = 50
             fig.update_layout(transition_duration=100)
-            #fig.update_traces(line_color="#3391CF")
             fig.update_xaxes( nticks=40)
             if parameter==parameter:
                 fig.update_yaxes(title= parameter,nticks=20)

@@ -1,18 +1,13 @@
-import os
-import pathlib
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import json
-import requests
 import pandas as pd
-import flask
-import numpy as np
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 import urllib3
-from data_timeseries import timeseries
+from assets.data.data_timeseries import timeseries
 urllib3.disable_warnings()
 
 
@@ -32,8 +27,8 @@ json_data = json.loads(response.text)
 timeseries=json_data['oed_timeseries']'''
 timeseries=timeseries
 
-germany = json.load(open("assets/karte.geojson", "r"))
-map=pd.read_csv("assets/states_list.csv", engine="python", index_col=False, delimiter='\;', dtype={"abbrev": str})
+germany = json.load(open("../assets/karte.geojson", "r"))
+map=pd.read_csv("../assets/states_list.csv", engine="python", index_col=False, delimiter='\;', dtype={"abbrev": str})
 
 
 fig = px.choropleth_mapbox(map, geojson=germany, locations='abbrev',

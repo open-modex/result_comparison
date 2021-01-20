@@ -6,11 +6,16 @@ import plotly.express as px
 import pandas as pd
 import flask
 
+
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns',None)
 
-germany = json.load(open("assets/karte.geojson","r"))
-map=pd.read_csv("assets/states_list.csv",engine="python",index_col=False, delimiter='\;',dtype={"abbrev": str})
+from assets.data.data_karte import features
+for i in range(16):
+    print(features[i]['id'])
+
+'''germany = json.load(open(tristate, "r"))
+map=pd.read_csv("assets/states_list.csv", engine="python", index_col=False, delimiter='\;', dtype={"abbrev": str})
 
 mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
 #mapbox_style = "mapbox://styles/plotlymapbox/cjvprkf3t1kns1cqjxuxmwixz"
@@ -29,6 +34,6 @@ app.layout = html.Div([
     dcc.Graph(figure=fig)
 ])
 
-app.run_server(debug=True, use_reloader=False)
+app.run_server(debug=True, use_reloader=False)'''
 
 
