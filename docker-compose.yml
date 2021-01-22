@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     image: modex_visualization
     container_name: modex_visualization
+    expose:
+    - 80
     restart: always
     networks:
     - caddy_network
