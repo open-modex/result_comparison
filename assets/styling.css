@@ -779,6 +779,7 @@ hr {
         flex-direction: column;
         align-items: stretch;
         justify-content: flex-start;
+
     }
 
     #selected-data {

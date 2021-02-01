@@ -154,8 +154,12 @@ html.Div(
                                 dcc.Checklist(
                                     options=[],value=[],
                                     labelStyle={'display': 'inline-block'},id='parameter_id'),
-                                dcc.RadioItems(id='experiment',options=[],value=''),
-                                dcc.Graph(id="selected-data",figure={},style={})
+                                dcc.RadioItems(id='experiment',options=[{'label':'bar-chart','value':'bar'},
+                                                                        {'label':'pie-chart','value':'pie'}],
+                                               value='bar',
+                                               labelStyle={'display': 'inline-block'}),
+                                dcc.Graph(id="selected-data",figure={},style={}),
+                                #dcc.Graph(id="pie",figure={},style={})
                             ]
                         )
                     ]
@@ -362,19 +366,26 @@ def finale(region):
 
         card= json.load(open("assets/card.geojson", "r"))
         card["features"]=liste
+
         fig = px.choropleth_mapbox(map, geojson=card, locations='abbrev',
                                    mapbox_style="carto-darkmatter", hover_name='Bundesland', color='abbrev',
-                                   #color_continuous_scale="Viridis",
                                    hover_data=['Population', 'Capital', 'Area (sq. km)'],
-                                   zoom=5, center={"lat": 51.3, "lon": 10}, opacity=0.7,
+                                   zoom=5, center={"lat": 51.3, "lon": 10},
                                    color_discrete_map={'BB':'blue',
-                                                       'SN':'orange',
-                                                       'MV':'red',
-                                                       'BY':'yellow',
-                                                       'NI':'green',
-                                                       'HB':'yellow'}
-                                   )
-        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False)
+                                                                                          'SN':'orange',
+                                                                                          'MV':'red',
+                                                                                          'BY':'yellow',
+                                                                                          'NI':'green',
+                                                                                          'HB':'yellow'}
+                                                                      )
+        fig.update_layout(legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            ),margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        #fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return fig
 
     else:
@@ -382,7 +393,7 @@ def finale(region):
 
 
     return fig
-
+#, coloraxis_showscale=False)
 
 #von regions auf checkboxes
 #TECHNOLOGY ID_FIVE
@@ -519,8 +530,9 @@ def six_seven (dropdown):
     [Input(component_id='years-slider', component_property='value'),
      Input(component_id='technology_id', component_property='value'),
      Input(component_id='parameter_id', component_property='value'),
-     Input(component_id='state-dropdown', component_property='value')])
-def masterclass (year,technology,parameter,region):
+     Input(component_id='state-dropdown', component_property='value'),
+     Input(component_id='experiment', component_property='value')])
+def masterclass (year,technology,parameter,region,chart):
     if len(technology) >0 and len(region)>0 and len(parameter)>0:
         liste=[]
         for i in scalar:
@@ -557,58 +569,81 @@ def masterclass (year,technology,parameter,region):
                 farbe = "technology"
 
             print(farbe)
-            fig = px.bar(
-                df,
-                orientation='h',
-                x="value",
-                y="source",
-                color=farbe,
-                hover_name="region",
-                hover_data=["region","technology","parameter_name","unit"],
-                labels={"source": "Simulation Framework"},
-                color_discrete_map={'generation': "#3391CF",
-                                    'emissions': "#3391CF",
-                                    'deprecated investment cost': "#3391CF",
-                                    'input energy': "#3391CF",
-                                    'energy flow': "#3391CF",
-                                    'photovoltaics': "#3391CF",}
+            if chart=='bar':
+                fig = px.bar(
+                    df,
+                    orientation='h',
+                    x="value",
+                    y="source",
+                    color=farbe,
+                    hover_name="region",
+                    hover_data=["region","technology","parameter_name","unit"],
+                    labels={"source": "Simulation Framework"},
+                    color_discrete_map={'generation': "#3391CF",
+                                        'emissions': "#3391CF",
+                                        'deprecated investment cost': "#3391CF",
+                                        'input energy': "#3391CF",
+                                        'energy flow': "#3391CF",
+                                        'photovoltaics': "#3391CF",}
 
-            )
-            fig_layout = fig["layout"]
-            fig_layout["paper_bgcolor"] = "#1f2630"
-            fig_layout["plot_bgcolor"] = "#1f2630"
-            fig_layout["font"]["color"] = "#3391CF"
-            fig_layout["title"]["font"]["color"] = "#3391CF"
-            fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
-            fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
-            fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
-            fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
-            fig_layout["margin"]["t"] = 50
-            fig_layout["margin"]["r"] = 50
-            fig_layout["margin"]["b"] = 50
-            fig_layout["margin"]["l"] = 50
+                )
+                fig_layout = fig["layout"]
+                fig_layout["paper_bgcolor"] = "#1f2630"
+                fig_layout["plot_bgcolor"] = "#1f2630"
+                fig_layout["font"]["color"] = "#3391CF"
+                fig_layout["title"]["font"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["margin"]["t"] = 50
+                fig_layout["margin"]["r"] = 50
+                fig_layout["margin"]["b"] = 50
+                fig_layout["margin"]["l"] = 50
 
-            fig.update_layout(transition_duration=500,legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
-            ))
-            #fig.update_traces(marker_color="#3391CF")
-
-            if len(parameter)==1:
-                fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']',nticks=20)
-            if len(parameter)==2:
-                fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
-                                       parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']',nticks=20)
-            if len(parameter)==3:
-                fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
-                                       parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
-                                       parameter[2] + "\n in \n" + '[' + unit[2].replace('â‚¬/a', '€/a') + ']',nticks=20)
-
-
-            return fig
+                fig.update_layout(transition_duration=500,legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.02,
+                    xanchor="right",
+                    x=1
+                ))
+                #fig.update_traces(marker_color="#3391CF")
+                #pie = px.pie(df, values='value', names='source')
+                if len(parameter)==1:
+                    fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']',nticks=20)
+                if len(parameter)==2:
+                    fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                           parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']',nticks=20)
+                if len(parameter)==3:
+                    fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                           parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                           parameter[2] + "\n in \n" + '[' + unit[2].replace('â‚¬/a', '€/a') + ']',nticks=20)
+            elif chart=='pie':
+                fig = px.pie(df, values='value',names='source')
+                fig_layout = fig["layout"]
+                fig_layout["paper_bgcolor"] = "#1f2630"
+                fig_layout["plot_bgcolor"] = "#1f2630"
+                fig_layout["font"]["color"] = "#3391CF"
+                fig_layout["title"]["font"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["margin"]["t"] = 50
+                fig_layout["margin"]["r"] = 50
+                fig_layout["margin"]["b"] = 50
+                fig_layout["margin"]["l"] = 50
+                fig.update_traces(textinfo='label+value+percent')
+                fig.update_layout(transition_duration=500, legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.02,
+                    xanchor="right",
+                    x=1
+                ))
+            #pie = px.pie(df, values='value', names='source')
+            return fig#,pie
         else:
             raise PreventUpdate
     else:
