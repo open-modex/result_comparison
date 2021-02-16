@@ -233,11 +233,12 @@ body {
     font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #F5F2F2;
     margin: 0;
+    padding: 0;
 }
 
 #root {
     margin: 0;
-
+    padding: 0;
 }
 
 @media (max-width: 550px) {
@@ -332,8 +333,9 @@ p {
 }
 
 #slider-text{
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.5rem !important;
     font-size: 2rem;
+    margin-left:0.5rem;
 }
 
 
@@ -462,60 +464,6 @@ select {
     font-size: inherit; /*https://stackoverflow.com/questions/6080413/why-doesnt-input-inherit-the-font-from-body*/
 }
 
-/* Removes awkward default styles on some inputs for iOS */
-input[type="email"],
-input[type="number"],
-input[type="search"],
-input[type="text"],
-input[type="tel"],
-input[type="url"],
-input[type="password"],
-textarea {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-textarea {
-    min-height: 65px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-
-input[type="email"]:focus,
-input[type="number"]:focus,
-input[type="search"]:focus,
-input[type="text"]:focus,
-input[type="tel"]:focus,
-input[type="url"]:focus,
-input[type="password"]:focus,
-textarea:focus,
-select:focus {
-    border: 1px solid #33C3F0;
-    outline: 0;
-}
-
-label,
-legend {
-    display: block;
-    margin-bottom: 0;
-}
-
-fieldset {
-    padding: 0;
-    border-width: 0;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-    display: inline;
-}
-
-label > .label-body {
-    display: inline-block;
-    margin-left: .5rem;
-    font-weight: normal;
-}
 
 
 /* Lists
@@ -582,6 +530,8 @@ textarea,
 select,
 fieldset {
     margin-bottom: 0;
+    margin-top:0;
+
 }
 
 pre,
@@ -644,14 +594,7 @@ hr {
 /* Slider
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-#slider-container {
-    background-color: #1B2129;
-    padding: 2rem 6rem 4rem 4rem;
-    height: 5rem;
-    border-style: solid;
-    border-width: thin;
-    border-color: #374147;
-}
+
 
 .rc-slider-dot-active, .rc-slider-handle {
     border-color: #3391CF    !important;
@@ -665,197 +608,6 @@ hr {
     background-color: #1d2731 !important
 }
 
-/* Heatmap
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-#deutschland {
-    margin: 2.5rem 0 0 0;
-    background-color: #1B2129;
-    border-style: solid;
-    border-width: thin;
-    border-color: #374147;
-    padding: 1rem;
-}
-
-
-#titel {
-    margin: 0;
-    padding: 1rem;
-}
-
-#country-choropleth {
-    margin: 0;
-    flex-grow: 1;
-}
-
-#state-dropdown {
-    padding:1rem;
-}
-
-#radio {
-    padding:1rem;
-}
-
-@media (min-width: 1251px) {
-    #deutschland {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-}
-
-@media (max-width: 550px) {
-    #country-choropleth .annotation-text{
-        font-size: 1.2rem !important;
-    }
-}
-
-/* Left column
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-@media only screen and (max-width: 1250px) {
-    /*For mobile and smaller screens*/
-    #left-column {
-        margin-right: 1.5%;
-        width: 100%;
-    }
-}
-
-@media (min-width: 1251px) {
-    /*For desktop*/
-}
-
-
-/* Graph
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-
-#graph-container {
-    margin: 2.5rem 0 0 0;
-    background-color: #1B2129;
-    padding: 1rem;
-    border-style: solid;
-    border-width: thin;
-    border-color: #374147;
-
-}
-
-
-
-
-@media (min-width: 1251px) {
-    /*For desktop*/
-    #logo {
-        float: right;
-        padding-right: 0rem;
-
-    }
-
-    #header p {
-        font-size: 1.5rem;
-    }
-
-    #tabs {
-        font-size: 1.5rem;
-        color:#FFFFFF;
-        background-color: #1B2129;
-        border-style: solid;
-        border-width: thin;
-        border-color: #374147;
-    }
-
-    #left-column {
-        margin-right: 1.5%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-content: center;
-        flex: 4 40%;
-    }
-
-    #abc {
-        flex: 6 60%;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-
-    }
-
-    #selected-data {
-        flex-grow: 1;
-        padding: 1rem;
-    }
-
-}
-
-
-
-#chart-selector {
-    font-size: 2rem;
-    padding: 1rem;
-}
-
-#technology_id {
-        font-size: 1.7rem;
-        padding:0rem 1rem 0rem 5rem;
-        margin-left:5rem;
-    }
-#parameter_id {
-        font-size: 1.7rem;
-        padding:0rem 1rem 0rem 5rem;
-        margin-left:5rem;
-    }
-#parameter_id_2 {
-        font-size: 1.7rem;
-        padding:1rem 1rem 1rem 2rem;
-    }
-#source {
-        font-size: 1.7rem;
-        padding:1rem 1rem 1rem 5rem;
-        margin-left:5rem;
-    }
-#tabs_3 {
-        font-size: 1.5rem;
-        color:#FFFFFF;
-        background-color: #1B2129;
-        border-style: solid;
-        border-width: thin;
-        border-color: #374147;
-        margin-top:15rem;
-    }
-#solo {
-        font-size: 1.9rem;
-        padding:0rem 1rem 1rem 3rem;
-    }
-
-#yes {
-        font-size: 1.9rem;
-        padding:0rem 1rem 1rem 3rem;
-    }
-
-#chart-dropdown {
-    margin-bottom: 0rem;
-    font-size: 1.8rem;
-    padding:1rem 1rem 1rem 2rem;
-}
-
-#energy-vector {
-    margin-bottom: 0rem;
-    padding:1rem 1rem 1rem 10rem;
-    font-size: 1.8rem;
-}
-
-
-
-#headerr {
-    background-color: #1B2129;
-    padding: 1rem;
-    border-style: solid;
-    border-width: thin;
-    border-color: #374147;
-    height: 5 rem;
-}
 
 /* Dropdown
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -891,27 +643,13 @@ hr {
 
 .Select--single > .Select-control .Select-value, .Select-placeholder {
     border: 1px solid #7fafdf !important;
-    border-radius: 4px !important;
-}
 
+}
+'''border-radius: 4px !important;'''
 /* Placement
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-@media (min-width: 1251px) {
-    /*For desktop*/
-    #app-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: stretch;
-        height: 100rem;
-        margin-bottom: 5rem;
-    }
-}
 
-#header {
-    margin-left: 1.5%;
-}
 
 
 div, svg {
@@ -921,3 +659,257 @@ div, svg {
 ._dash-undo-redo {
     display: none;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Graph
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#app-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    height: 60rem;
+    margin-bottom: 2rem;
+}
+
+
+#header {
+    margin-left: 1.5%;
+    margin-bottom: 0%;
+}
+
+
+#left-column {
+    margin-right: 1.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+    flex: 1.7 17%;
+}
+#right-column {
+    flex: 8.3 83%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+
+}
+
+#logo {
+    float: right;
+    padding-right: 5rem;
+}
+
+
+#slider-container {
+background-color: #1B2129;
+padding: 1rem 2rem 4rem 0rem;
+border-style: solid;
+border-width: thin;
+border-color: #374147;
+margin-bottom:-0.8rem;
+}
+
+
+#years-slider{
+    margin-left:2rem;
+    }
+
+#selection {
+background-color: #1B2129;
+padding:1rem;
+border-style: solid;
+border-width: thin;
+border-color: #374147;
+}
+
+#up {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-bottom:-1rem;
+}
+
+#extra,#regions,#technology {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+#type,#parameter,#input {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-top:1rem;
+}
+
+#text {
+    flex: 1 10%;
+}
+
+#help1, #help2, #help3, #help4, #help5 {
+    background-color: #1B2129;
+    padding: 1rem;
+    margin-left:2rem;
+    margin-bottom:1rem;
+    border-style: solid;
+    border-width: thin;
+    border-color: #374147;
+    height:8rem;
+    width:13rem;
+    font-size:1.8rem;
+}
+
+#arbitrary {
+    background-color: #1B2129;
+    padding: 1rem;
+    border-style: solid;
+    border-width: thin;
+    border-color: #374147;
+    flex: 6.5 65%;
+    margin-bottom:1rem;
+}
+#right-left {
+    background-color: #1B2129;
+    padding: 1rem;
+    border-style: solid;
+    border-width: thin;
+    border-color: #374147;
+    flex: 3.5 35%;
+    margin-bottom:1rem;
+    margin-right:2rem;
+}
+
+
+#scalar {
+    height: 35rem;
+    margin-top: -1rem;
+    }
+
+
+#down {
+    background-color: #1B2129;
+    padding: 1rem;
+    border-style: solid;
+    border-width: thin;
+    border-color: #374147;
+    margin-top:-1rem;
+}
+
+#background{
+    float:right;
+    background-color:#1B2129;
+    color:#FFFFFF;
+    margin-top:-0.5rem;
+    margin-bottom:-1rem;
+    margin-left:0.5rem;
+    }
+#description_1{
+    margin-right:1rem;
+    margin-left:7.5rem;
+    margin-top:0rem;
+    font-size:1.5rem;
+    float:right;
+    z-index:1000;
+    position:relative;
+    }
+#source{
+    margin-left:0.1rem;
+    float:left;
+
+    }
+#source_text{
+    font-size: 2rem;
+    }
+
+#region_text{
+    float:left;
+    margin-right:1.8rem;
+    }
+#technology_text,#type_text,#parameter_text,#input_text{
+    float:left;
+    }
+#parameter{margin-top:4rem;}
+#parameter_text{
+    margin-top:-3rem;}
+
+#radio4{
+    margin-left:18.3rem;
+    }
+#radio5{
+    margin-left:22.7rem;
+    }
+#radio6{
+    margin-left:23.2rem;
+    }
+#radio7{
+    margin-top:-3rem;
+    }
+
+#timeseries {
+    height:40rem;
+    }
+
+#deutschland {
+    height:32rem;
+    border-style: solid;
+    border-width: thin;
+    border-color: #FFFFFF;
+    flex
+    }
+
+#dd1,#dd2,#dd3 {
+    margin:0.5rem 0.5rem 0.5rem 1rem;
+    display: stretch;
+    }
+
+#dd4,#dd5,#dd6 {
+    margin-left:0.5rem;
+    magin-bottom:1rem;
+    }
+
+#dd7{
+    width:67.5rem;
+    margin-left:1rem;
+    margin-top:-2rem;
+    margin-bottom:0.5rem;
+    }
+
+
+
+
+

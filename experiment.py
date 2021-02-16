@@ -1,37 +1,23 @@
-# -*- coding: utf-8 -*-
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-from experiments import timeseries
+import pathlib
+import json
+import pandas as pd
+import requests
+import urllib3
+from assets.data.data_scalars import scalars
 
-app = dash.Dash(
-    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
-)
-server = app.server
+urllib3.disable_warnings()
 
-# Describe the layout/ UI of the app
-app.layout = html.Div(
-    children=[
-        html.Div(
-            dcc.Tabs(id="folder", value='timeseries', children=[
-                dcc.Tab(label='scalars', value='scalars', style={'background-color': "#1B2129"}),
-                dcc.Tab(label='timeseries', value='timeseries', style={'background-color': "#1B2129"})])),
-        html.Div(id="page-content")
-    ]
-)
+from assets.data.data_in_scalars import scalars_in
+from assets.data.data_in_timeseries import timeseries_in
+mapbox_access_token = "pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNrOWJqb2F4djBnMjEzbG50amg0dnJieG4ifQ.Zme1-Uzoi75IaFbieBDl3A"
+mapbox_style = "mapbox://styles/plotlymapbox/cjvprkf3t1kns1cqjxuxmwixz"
+map=pd.read_csv("assets/states_list.csv", engine="python", index_col=False, delimiter='\;', dtype={"abbrev": str})
 
-# Update page
-@app.callback(
-    [Output(component_id='page-content', component_property='children')],
-    [Input(component_id='folder', component_property='value')])
-def display_page(value):
-    if value=='scalars':
-        return scalars.create_layout(app)
-    elif value=='timeseries':
-        return timeseries.create_layout(app)
+region_options = [{"label": str(region), "value": str(region)}
+                    for region in map['abbrev']]
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns',None)
 
+df=pd.DataFrame(timeseries_in,columns=['technology','technology_type','input_energy_vector','region','parameter_name'])
+print(df)
 
-
-if __name__ == "__main__":
-    app.run_server(debug=True)
