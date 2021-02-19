@@ -19,5 +19,8 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns',None)
 
 df=pd.DataFrame(timeseries_in,columns=['technology','technology_type','input_energy_vector','region','parameter_name'])
-print(df)
-
+#print(df)
+dff=pd.DataFrame(scalars_in)
+w=dff[dff['technology_type']=='combustion Engine']
+q=dff[dff['technology_type']=='combustion engine']
+print(w,q)

@@ -738,7 +738,7 @@ padding: 1rem 2rem 4rem 0rem;
 border-style: solid;
 border-width: thin;
 border-color: #374147;
-margin-bottom:-0.8rem;
+margin-bottom:1rem;
 }
 
 
@@ -816,8 +816,8 @@ border-color: #374147;
 
 
 #scalar {
-    height: 35rem;
-    margin-top: -1rem;
+    height: 45rem;
+    margin-top: 0rem;
     }
 
 
@@ -827,7 +827,7 @@ border-color: #374147;
     border-style: solid;
     border-width: thin;
     border-color: #374147;
-    margin-top:-1rem;
+    margin-top:1rem;
 }
 
 #background{
@@ -840,13 +840,20 @@ border-color: #374147;
     }
 #description_1{
     margin-right:1rem;
-    margin-left:7.5rem;
+    margin-left:8%;
     margin-top:0rem;
     font-size:1.5rem;
     float:right;
     z-index:1000;
     position:relative;
     }
+#timeseries_check{
+    margin-left:3rem;
+    font-size:2rem;
+    }
+        color:#1265CE;
+    color:#CE1257;
+
 #source{
     margin-left:0.1rem;
     float:left;

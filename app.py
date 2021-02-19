@@ -48,15 +48,16 @@ scalar=scalar[0:1540]
 timeseries=json_data['oed_timeseries']'''
 
 from assets.data.data_scalars import scalars
-scalar=scalars[0:1540]
-
+scalars_in=scalars
+scalar=scalars
+#from assets.data.data_in_scalars import scalars_in
+#HIER ÄNDERUNG
 
 #x=df.to_dict('records')
 #print(x==scalar)
 #print(scalar)
 from assets.data.data_timeseries import timeseries
 
-from assets.data.data_in_scalars import scalars_in
 
 
 
@@ -124,15 +125,14 @@ html.Div(
                                     html.P(id="utility_text", children='Select Utility:'),
                                     dcc.Dropdown(options=[{'label': 'generation', 'value': 'generation'},
                                                           {'label': 'storage', 'value': 'storage'},
-                                                          {'label': 'transmission', 'value': 'transmission'}],
+                                                          {'label': 'transmission', 'value': 'transmission'},
+                                                          {'label': 'ALL', 'value': 'ALL'}],
                                                  value='generation',searchable=False,
                                                  multi=False, id="dd1",clearable=False),
-                                    html.P(id="field_text", children='Select Field:'),
-                                    dcc.Dropdown(options=[{'label':'economic','value':'economic'},
-                                                          {'label':'environmental','value':'environmental'},
-                                                          {'label':'technical','value':'technical'}],
-                                                 value='economic',clearable=False,
-                                            multi=False,id="dd2",searchable=False),
+                                    html.P(id="field_text", children='Select Parameter:'),
+                                    dcc.Dropdown(id="dd2",clearable=False, searchable=False),
+                                    html.P(id="timeseries_check", children='Timeseries:'),
+                                    html.Br(id='filler_4', children=[]),
                                     html.Div(id="regions",
                                              children=[
                                                  html.P(id="region_text",children='Select Region:'),
@@ -162,7 +162,7 @@ html.Div(
                                                                          {'label': 'choose', 'value': 'choose'}],
                                                                 value='choose', labelStyle={'display': 'inline-block'},
                                                                 id='radio4')]),
-                                    dcc.Dropdown(multi=True, id="dd4", clearable=False),  # 1.Filter TECHNOLOGY
+                                    dcc.Dropdown(id="dd4", multi=True),  # 1.Filter TECHNOLOGY
                                     html.Div(id="input",
                                              children=[
                                                  html.P(id="input_text", children='Select Input:'),
@@ -187,28 +187,18 @@ html.Div(
 
                                     html.Div(id="extra",children=[
                                         dcc.Checklist(
-                                        options=[{'label':'urbs','value':'urbs'},{'label':'oemof','value':'oemof'},
-                                                 {'label':'GENESYS-2','value':'gen2'},{'label':'BALMOREL','value':'balmorel'},
-                                                 {'label':'GENeSYS-mod','value':'gen'}], value=['urbs','oemof','balmorel','gen2','gen'],
+                                        options=[{'label':'Urbs','value':'Urbs'},{'label':'Oemof','value':'Oemof'},
+                                                 {'label':'GENESYS-2','value':'GENESYS-2'},{'label':'Balmorel','value':'Balmorel'},
+                                                 {'label':'Genesys-mod','value':'Genesys-mod'}],
+                                        value=['Urbs','Oemof','Balmorel','GENESYS-2','Genesys-mod'],
                                         id='source',labelStyle={'display': 'inline-block','size':'50px'}),
                                         html.P(id="description_1", children='html color code'),
                                         dcc.Input(id="background", type='text',
-                                              placeholder='html color code for background',value="#1f2630",
+                                              pattern=u"^#[A-Fa-f0-9]{6}$",value="#1f2630",
                                               size="30", minLength="7", maxLength="7",style={'width' : '120px'})]),
                                     html.Br(id='filler_2j2', children=[]),
                                     dcc.Graph(id="scalar", figure={}, style={}),
-                                    html.Div(id="parameter",
-                                             children=[
-                                                 html.P(id="parameter_text", children='Select Parameter:'),
-                                                 dcc.Dropdown(options=[{'label': 'fixed costs', 'value': 'fixed'},
-                                                                       {'label': 'deceprated investment costs',
-                                                                        'value': 'dic'}],
-                                                              value=['fixed'],
-                                                              multi=True, id="dd7", clearable=False)]),  # 3.Filter]),
-                                    dcc.RadioItems(options=[{'label': 'All', 'value': 'All'},
-                                                            {'label': 'choose', 'value': 'choose'}],
-                                                   value='choose', labelStyle={'display': 'inline-block'},
-                                                   id='radio7'),
+
                                     ]),
                             ]
                         ),
@@ -226,31 +216,206 @@ html.Div(
     ]
 )])
 
+@app.callback(
+    [Output(component_id='dd2', component_property='options'),
+     Output(component_id='dd2', component_property='value'),
+     Output(component_id='dd2', component_property='multi')],
+    [Input(component_id='dd1', component_property='value')])
+def start(dd1):
+    option=[]
+    value=[]
+
+
+    if dd1=='ALL':
+        option=[{'label':'curtailment','value':'curtailment'},
+                {'label':'slack','value':'slack'},
+                {'label':'cost system','value':'cost system'},
+                {'label':'emissions','value':'emissions'}]
+        value='cost system'
+        multi=False
+    elif dd1=='generation':
+        option=[{'label':'emissions','value':'emissions'},
+                {'label':'generation','value':'generation'},
+                {'label':'deprecated fixed cost','value':'deprecated fixed cost'},
+                {'label': 'deprecated investment cost', 'value': 'deprecated investment cost'},
+                {'label': 'variable cost', 'value': 'variable cost'},
+                {'label': 'primary energy consumption', 'value': 'primary energy consumption'}]
+        value='emissions'
+        multi=False
+    elif dd1=='transmission':
+        option=[{'label':'energy flow','value':'energy flow'},
+                {'label':'losses','value':'losses'},
+                {'label':'deprecated investment cost','value':'deprecated investment cost'},
+                {'label':'deprecated fixed cost','value':'deprecated fixed cost'}]
+        value=['energy flow']
+        multi=True
+    elif dd1=='storage':
+        option=[{'label':'losses','value':'losses'},
+                {'label': 'input energy', 'value': 'input energy'},
+                {'label': 'output energy', 'value': 'output energy'},
+                {'label': 'deprecated investment cost', 'value': 'deprecated investment cost'},
+                {'label': 'variable cost', 'value': 'variable cost'},
+                {'label': 'primary energy consumption', 'value': 'primary energy consumption'}
+                ]
+        value='losses'
+        multi=False
+    return option, value, multi
+
+'''@app.callback(
+    [Output(component_id='dd2', component_property='options'),
+     Output(component_id='dd2', component_property='value'),
+     Output(component_id='dd2', component_property='multi')],
+    [Input(component_id='dd1', component_property='value')])
+def start(dd1):
+    option=[]
+    value=[]
+    print('dd1 is ', dd1)
+
+    if dd1=='ALL':
+        option=[{'label':'system cost','value':'system cost'},
+                {'label':'slack','value':'slack'},
+                {'label':'renewable generation','value':'renewable generation'},
+                {'label':'emissions','value':'emissions'}]
+        value='system cost'
+        multi=False
+    elif dd1=='generation':
+        option=[{'label':'emissions','value':'emissions'},
+                {'label':'electricity generation','value':'electricity_gen'},
+                {'label':'fixed cost','value':'fixed cost'},
+                {'label':'variable cost','value':'variable cost'}]
+        value='emissions'
+        multi=False
+    elif dd1=='transmission':
+        option=[{'label':'energy flow','value':'energy flow'},
+                {'label':'losses','value':'losses'},
+                {'label':'added capacity','value':'added capacity'}]
+        value=['energy flow']
+        multi=True
+        #if multi is True then value has to be a list, if false, value is only string
+    elif dd1=='storage':
+        option=[{'label':'storage level','value':'storage level'},
+                {'label':'input energy','value':'input energy'},
+                {'label':'output energy','value':'output energy'}]
+        value='storage level'
+        multi=False
+
+    return option, value, multi'''
+
+
+
+
+'''@app.callback(
+    [Output(component_id='timeseries_check', component_property='children'),
+     Output(component_id='timeseries_check', component_property='style')],
+    [Input(component_id='dd1', component_property='value'),
+    Input(component_id='dd2', component_property='value')])
+def time(dd1,dd2):
+    children=[]
+    style = {"color": "red"}
+    timeseries=['emissions','electricity generation', 'input energy', 'output energy', 'storage level',
+                'energy flow']
+
+    if type(dd2) is not None:
+        if type(dd2) is list:
+            if dd2[0] in timeseries:
+                children = 'Timeseries: YES'
+                style = {"color": "green"}
+            else:
+                children = 'Timeseries: NO'
+                style = {"color": "red"}
+            return children, style
+        elif type(dd2) is str:
+            if dd2 in timeseries:
+                children = 'Timeseries: YES'
+                style = {"color": "green"}
+            else:
+                children = 'Timeseries: NO'
+                style = {"color": "red"}
+            return children, style
+        return children,style
+
+    else:
+        raise PreventUpdate'''
+
+
+@app.callback(
+    [Output(component_id='timeseries_check', component_property='children'),
+     Output(component_id='timeseries_check', component_property='style')],
+    [Input(component_id='dd2', component_property='value')])
+def time(dd2):
+    children=[]
+    style = {"color": "red"}
+    timeseries=['emissions','generation', 'input energy', 'slack', 'cost system','curtailment']
+
+    if type(dd2) is not None:
+        if type(dd2) is list:
+            if dd2[0] in timeseries:
+                children = 'Timeseries: YES'
+                style = {"color": "green"}
+            else:
+                children = 'Timeseries: NO'
+                style = {"color": "red"}
+            return children, style
+        elif type(dd2) is str:
+            if dd2 in timeseries:
+                children = 'Timeseries: YES'
+                style = {"color": "green"}
+            else:
+                children = 'Timeseries: NO'
+                style = {"color": "red"}
+            return children, style
+        return children,style
+
+    else:
+        raise PreventUpdate
+
+
+
+
 
 #dropdown 4 TECHNOLOGY
 @app.callback(
     [Output(component_id='dd4', component_property='options'),
-    Output(component_id='dd4', component_property='value')],
+     Output(component_id='dd4', component_property='value')],
     [Input(component_id='dd1', component_property='value'),
-     Input(component_id='radio4', component_property='value')])
-def technology_filter(dd1,selector):
+     Input(component_id='radio4', component_property='value'),
+     Input(component_id='dd2', component_property='value')])
+def technology_filter(dd1,selector,dd2):
     option=[]
     value=[]
+    if dd1=='ALL':
+        option=[{'label':'ALL','value':'ALL'}]
+        value=['ALL']
+
 
     if dd1=='generation':
         df=pd.DataFrame(scalars_in)
-        df=df[df['technology']!='storage']
+        #hier muss geändert werden
+        df=df[df['technology']!='battery storage']
         df = df[df['technology'] != 'transmission']
+        df = df[df['technology'] != 'ALL']
+
+        if type(dd2) is list:
+            df = df[df['parameter_name']==dd2[0]]
+        else:
+            df = df[df['parameter_name'] == dd2]
+
         available=df['technology'].unique()
         option=[{'label':str(technology),'value':str(technology)}
                 for technology in available]
-        value=["photovoltaics"]
+
+        if len(option)>0:
+            option=option
+            value = [option[0]["value"]]
+
         if selector == 'choose':
             option=option
             value = value
+
         else:
             option=option
             value=[]
+
             for i in range(len(option)):
                 value.append(option[i]["value"])
 
@@ -258,10 +423,11 @@ def technology_filter(dd1,selector):
     elif dd1=="transmission":
         option=[{'label':'transmission','value':'transmission'}]
         value=['transmission']
-    elif dd1=="storage":
-        option=[{'label':'storage','value':'storage'}]
-        value=['storage']
 
+#HIER MUSS AUCH GEÄNDERT WERDEN
+    elif dd1=="storage":
+        option=[{'label':'storage','value':'battery storage'}]
+        value=['battery storage']
 
     return option,value
 
@@ -269,23 +435,31 @@ def technology_filter(dd1,selector):
 #Dropdown 5 Input
 @app.callback(
     [Output(component_id='dd5', component_property='options'),
-    Output(component_id='dd5', component_property='value')],
+     Output(component_id='dd5', component_property='value')],
     [Input(component_id='dd4', component_property='value'),
      Input(component_id='radio5', component_property='value')])
 def input_filter(dd4,selector):
     option=[]
     value=[]
+
+    if dd4=='ALL':
+        option=[{'label':'ALL','value':'ALL'}]
+        value='ALL'
+
+
     if type(dd4) is list:
         if len(dd4)>0:
             x=[]
+            #available = []
             for i in range(len(scalars_in)):
                 for j in range(len(dd4)):
                     if scalars_in[i]['technology'] == dd4[j]:
                         x.append(scalars_in[i])
                         df = pd.DataFrame(x, columns=['technology', 'technology_type', 'input_energy_vector'])
-                        available = df['input_energy_vector'].unique()
+                        availablee = df['input_energy_vector'].unique()
+
             option = [{'label': str(energy_input), 'value': str(energy_input)}
-                      for energy_input in available]
+                      for energy_input in availablee]
             value = [option[0]["value"]]
 
             if selector == 'choose':
@@ -305,7 +479,7 @@ def input_filter(dd4,selector):
 #Dropdown 6 Type
 @app.callback(
     [Output(component_id='dd6', component_property='options'),
-    Output(component_id='dd6', component_property='value')],
+     Output(component_id='dd6', component_property='value')],
     [Input(component_id='dd5', component_property='value'),
     Input(component_id='dd4', component_property='value'),
      Input(component_id='radio6', component_property='value')])
@@ -313,6 +487,9 @@ def input_filter(dd5,dd4,selector):
     option=[]
     value=[]
     available=[]
+    if dd5=='ALL':
+        option=[{'label':'ALL','value':'ALL'}]
+        value='ALL'
 
     if type(dd5) is list and type(dd4) is list:
         if len(dd5)>0 and len(dd4)>0:
@@ -344,6 +521,22 @@ def input_filter(dd5,dd4,selector):
         raise PreventUpdate
     return option,value
 
+@app.callback(
+    [Output(component_id='radio3', component_property='options'),
+     Output(component_id='radio3', component_property='value')],
+     [Input(component_id='dd1', component_property='value')])
+def abc(all):
+    option=[]
+    value=[]
+    if all=='ALL':
+        option = [{'label': 'All', 'value': 'ALL'},
+                  {'label': 'choose', 'value': 'choose','disabled':True}]
+        value = 'ALL'
+    else:
+        option = [{'label': 'All', 'value': 'ALL'},
+                  {'label': 'choose', 'value': 'choose'}]
+        value = 'choose'
+    return option, value
 
 #Dropdown 3 regions
 @app.callback(
@@ -353,7 +546,8 @@ def regions(selector):
     value=[]
     if selector == 'choose':
         value = ['BB']
-    else:
+
+    elif selector == 'ALL':
         for i in range(len(region_options)):
             value.append(region_options[i]["value"])
 
@@ -390,7 +584,7 @@ def karte(region):
         card["features"]=liste
         fig = px.choropleth_mapbox(map, geojson=card, locations='abbrev',
                                    mapbox_style="carto-darkmatter", hover_name='Bundesland', color='abbrev',
-                                   hover_data=['Population', 'Capital', 'Area (sq. km)'],
+                                   hover_data=['Population'],
                                    zoom=3.8, center={"lat": 51.3, "lon": 10.3}, opacity=0.7,
                                    color_discrete_map={'BB':'blue','SN':'orange','MV':'red','BY':'yellow',
                                                        'NI':'green','HB':'yellow','HH':'red'}
@@ -401,6 +595,248 @@ def karte(region):
     else:
         raise PreventUpdate
     return fig
+
+
+@app.callback(
+    Output(component_id='scalar', component_property='figure'),
+    [Input(component_id='dd1', component_property='value'),
+     Input(component_id='dd2', component_property='value'),
+     Input(component_id='dd3', component_property='value'),
+     Input(component_id='dd4', component_property='value'),
+     Input(component_id='dd5', component_property='value'),
+     Input(component_id='dd6', component_property='value'),
+     Input(component_id='source', component_property='value'),
+     Input(component_id='background', component_property='value')])
+def masterclass (dd1,parameter,region,technology,input,tech_type,source,background):
+    print(dd1,parameter,region,technology,input,tech_type,source)
+    if type(region) is list and type(technology) is list and type(input) is list and type(tech_type) is list:
+        if len(technology) >0 and len(region)>0 and len(input)>0 and len(tech_type)>0:
+            liste=[]
+            for i in scalar:
+                for j in range(len(region)):
+                    for s in range(len(i['region'])): # neu
+                        if len(region) > j and i['region'][s] == region[j]:
+
+                            for k in range(len(technology)):
+                                if len(technology) > k and i['technology'] == technology[k]:
+
+                                    for o in range(len(input)):
+                                        if len(input) > o and i['input_energy_vector'] == input[o]:
+
+                                            for h in range(len(tech_type)):
+                                                if len(tech_type) > h and i['technology_type'] == tech_type[h]:
+
+                                                    for a in range(len(source)):
+                                                        if len(source) > a and i['source'] == source[a] and type(parameter) is list:
+
+                                                            for l in range(len(parameter)):
+                                                                if len(parameter) > l and i['parameter_name'] == parameter[l]:
+                                                                    liste.append(i)
+
+                                                        elif len(source) > a and i['source'] == source[a] and type(parameter) is str:
+                                                                if i['parameter_name'] == parameter:
+                                                                    liste.append(i)
+            #cutting out possible duplicates
+            final_list=[]
+            for i in liste:
+                if i not in final_list:
+                    final_list.append(i)
+            df = pd.DataFrame(final_list, columns=['scenario_id','region', 'parameter_name', 'technology',
+                                              'value','unit','source', 'input_energy_vector', 'technology_type'])
+
+            #print(liste)
+            #print(df)
+            #print(len(technology))
+
+
+            unit = df["unit"].tolist()
+            '''for i in range(len(parameter)):
+                print('Unit is',unit[i])'''
+            if len(unit)>0:
+
+                if len(technology)==1:
+                    farbe = "parameter_name"
+                elif len(technology)==2:
+                    farbe = "technology"
+
+                #print('Farbe richtet sich nach',farbe)
+                fig = px.bar(
+                    df,
+                    orientation='h',
+                    x="value",
+                    y="source",
+                    color=farbe,
+                    hover_name="region",
+                    hover_data=["region","technology","parameter_name","unit"],
+                    labels={"source": "Simulation Framework"},
+                    color_discrete_map={'generation': "#3391CF",
+                                        'emissions': "#3391CF",
+                                        'deprecated investment cost': "#3391CF",
+                                        'input energy': "#3391CF",
+                                        'energy flow': "#3391CF",
+                                        'photovoltaics': "#3391CF",}
+
+                )
+
+                fig_layout = fig["layout"]
+                fig_layout["paper_bgcolor"] = "#1f2630"
+                #fig_layout["plot_bgcolor"] = "#1f2630"
+                fig_layout["font"]["color"] = "#3391CF"
+                fig_layout["title"]["font"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["margin"]["t"] = 50
+                fig_layout["margin"]["r"] = 50
+                fig_layout["margin"]["b"] = 50
+                fig_layout["margin"]["l"] = 50
+
+                default_background = "#1f2630"
+                if len(background) == 7 and background.startswith("#"):
+                    try:
+                        int(background[1:], 16)
+                        fig_layout["plot_bgcolor"] = background
+                    except:
+                        fig_layout["plot_bgcolor"] = default_background
+                else:
+                    fig_layout["plot_bgcolor"] = default_background
+
+
+                fig.update_layout(transition_duration=500,legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.02,
+                    xanchor="right",
+                    x=1
+                ))
+                #fig.update_traces(marker_color="#3391CF")
+
+                if type(parameter) is str:
+                    fig.update_xaxes(title=parameter + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']',nticks=20)
+                if len(parameter)==1:
+                    fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']',nticks=20)
+                if len(parameter)==2:
+                    fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                           parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']',nticks=20)
+                if len(parameter)==3:
+                    fig.update_xaxes(title=parameter[0] + "\n in \n" + '[' + unit[0].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                           parameter[1] + "\n in \n" + '[' + unit[1].replace('â‚¬/a', '€/a') + ']' + "\n & \n" +
+                                           parameter[2] + "\n in \n" + '[' + unit[2].replace('â‚¬/a', '€/a') + ']',nticks=20)
+
+
+                return fig
+            else:
+                raise PreventUpdate
+        else:
+            raise PreventUpdate
+
+    else:
+        raise PreventUpdate
+
+
+@app.callback(
+    Output(component_id='timeseries', component_property='figure'),
+    [Input(component_id='dd2', component_property='value'),
+     Input(component_id='dd3', component_property='value'),
+     Input(component_id='dd4', component_property='value'),
+     Input(component_id='dd5', component_property='value'),
+     Input(component_id='dd6', component_property='value'),
+     Input(component_id='source', component_property='value'),
+     Input(component_id='background', component_property='value')])
+def masterclass (parameter,region,technology,input,tech_type,source,background):
+    #print(parameter, region, technology, input, tech_type, source)
+    if type(region) is list and type(technology) is list and type(input) is list and type(tech_type) is list:
+        if len(technology) >0 and len(region)>0 and len(input)>0 and len(tech_type)>0:
+            liste=[]
+            for i in timeseries:
+                for j in range(len(region)):
+                    for s in range(len(i['region'])):  # neu
+                        if len(region) > j and i['region'][s] == region[j]:
+
+                            for k in range(len(technology)):
+                                if len(technology) > k and i['technology'] == technology[k]:
+
+                                    for o in range(len(input)):
+                                        if len(input) > o and i['input_energy_vector'] == input[o]:
+
+                                            for h in range(len(tech_type)):
+                                                if len(tech_type) > h and i['technology_type'] == tech_type[h]:
+
+                                                    for a in range(len(source)):
+                                                        if len(source) > a and i['source'] == source[a] and type(parameter) is list:
+
+                                                            for l in range(len(parameter)):
+                                                                if len(parameter) > l and i['parameter_name'] == parameter[l]:
+                                                                    liste.append(i)
+
+                                                        elif len(source) > a and i['source'] == source[a] and type(parameter) is str:
+                                                                if i['parameter_name'] == parameter:
+                                                                    liste.append(i)
+
+            #print(liste)
+            final_list = []
+            for i in liste:
+                if i not in final_list:
+                    final_list.append(i)
+            #df = pd.DataFrame(final_list, columns=['scenario_id', 'region', 'parameter_name', 'technology',
+            #                                       'value', 'unit', 'source', 'input_energy_vector', 'technology_type'])
+            #print(final_list)
+            if len(final_list)>0 and len(parameter)>0:
+                data = {timeseriess["source"]: timeseriess["series"] for timeseriess in final_list}
+                data["hour"] = range(201)  # hier wird ein neuer key eingefügt
+                df=pd.DataFrame(data)
+                help=[]
+
+                if len(df)>0:
+                    y=[]
+                    for i in range(len(source)):
+                        y.append(source[i])
+                        fig = px.line(
+                            df,
+                            x="hour",
+                            y=y,
+                            color_discrete_map={'Urbs': "#3391CF",
+                                                'Balmorel':"red"}
+                        )
+                    fig_layout = fig["layout"]
+                    fig_layout["paper_bgcolor"] = "#1f2630"
+                    fig_layout["font"]["color"] = "#3391CF"
+                    fig_layout["title"]["font"]["color"] = "#3391CF"
+                    fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
+                    fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
+                    fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+                    fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+                    fig_layout["margin"]["t"] = 20
+                    fig_layout["margin"]["r"] = 50
+                    fig_layout["margin"]["b"] = 50
+                    fig_layout["margin"]["l"] = 50
+                    fig.update_layout(transition_duration=100)
+                    fig.update_xaxes( nticks=40)
+                    default_background = "#1f2630"
+
+                    if len(background) == 7 and background.startswith("#"):
+                        try:
+                            int(background[1:], 16)
+                            fig_layout["plot_bgcolor"] = background
+                        except:
+                            fig_layout["plot_bgcolor"] = default_background
+                    else:
+                        fig_layout["plot_bgcolor"] = default_background
+
+                    if parameter==parameter:
+                        fig.update_yaxes(title= parameter,nticks=20)
+                    else:
+                        raise PreventUpdate
+                    return fig
+                else:
+                    raise PreventUpdate
+            else:
+                raise PreventUpdate
+        else:
+            raise PreventUpdate
+    else:
+        raise PreventUpdate
 
 
 if __name__ == "__main__":
