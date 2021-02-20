@@ -5,6 +5,7 @@ import dash_html_components as html
 import plotly.express as px
 import json
 import pandas as pd
+import numpy as np
 from dash.dependencies import Input, Output
 import urllib3
 from dash.exceptions import PreventUpdate
@@ -316,22 +317,12 @@ def time(dd1,dd2):
                 'energy flow']
 
     if type(dd2) is not None:
-        if type(dd2) is list:
-            if dd2[0] in timeseries:
-                children = 'Timeseries: YES'
-                style = {"color": "green"}
-            else:
-                children = 'Timeseries: NO'
-                style = {"color": "red"}
-            return children, style
-        elif type(dd2) is str:
-            if dd2 in timeseries:
-                children = 'Timeseries: YES'
-                style = {"color": "green"}
-            else:
-                children = 'Timeseries: NO'
-                style = {"color": "red"}
-            return children, style
+        if type(dd2) is list and dd2[0] in timeseries or type(dd2) is str and dd2 in timeseries:
+            children = 'Timeseries: YES'
+            style = {"color": "green"}
+        else:
+            children = 'Timeseries: NO'
+            style = {"color": "red"}
         return children,style
 
     else:
@@ -348,22 +339,12 @@ def time(dd2):
     timeseries=['emissions','generation', 'input energy', 'slack', 'cost system','curtailment']
 
     if type(dd2) is not None:
-        if type(dd2) is list:
-            if dd2[0] in timeseries:
-                children = 'Timeseries: YES'
-                style = {"color": "green"}
-            else:
-                children = 'Timeseries: NO'
-                style = {"color": "red"}
-            return children, style
-        elif type(dd2) is str:
-            if dd2 in timeseries:
-                children = 'Timeseries: YES'
-                style = {"color": "green"}
-            else:
-                children = 'Timeseries: NO'
-                style = {"color": "red"}
-            return children, style
+        if type(dd2) is list and dd2[0] in timeseries or type(dd2) is str and dd2 in timeseries:
+            children = 'Timeseries: YES'
+            style = {"color": "green"}
+        else:
+            children = 'Timeseries: NO'
+            style = {"color": "red"}
         return children,style
 
     else:
@@ -554,19 +535,6 @@ def regions(selector):
     return value
 
 
-
-#background color change
-'''@app.callback(
-    [Output(component_id='timeseries', component_property='figure'),
-    Output(component_id='scalar', component_property='figure')],
-    [Input(component_id='background', component_property='value')])
-def background_color (background):
-    if len(background)==7 and background.startswith('#'):
-        figgg_layout["plot_bgcolor"] = background
-        figg_layout["plot_bgcolor"] = background
-    else:
-        raise PreventUpdate
-    return figgg,figg'''
 
 #interaktive Karte
 @app.callback(
@@ -781,12 +749,54 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                     final_list.append(i)
             #df = pd.DataFrame(final_list, columns=['scenario_id', 'region', 'parameter_name', 'technology',
             #                                       'value', 'unit', 'source', 'input_energy_vector', 'technology_type'])
-            #print(final_list)
+            print('FINALE LISTE',final_list)
             if len(final_list)>0 and len(parameter)>0:
-                data = {timeseriess["source"]: timeseriess["series"] for timeseriess in final_list}
-                data["hour"] = range(201)  # hier wird ein neuer key eingefügt
-                df=pd.DataFrame(data)
-                help=[]
+                urbs = []
+                oemof = []
+                gen = []
+                gen2 = []
+                balmorel = []
+                x_help = [urbs, oemof, gen2, gen, balmorel]
+                xx_help = ['Urbs', 'Oemof', 'GENESYS-2', 'Genesys-mod', 'Balmorel']
+
+                #auf gleiches sources überprüft
+                for i in range(len(final_list)):
+                    for j in range(len(x_help)):
+                        if final_list[i]["source"] == xx_help[j]:
+                            x_help[j].append(final_list[i])  # balmorel
+
+                a = []
+                b = []
+                c = []
+                d = []
+                e = []
+                help_1 = [a, b, c, d, e]
+                help_2 = [balmorel, urbs, gen, gen2, oemof]
+                #arrays gemacht und eine Liste mit gleichen FW gemacht
+                for i in range(len(help_2)):
+                    for j in range(len(help_2[i])):
+                        x = np.array(help_2[i][j]["series"])
+                        help_1[i].append(x)  # balmorel
+
+                liste = [a, b, c, d, e]
+
+                #Summieren der Timeseries-Elemente
+                for i in range(len(liste)):
+                    if len(liste[i]) == 0:
+                        liste[i] = range(201)
+                    elif len(liste[i]) > 0:
+                        liste[i] = list(sum(liste[i]))  # balmorel
+                #neue Dictionary für die Timeseries
+                new = [{'source': 'Balmorel', 'series': liste[0]},
+                       {'source': 'Urbs', 'series': liste[1]},
+                       {'source': 'Genesys-mod', 'series': liste[2]},
+                       {'source': 'GENESYS-2', 'series': liste[3]},
+                       {'source': 'Oemof', 'series': liste[4]}]
+
+                final = {x['source']: x["series"] for x in new}
+                #hier muss die Range für ein ganzes Jahr geändert werden
+                final["hour"] = range(201)
+                df = pd.DataFrame(final)
 
                 if len(df)>0:
                     y=[]
