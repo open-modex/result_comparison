@@ -802,7 +802,7 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                     y=[]
                     for i in range(len(source)):
                         y.append(source[i])
-                        fig = px.line(
+                        fig = px.bar(
                             df,
                             x="hour",
                             y=y,
