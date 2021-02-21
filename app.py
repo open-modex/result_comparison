@@ -576,7 +576,7 @@ def karte(region):
      Input(component_id='source', component_property='value'),
      Input(component_id='background', component_property='value')])
 def masterclass (dd1,parameter,region,technology,input,tech_type,source,background):
-    print(dd1,parameter,region,technology,input,tech_type,source)
+    #print(dd1,parameter,region,technology,input,tech_type,source)
     if type(region) is list and type(technology) is list and type(input) is list and type(tech_type) is list:
         if len(technology) >0 and len(region)>0 and len(input)>0 and len(tech_type)>0:
             liste=[]
@@ -749,13 +749,22 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                     final_list.append(i)
             #df = pd.DataFrame(final_list, columns=['scenario_id', 'region', 'parameter_name', 'technology',
             #                                       'value', 'unit', 'source', 'input_energy_vector', 'technology_type'])
-            print('FINALE LISTE',final_list)
+            #print('FINALE LISTE',final_list)
+
+
             if len(final_list)>0 and len(parameter)>0:
                 urbs = []
                 oemof = []
                 gen = []
                 gen2 = []
                 balmorel = []
+
+                photo=[]
+                lignite=[]
+
+                p_help=[photo,lignite]
+                pp_help=['photovoltaics','generator']
+
                 x_help = [urbs, oemof, gen2, gen, balmorel]
                 xx_help = ['Urbs', 'Oemof', 'GENESYS-2', 'Genesys-mod', 'Balmorel']
 
@@ -765,11 +774,18 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                         if final_list[i]["source"] == xx_help[j]:
                             x_help[j].append(final_list[i])  # balmorel
 
-                a = []
-                b = []
-                c = []
-                d = []
-                e = []
+                #auf gleiches technology überprüft
+                for i in range(len(final_list)):
+                    for j in range(len(p_help)):
+                        if final_list[i]["technology"] == pp_help[j]:
+                            p_help[j].append(final_list[i])  # photovoltaics
+
+
+                f,g= [],[]
+                fg=[f,g]
+                fg_2=[photo,lignite]
+
+                a,b,c,d,e = [],[],[],[],[]
                 help_1 = [a, b, c, d, e]
                 help_2 = [balmorel, urbs, gen, gen2, oemof]
                 #arrays gemacht und eine Liste mit gleichen FW gemacht
@@ -778,7 +794,15 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                         x = np.array(help_2[i][j]["series"])
                         help_1[i].append(x)  # balmorel
 
+                for i in range(len(fg_2)):
+                    for j in range(len(fg_2[i])):
+                        x = np.array(fg_2[i][j]["series"])
+                        fg[i].append(x)  # balmorel
+
+                liste_2=[f,g]
+
                 liste = [a, b, c, d, e]
+
 
                 #Summieren der Timeseries-Elemente
                 for i in range(len(liste)):
@@ -786,6 +810,14 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                         liste[i] = range(201)
                     elif len(liste[i]) > 0:
                         liste[i] = list(sum(liste[i]))  # balmorel
+
+                # Summieren der Timeseries-Elemente
+                for i in range(len(liste_2)):
+                    if len(liste_2[i]) == 0:
+                        liste_2[i] = range(201)
+                    elif len(liste_2[i]) > 0:
+                        liste_2[i] = list(sum(liste_2[i]))  # balmorel
+
                 #neue Dictionary für die Timeseries
                 new = [{'source': 'Balmorel', 'series': liste[0]},
                        {'source': 'Urbs', 'series': liste[1]},
@@ -798,10 +830,20 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                 final["hour"] = range(201)
                 df = pd.DataFrame(final)
 
-                if len(df)>0:
+                #neue Dictionary für die Timeseries
+                new_2 = [{'technology': 'photovoltaics', 'series': liste_2[0]},
+                         {'technology': 'generator', 'series': liste_2[1]}]
+
+                final_2 = {xi['technology']: xi["series"] for xi in new_2}
+                #hier muss die Range für ein ganzes Jahr geändert werden
+                final_2["hour"] = range(201)
+                dff = pd.DataFrame(final_2)
+
+                if len(df)>0 and len(source)>1:
                     y=[]
                     for i in range(len(source)):
                         y.append(source[i])
+                        print('sources selected are',y)
                         fig = px.bar(
                             df,
                             x="hour",
@@ -809,38 +851,47 @@ def masterclass (parameter,region,technology,input,tech_type,source,background):
                             color_discrete_map={'Urbs': "#3391CF",
                                                 'Balmorel':"red"}
                         )
-                    fig_layout = fig["layout"]
-                    fig_layout["paper_bgcolor"] = "#1f2630"
-                    fig_layout["font"]["color"] = "#3391CF"
-                    fig_layout["title"]["font"]["color"] = "#3391CF"
-                    fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
-                    fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
-                    fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
-                    fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
-                    fig_layout["margin"]["t"] = 20
-                    fig_layout["margin"]["r"] = 50
-                    fig_layout["margin"]["b"] = 50
-                    fig_layout["margin"]["l"] = 50
-                    fig.update_layout(transition_duration=100)
-                    fig.update_xaxes( nticks=40)
-                    default_background = "#1f2630"
+                    #hier kann noch die summe der regional aggregations her
+                if len(dff)>0 and len(source)==1:
+                    tech = []
+                    for i in range(len(technology)):
+                        print('technology selected are',tech)
+                        tech.append(technology[i])
+                        fig = px.bar(
+                            dff,
+                            x="hour",
+                            y=tech)
 
-                    if len(background) == 7 and background.startswith("#"):
-                        try:
-                            int(background[1:], 16)
-                            fig_layout["plot_bgcolor"] = background
-                        except:
-                            fig_layout["plot_bgcolor"] = default_background
-                    else:
+                fig_layout = fig["layout"]
+                fig_layout["paper_bgcolor"] = "#1f2630"
+                fig_layout["font"]["color"] = "#3391CF"
+                fig_layout["title"]["font"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["yaxis"]["tickfont"]["color"] = "#3391CF"
+                fig_layout["xaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["yaxis"]["gridcolor"] = "#5b5b5b"
+                fig_layout["margin"]["t"] = 20
+                fig_layout["margin"]["r"] = 50
+                fig_layout["margin"]["b"] = 50
+                fig_layout["margin"]["l"] = 50
+                fig.update_layout(transition_duration=100)
+                fig.update_xaxes( nticks=40)
+                default_background = "#1f2630"
+
+                if len(background) == 7 and background.startswith("#"):
+                    try:
+                        int(background[1:], 16)
+                        fig_layout["plot_bgcolor"] = background
+                    except:
                         fig_layout["plot_bgcolor"] = default_background
+                else:
+                    fig_layout["plot_bgcolor"] = default_background
 
-                    if parameter==parameter:
-                        fig.update_yaxes(title= parameter,nticks=20)
-                    else:
-                        raise PreventUpdate
-                    return fig
+                if parameter==parameter:
+                    fig.update_yaxes(title= parameter,nticks=20)
                 else:
                     raise PreventUpdate
+                return fig
             else:
                 raise PreventUpdate
         else:
