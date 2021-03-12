@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  modex_visualization:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: modex_visualization
+    container_name: modex_visualization
+    expose:
+    - 80
+    restart: always
+    networks:
+    - caddy_network
+
+networks:
+  caddy_network:
+    external:
+      name: docker_caddy_network

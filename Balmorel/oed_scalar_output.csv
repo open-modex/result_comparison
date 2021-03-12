@@ -1,0 +1,289 @@
+id;scenario_id;region;input_energy_vector;output_energy_vector;parameter_name;technology;technology_type;value;unit;tags;method;source;comment;year
+;1;['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH','Baltic','North'];ALL;ALL;cost system;ALL;ALL;21322272642.4369;€;;{"value": "aggregated"};Balmorel;;['2016']
+;1;['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH','Baltic','North'];ALL;ALL;fixed cost;ALL;ALL;7701466328.7152;€/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH','Baltic','North'];ALL;ALL;variable cost;ALL;ALL;13620806313.7218;€/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','BE'];electricity;electricity;energy flow;transmission;hvac;5556.34;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','MV'];electricity;electricity;energy flow;transmission;hvac;75.46;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','SN'];electricity;electricity;energy flow;transmission;hvac;780.02;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','ST'];electricity;electricity;energy flow;transmission;hvac;2699.69;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','BY'];electricity;electricity;energy flow;transmission;hvac;4686.51;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','HE'];electricity;electricity;energy flow;transmission;hvac;1437.8;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','RP'];electricity;electricity;energy flow;transmission;hvac;424.2;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','SL'];electricity;electricity;energy flow;transmission;hvac;2477.86;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','TH'];electricity;electricity;energy flow;transmission;hvac;2.32;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY','BW'];electricity;electricity;energy flow;transmission;hvac;68.05;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY','HE'];electricity;electricity;energy flow;transmission;hvac;793.29;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','BY'];electricity;electricity;energy flow;transmission;hvac;589.54;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','RP'];electricity;electricity;energy flow;transmission;hvac;45.36;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','SL'];electricity;electricity;energy flow;transmission;hvac;15.49;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','TH'];electricity;electricity;energy flow;transmission;hvac;2.01;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH','NI'];electricity;electricity;energy flow;transmission;hvac;178.1;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH','NW'];electricity;electricity;energy flow;transmission;hvac;1844.08;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','BB'];electricity;electricity;energy flow;transmission;hvac;162.75;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','BE'];electricity;electricity;energy flow;transmission;hvac;2220.3;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','SH'];electricity;electricity;energy flow;transmission;hvac;123.84;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','ST'];electricity;electricity;energy flow;transmission;hvac;1081.87;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','HB'];electricity;electricity;energy flow;transmission;hvac;6862.91;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','HE'];electricity;electricity;energy flow;transmission;hvac;5662.15;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','HH'];electricity;electricity;energy flow;transmission;hvac;17.74;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','NW'];electricity;electricity;energy flow;transmission;hvac;7004.59;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','ST'];electricity;electricity;energy flow;transmission;hvac;284.62;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW','HE'];electricity;electricity;energy flow;transmission;hvac;7749.37;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW','NI'];electricity;electricity;energy flow;transmission;hvac;0.21;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW','RP'];electricity;electricity;energy flow;transmission;hvac;23964.17;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP','BW'];electricity;electricity;energy flow;transmission;hvac;0.69;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP','HE'];electricity;electricity;energy flow;transmission;hvac;2.83;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP','SL'];electricity;electricity;energy flow;transmission;hvac;79.39;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH','HH'];electricity;electricity;energy flow;transmission;hvac;10649.92;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH','MV'];electricity;electricity;energy flow;transmission;hvac;1835.93;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH','NI'];electricity;electricity;energy flow;transmission;hvac;3060.81;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL','HE'];electricity;electricity;energy flow;transmission;hvac;16.34;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL','RP'];electricity;electricity;energy flow;transmission;hvac;13;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN','TH'];electricity;electricity;energy flow;transmission;hvac;10650.05;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','BE'];electricity;electricity;energy flow;transmission;hvac;118.16;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','MV'];electricity;electricity;energy flow;transmission;hvac;0.04;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','NI'];electricity;electricity;energy flow;transmission;hvac;69.37;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','TH'];electricity;electricity;energy flow;transmission;hvac;1346;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH','BW'];electricity;electricity;energy flow;transmission;hvac;158.87;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH','HE'];electricity;electricity;energy flow;transmission;hvac;345.3;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH','SN'];electricity;electricity;energy flow;transmission;hvac;0.39;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['Baltic','MV'];electricity;electricity;energy flow;transmission;hvac;1163.29;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['North','NI'];electricity;electricity;energy flow;transmission;hvac;14568.99;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','BE'];electricity;electricity;losses;transmission;hvac;1666.9;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','MV'];electricity;electricity;losses;transmission;hvac;22.64;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','SN'];electricity;electricity;losses;transmission;hvac;234.01;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','ST'];electricity;electricity;losses;transmission;hvac;809.91;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','BY'];electricity;electricity;losses;transmission;hvac;1405.95;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','HE'];electricity;electricity;losses;transmission;hvac;431.34;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','RP'];electricity;electricity;losses;transmission;hvac;127.26;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','SL'];electricity;electricity;losses;transmission;hvac;743.36;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW','TH'];electricity;electricity;losses;transmission;hvac;0.7;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY','BW'];electricity;electricity;losses;transmission;hvac;20.42;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY','HE'];electricity;electricity;losses;transmission;hvac;237.99;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','BY'];electricity;electricity;losses;transmission;hvac;176.86;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','RP'];electricity;electricity;losses;transmission;hvac;13.61;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','SL'];electricity;electricity;losses;transmission;hvac;4.65;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE','TH'];electricity;electricity;losses;transmission;hvac;0.6;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH','NI'];electricity;electricity;losses;transmission;hvac;53.43;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH','NW'];electricity;electricity;losses;transmission;hvac;553.22;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','BB'];electricity;electricity;losses;transmission;hvac;48.83;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','BE'];electricity;electricity;losses;transmission;hvac;666.09;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','SH'];electricity;electricity;losses;transmission;hvac;37.15;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV','ST'];electricity;electricity;losses;transmission;hvac;324.56;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','HB'];electricity;electricity;losses;transmission;hvac;2058.87;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','HE'];electricity;electricity;losses;transmission;hvac;1698.65;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','HH'];electricity;electricity;losses;transmission;hvac;5.32;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','NW'];electricity;electricity;losses;transmission;hvac;2101.38;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI','ST'];electricity;electricity;losses;transmission;hvac;85.38;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW','HE'];electricity;electricity;losses;transmission;hvac;2324.81;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW','NI'];electricity;electricity;losses;transmission;hvac;0.06;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW','RP'];electricity;electricity;losses;transmission;hvac;7189.25;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP','BW'];electricity;electricity;losses;transmission;hvac;0.21;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP','HE'];electricity;electricity;losses;transmission;hvac;0.85;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP','SL'];electricity;electricity;losses;transmission;hvac;23.82;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH','HH'];electricity;electricity;losses;transmission;hvac;3194.98;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH','MV'];electricity;electricity;losses;transmission;hvac;550.78;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH','NI'];electricity;electricity;losses;transmission;hvac;918.24;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL','HE'];electricity;electricity;losses;transmission;hvac;4.9;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL','RP'];electricity;electricity;losses;transmission;hvac;3.9;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN','TH'];electricity;electricity;losses;transmission;hvac;3195.01;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','BE'];electricity;electricity;losses;transmission;hvac;35.45;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','MV'];electricity;electricity;losses;transmission;hvac;0.01;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','NI'];electricity;electricity;losses;transmission;hvac;20.81;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST','TH'];electricity;electricity;losses;transmission;hvac;403.8;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH','BW'];electricity;electricity;losses;transmission;hvac;47.66;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH','HE'];electricity;electricity;losses;transmission;hvac;103.59;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH','SN'];electricity;electricity;losses;transmission;hvac;0.12;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB'];solar radiation;electricity;electricity generation;photovoltaics;utility;2821.18;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;374.91;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB'];air;electricity;electricity generation;wind turbine;onshore;8124.91;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB'];lignite;electricity;electricity generation;chp;steam;12474.57;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB'];water;electricity;electricity generation;hydro turbine;run-of-river;15.54;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];solar radiation;electricity;electricity generation;photovoltaics;utility;30.96;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;58.16;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];air;electricity;electricity generation;wind turbine;onshore;9.61;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];hard coal;electricity;electricity generation;chp;steam;5759.11;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];natural gas;electricity;electricity generation;chp;combinedcycle;27.92;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];solar radiation;electricity;electricity generation;photovoltaics;utility;1690.37;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;4272.82;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];air;electricity;electricity generation;wind turbine;onshore;721.69;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];waste;electricity;electricity generation;chp;steam;30.25;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];waste;electricity;electricity generation;generator;steam;17.05;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];hard coal;electricity;electricity generation;generator;steam;7882.21;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];hard coal;electricity;electricity generation;chp;steam;24383.39;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];water;electricity;electricity generation;hydro turbine;run-of-river;15.73;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];heat;electricity;electricity generation;geothermal;unknown;4.8;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];natural gas;electricity;electricity generation;generator;gas;63.96;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];natural gas;electricity;electricity generation;chp;gas;18.68;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];natural gas;electricity;electricity generation;generator;combinedcycle;299.74;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];natural gas;electricity;electricity generation;chp;combinedcycle;171.2;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];natural gas;electricity;electricity generation;chp;combustionengine;3.09;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];uranium;electricity;electricity generation;nuclear;unknown;23691.83;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];solar radiation;electricity;electricity generation;photovoltaics;utility;4669.7;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;8152.94;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];air;electricity;electricity generation;wind turbine;onshore;2064.93;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];waste;electricity;electricity generation;chp;steam;197.88;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];waste;electricity;electricity generation;generator;steam;232.51;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];hard coal;electricity;electricity generation;chp;steam;6739.42;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];water;electricity;electricity generation;hydro turbine;run-of-river;35.01;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];heat;electricity;electricity generation;geothermal;unknown;206.87;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];natural gas;electricity;electricity generation;chp;gas;46.63;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];natural gas;electricity;electricity generation;generator;combinedcycle;14911.44;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];natural gas;electricity;electricity generation;chp;combinedcycle;3378.17;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];natural gas;electricity;electricity generation;chp;combustionengine;23.17;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];uranium;electricity;electricity generation;nuclear;unknown;23568.67;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];solar radiation;electricity;electricity generation;photovoltaics;utility;18.3;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;23.05;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];air;electricity;electricity generation;wind turbine;onshore;284.24;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];waste;electricity;electricity generation;chp;steam;27.66;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];waste;electricity;electricity generation;generator;steam;139.6;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];hard coal;electricity;electricity generation;generator;steam;2426.71;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];hard coal;electricity;electricity generation;chp;steam;2314.61;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];water;electricity;electricity generation;hydro turbine;run-of-river;0.77;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];natural gas;electricity;electricity generation;chp;combinedcycle;8.27;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];solar radiation;electricity;electricity generation;photovoltaics;utility;626.45;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;1379;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];air;electricity;electricity generation;wind turbine;onshore;1187.18;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];waste;electricity;electricity generation;chp;steam;53.57;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];hard coal;electricity;electricity generation;chp;steam;6353.91;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];lignite;electricity;electricity generation;chp;steam;290.25;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];water;electricity;electricity generation;hydro turbine;run-of-river;6.23;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];natural gas;electricity;electricity generation;generator;gas;40.3;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];natural gas;electricity;electricity generation;chp;gas;37.12;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];natural gas;electricity;electricity generation;generator;combinedcycle;4317.79;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];natural gas;electricity;electricity generation;chp;combinedcycle;959.45;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH'];solar radiation;electricity;electricity generation;photovoltaics;utility;11.65;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;26.34;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH'];air;electricity;electricity generation;wind turbine;onshore;78.19;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH'];hard coal;electricity;electricity generation;chp;steam;2266.77;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH'];water;electricity;electricity generation;hydro turbine;run-of-river;0.46;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];solar radiation;electricity;electricity generation;photovoltaics;utility;1218.65;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;225.35;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];air;electricity;electricity generation;wind turbine;onshore;5409.46;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];hard coal;electricity;electricity generation;chp;steam;1194.6;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];water;electricity;electricity generation;hydro turbine;run-of-river;9.71;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];heat;electricity;electricity generation;geothermal;unknown;1.92;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];natural gas;electricity;electricity generation;chp;combinedcycle;6.58;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];solar radiation;electricity;electricity generation;photovoltaics;utility;1362.78;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;2320.43;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];air;electricity;electricity generation;wind turbine;onshore;13631.55;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];waste;electricity;electricity generation;generator;steam;24.52;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];hard coal;electricity;electricity generation;generator;steam;6787.98;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];hard coal;electricity;electricity generation;chp;steam;899.84;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];water;electricity;electricity generation;hydro turbine;run-of-river;31.87;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];natural gas;electricity;electricity generation;chp;combinedcycle;66.83;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];uranium;electricity;electricity generation;nuclear;unknown;23534.86;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];solar radiation;electricity;electricity generation;photovoltaics;utility;1294.92;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;3250.67;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];air;electricity;electricity generation;wind turbine;onshore;5162.94;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];waste;electricity;electricity generation;generator;steam;19.94;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];hard coal;electricity;electricity generation;generator;steam;21073.08;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];hard coal;electricity;electricity generation;chp;steam;17878.42;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];lignite;electricity;electricity generation;generator;steam;50140.43;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];lignite;electricity;electricity generation;chp;steam;30055.38;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];water;electricity;electricity generation;hydro turbine;run-of-river;17.29;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];natural gas;electricity;electricity generation;generator;combinedcycle;584.54;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];natural gas;electricity;electricity generation;chp;combinedcycle;55.72;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];solar radiation;electricity;electricity generation;photovoltaics;utility;863.69;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;1266.34;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];air;electricity;electricity generation;wind turbine;onshore;3229.88;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];waste;electricity;electricity generation;chp;steam;32.39;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];waste;electricity;electricity generation;generator;steam;117.93;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];hard coal;electricity;electricity generation;chp;steam;115.84;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];water;electricity;electricity generation;hydro turbine;run-of-river;8.84;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];heat;electricity;electricity generation;geothermal;unknown;68.14;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];natural gas;electricity;electricity generation;chp;gas;16.31;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];natural gas;electricity;electricity generation;chp;combinedcycle;1854.77;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];solar radiation;electricity;electricity generation;photovoltaics;utility;770.99;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;774.46;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];air;electricity;electricity generation;wind turbine;onshore;13990.42;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];hard coal;electricity;electricity generation;chp;steam;145.46;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];water;electricity;electricity generation;hydro turbine;run-of-river;19.04;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];uranium;electricity;electricity generation;nuclear;unknown;11967.02;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];solar radiation;electricity;electricity generation;photovoltaics;utility;197.42;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;259.43;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];air;electricity;electricity generation;wind turbine;onshore;313.38;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];waste;electricity;electricity generation;chp;steam;12.82;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];waste;electricity;electricity generation;generator;steam;85.55;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];hard coal;electricity;electricity generation;generator;steam;6338.06;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];hard coal;electricity;electricity generation;chp;steam;8818.36;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];water;electricity;electricity generation;hydro turbine;run-of-river;1.54;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];natural gas;electricity;electricity generation;chp;gas;19.22;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];natural gas;electricity;electricity generation;chp;combinedcycle;176.23;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];solar radiation;electricity;electricity generation;photovoltaics;utility;1305.49;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;441.11;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];air;electricity;electricity generation;wind turbine;onshore;1497.62;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];lignite;electricity;electricity generation;generator;steam;5381.8;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];lignite;electricity;electricity generation;chp;steam;19109.63;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];water;electricity;electricity generation;hydro turbine;run-of-river;5.32;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];solar radiation;electricity;electricity generation;photovoltaics;utility;1761.42;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;346.49;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];air;electricity;electricity generation;wind turbine;onshore;6055.38;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];waste;electricity;electricity generation;generator;steam;15.87;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];lignite;electricity;electricity generation;chp;steam;7907.74;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];water;electricity;electricity generation;hydro turbine;run-of-river;12.14;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];natural gas;electricity;electricity generation;generator;combinedcycle;44.87;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];natural gas;electricity;electricity generation;chp;combinedcycle;64.96;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];solar radiation;electricity;electricity generation;photovoltaics;utility;955.55;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];solar radiation;electricity;electricity generation;photovoltaics;rooftop;339.05;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];air;electricity;electricity generation;wind turbine;onshore;1567.85;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];water;electricity;electricity generation;hydro turbine;run-of-river;5.23;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];natural gas;electricity;electricity generation;chp;combinedcycle;21.23;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['Baltic'];air;electricity;electricity generation;wind turbine;offshore;1160.1;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['North'];air;electricity;electricity generation;wind turbine;offshore;14529.08;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH','Baltic','North'];ALL RENEW;ALL RENEW;renewable generation;ALL RENEW;ALL RENEW;122313182.01;GWh;;{"value": "aggregated"};Balmorel;;['2016']
+;1;['BB'];electricity;electricity;input energy;storage;battery;3.71;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];electricity;electricity;input energy;storage;battery;0.92;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];electricity;electricity;input energy;storage;pumped;217.86;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];electricity;electricity;input energy;storage;battery;0.59;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];electricity;electricity;input energy;storage;pumped;137.74;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];electricity;electricity;input energy;storage;pumped;44.61;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];electricity;electricity;input energy;storage;battery;1.84;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];electricity;electricity;input energy;storage;pumped;42.75;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];electricity;electricity;input energy;storage;battery;0.04;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];electricity;electricity;input energy;storage;pumped;10.17;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];electricity;electricity;input energy;storage;battery;1.1;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];electricity;electricity;input energy;storage;pumped;20.44;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];electricity;electricity;input energy;storage;battery;0.41;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];electricity;electricity;input energy;storage;battery;0.15;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];electricity;electricity;input energy;storage;pumped;20.19;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];electricity;electricity;input energy;storage;battery;0.35;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];electricity;electricity;input energy;storage;pumped;16.14;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];electricity;electricity;input energy;storage;pumped;52.41;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB'];electricity;electricity;output energy;storage;battery;3.71;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];electricity;electricity;output energy;storage;battery;0.92;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];electricity;electricity;output energy;storage;pumped;217.86;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];electricity;electricity;output energy;storage;battery;0.59;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];electricity;electricity;output energy;storage;pumped;137.74;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];electricity;electricity;output energy;storage;pumped;44.61;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];electricity;electricity;output energy;storage;battery;1.84;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];electricity;electricity;output energy;storage;pumped;42.75;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];electricity;electricity;output energy;storage;battery;0.04;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];electricity;electricity;output energy;storage;pumped;10.17;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];electricity;electricity;output energy;storage;battery;1.1;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];electricity;electricity;output energy;storage;pumped;20.44;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];electricity;electricity;output energy;storage;battery;0.41;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];electricity;electricity;output energy;storage;battery;0.15;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];electricity;electricity;output energy;storage;pumped;20.19;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];electricity;electricity;output energy;storage;battery;0.35;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];electricity;electricity;output energy;storage;pumped;16.14;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];electricity;electricity;output energy;storage;pumped;52.41;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH','Baltic','North'];electricity;electricity;losses;storage;battery;0.46;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH','Baltic','North'];electricity;electricity;losses;storage;pumped;140.58;GWh/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BB','BE','BW','BY','HB','HE','HH','MV','NI','NW','RP','SH','SL','SN','ST','TH','Baltic','North'];ALL;CO2;emissions;ALL;ALL;202533.11;Gt;;{"value": "aggregated"};Balmorel;;['2016']
+;1;['BB'];ALL;CO2;emissions;ALL;ALL;10645.81;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BE'];ALL;CO2;emissions;ALL;ALL;4018.28;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BW'];ALL;CO2;emissions;ALL;ALL;22722.97;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['BY'];ALL;CO2;emissions;ALL;ALL;11792.58;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HB'];ALL;CO2;emissions;ALL;ALL;3507.02;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HE'];ALL;CO2;emissions;ALL;ALL;6658.53;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['HH'];ALL;CO2;emissions;ALL;ALL;1577.17;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['MV'];ALL;CO2;emissions;ALL;ALL;833.82;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NI'];ALL;CO2;emissions;ALL;ALL;5404.81;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['NW'];ALL;CO2;emissions;ALL;ALL;95788.93;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['RP'];ALL;CO2;emissions;ALL;ALL;1018.5;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SH'];ALL;CO2;emissions;ALL;ALL;101.21;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SL'];ALL;CO2;emissions;ALL;ALL;10745.17;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['SN'];ALL;CO2;emissions;ALL;ALL;20901.01;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['ST'];ALL;CO2;emissions;ALL;ALL;6808.79;Gt/a;;{"value": "aggregated"};Balmorel;;2016
+;1;['TH'];ALL;CO2;emissions;ALL;ALL;8.52;Gt/a;;{"value": "aggregated"};Balmorel;;2016
