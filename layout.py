@@ -1,3 +1,5 @@
+
+import uuid
 import dash_core_components as dcc
 import dash_html_components as html
 
@@ -24,55 +26,24 @@ def get_header(app):
     )
 
 
-scenario = html.Div(
-    children=[
-        dcc.Tabs(
-            value="base",
-            children=[
-                dcc.Tab(
-                    label="Base-Scenario",
-                    value="base",
-                    style={"background-color": "#FFFFFF"},
-                ),
-                dcc.Tab(
-                    label="Pathway",
-                    value="var1",
-                    style={"background-color": "#1B2129"},
-                ),
-                dcc.Tab(
-                    label="Pathway + Heat",
-                    value="var2",
-                    style={"background-color": "#1B2129"},
-                ),
-            ],
-        ),
-    ],
-)
-
 # FILTER COLUMN
 
 filter_column = html.Div(
-    style={'width': '20%', 'display': 'inline-block', "vertical-align": "top"},
+    style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
     children=[
         html.Div(
-            id="selection",
+            style={"padding-bottom": "50px"},
+            children=[
+                html.Label("Select scenario:"),
+                dcc.Dropdown(id="dd_scenario"),
+            ],
+        ),
+        html.Div(
             children=[
                 html.Label("Select Year:"),
-                dcc.Dropdown(
-                    id="dd_year",
-                    options=[
-                        {"label": "2021", "value": "2021"},
-                    ],
-                    value=2021
-                ),
+                dcc.Dropdown(id="dd_year"),
                 html.Label("Filter Regions:"),
-                dcc.Dropdown(
-                    id="dd_region",
-                    options=REGIONS,
-                    value=["BB"],
-                    multi=True,
-                    clearable=True,
-                ),
+                dcc.Dropdown(id="dd_region", multi=True, clearable=True,),
                 html.Label("Filter Technologies:"),
                 dcc.Dropdown(id="dd_technology", multi=True, clearable=True),
                 html.Label("Filter Technology Type:"),
@@ -86,39 +57,34 @@ filter_column = html.Div(
                 html.Label("Filter Sources:"),
                 dcc.Checklist(
                     id="cl_source",
-                    options=[
-                        {"label": "Urbs", "value": "Urbs"},
-                        {"label": "Oemof", "value": "Oemof"},
-                        {"label": "GENESYS-2", "value": "GENESYS-2"},
-                        {"label": "Balmorel", "value": "Balmorel"},
-                        {"label": "Genesys-mod", "value": "Genesys-mod"},
-                    ],
-                    value=["Urbs", "Oemof", "GENESYS-2", "Balmorel", "Genesys-mod"],
                     labelStyle={"display": "inline-block", "size": "50px"},
                 ),
-                html.Button(id="refresh_filters", value="Refresh")
+                html.Button("Refresh", id="refresh_filters"),
             ],
         ),
     ],
 )
 
 graph_column = html.Div(
-    style={'width': '80%', 'display': 'inline-block'},
+    style={"width": "70%", "display": "inline-block"},
     children=[
         html.Label("Scalars:"),
         dcc.Graph(id="graph_scalar", figure={}, style={}),
         html.Label("Timeseries:"),
         dcc.Graph(id="graph_timeseries", figure={}, style={}),
-    ]
+    ],
 )
 
 
 def get_layout(app):
+    session_id = str(uuid.uuid4())
+
     return html.Div(
         children=[
+            html.Div(session_id, id='session-id', style={'display': 'none'}),
             get_header(app),
             html.Div(
-                children=[scenario, html.Div(children=[filter_column, graph_column])],
+                children=[filter_column, graph_column],
             ),
         ],
     )
