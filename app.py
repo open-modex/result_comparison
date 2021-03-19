@@ -1,7 +1,6 @@
 import os
 import pathlib
 
-import pandas as pd
 import urllib3
 import jmespath
 
@@ -13,9 +12,6 @@ from settings import FILTERS
 import scenario
 
 urllib3.disable_warnings()
-
-pd.set_option("display.max_rows", None)
-pd.set_option("display.max_columns", None)
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
