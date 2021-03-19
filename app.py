@@ -2,7 +2,6 @@ import os
 import pathlib
 
 import urllib3
-import jmespath
 
 import dash
 from dash.dependencies import Input, Output
@@ -59,17 +58,7 @@ def load_scenario(scenarios):
         return [[] for _ in FILTERS]
     scenarios = scenarios if isinstance(scenarios, list) else [scenarios]
     data = get_multiple_scenario_data(*scenarios)
-    filters = {}
-    for filter_, filter_format in FILTERS.items():
-        jmespath_str = f"[oed_scalars, oed_timeseries][].{filter_}"
-        if filter_format["type"] == "list":
-            jmespath_str += "[]"
-        filters[filter_] = set(jmespath.search(jmespath_str, data))
-    output = (
-        [{"label": filter_option, "value": filter_option} for filter_option in filter_options]
-        for _, filter_options in filters.items()
-    )
-    return list(output)
+    return scenario.get_filter_options(data)
 
 
 if __name__ == "__main__":
