@@ -1,10 +1,17 @@
 
+from functools import reduce
 import pandas
+import numpy as np
 import plotly.express as px
+
+from settings import FILTERS
 
 
 def get_scalar_plot(data, filters):
     df = pandas.DataFrame(data)
+    if filters:
+        conditions = [df[filter_].isin(filter_value) for filter_, filter_value in filters.items()]
+        df = df[reduce(np.logical_and, conditions)]
     fig = px.bar(
         df,
         orientation="h",

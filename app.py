@@ -7,6 +7,8 @@ import dash
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from flask_caching import Cache
+
+import filters
 from layout import get_layout
 from settings import FILTERS
 import scenario
@@ -60,7 +62,7 @@ def load_scenario(scenarios):
         raise PreventUpdate
     scenarios = scenarios if isinstance(scenarios, list) else [scenarios]
     data = get_multiple_scenario_data(*scenarios)
-    return scenario.get_filter_options(data)
+    return filters.get_filter_options(data)
 
 
 @app.callback(
@@ -68,12 +70,12 @@ def load_scenario(scenarios):
     [Input(component_id="dd_scenario", component_property="value")] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS]
 )
-def scalar_graph(scenarios, *filters):
+def scalar_graph(scenarios, *filter_args):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
-    filters = dict(zip(FILTERS.keys(), filters))
-    return graphs.get_scalar_plot(data["oed_scalars"], filters)
+    filter_kwargs = filters.extract_filters(filter_args)
+    return graphs.get_scalar_plot(data["oed_scalars"], filter_kwargs)
 
 
 if __name__ == "__main__":
