@@ -4,8 +4,6 @@ import pandas
 import numpy as np
 import plotly.express as px
 
-from settings import FILTERS
-
 
 def get_scalar_plot(data, filters):
     df = pandas.DataFrame(data)
@@ -18,6 +16,7 @@ def get_scalar_plot(data, filters):
         x="value",
         y="source",
         text="parameter_name",
+        color="parameter_name",
         color_discrete_map={
             "BB": "#5E5D5F",
             "BE": "#5E5D5F",
