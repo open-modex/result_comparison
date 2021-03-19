@@ -5,10 +5,12 @@ import urllib3
 
 import dash
 from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
 from flask_caching import Cache
 from layout import get_layout
 from settings import FILTERS
 import scenario
+import graphs
 
 urllib3.disable_warnings()
 
@@ -55,10 +57,23 @@ def get_multiple_scenario_data(*scenario_ids):
 )
 def load_scenario(scenarios):
     if scenarios is None:
-        return [[] for _ in FILTERS]
+        raise PreventUpdate
     scenarios = scenarios if isinstance(scenarios, list) else [scenarios]
     data = get_multiple_scenario_data(*scenarios)
     return scenario.get_filter_options(data)
+
+
+@app.callback(
+    Output(component_id='graph_scalar', component_property='figure'),
+    [Input(component_id="dd_scenario", component_property="value")] +
+    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS]
+)
+def scalar_graph(scenarios, *filters):
+    if scenarios is None:
+        raise PreventUpdate
+    data = get_multiple_scenario_data(*scenarios)
+    filters = dict(zip(FILTERS.keys(), filters))
+    return graphs.get_scalar_plot(data["oed_scalars"], filters)
 
 
 if __name__ == "__main__":
