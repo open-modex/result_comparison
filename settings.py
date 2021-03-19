@@ -39,9 +39,7 @@ STATES = pd.read_csv(
     delimiter=";",
     dtype={"abbrev": str},
 )
-REGIONS = [
-    {"label": str(region), "value": str(region)} for region in STATES["abbrev"]
-]
+REGIONS = {state["abbrev"]: state["Bundesland"] for _, state in STATES.iterrows()}
 
 # FILTERS
 
