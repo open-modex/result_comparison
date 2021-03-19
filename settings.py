@@ -50,7 +50,7 @@ FILTERS = {
     "region": {"type": "list"},
     "technology": {"type": "str"},
     "technology_type": {"type": "str"},
-    "parameter": {"type": "str"},
+    "parameter_name": {"type": "str"},
     "input_energy_vector": {"type": "str"},
     "output_energy_vector": {"type": "str"},
     "source": {"type": "str"},

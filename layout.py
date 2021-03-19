@@ -56,7 +56,7 @@ filter_column = html.Div(
                 html.Label("Filter Technology Type:"),
                 dcc.Dropdown(id="filter_technology_type", multi=True, clearable=True),
                 html.Label("Filter Parameters:"),
-                dcc.Dropdown(id="filter_parameter", multi=True, clearable=True),
+                dcc.Dropdown(id="filter_parameter_name", multi=True, clearable=True),
                 html.Label("Filter Input:"),
                 dcc.Dropdown(id="filter_input_energy_vector", multi=True, clearable=True),
                 html.Label("Filter Output:"),
