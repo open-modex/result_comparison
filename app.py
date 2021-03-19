@@ -44,7 +44,7 @@ def get_scenario_data(scenario_id):
 @cache.memoize()
 def get_multiple_scenario_data(*scenario_ids):
     scenarios = [
-        scenario.get_scenario_data(scenario_id) for scenario_id in scenario_ids
+        get_scenario_data(scenario_id) for scenario_id in scenario_ids
     ]
     return scenario.merge_scenario_data(scenarios)
 
