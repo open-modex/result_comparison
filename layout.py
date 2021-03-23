@@ -2,6 +2,8 @@ import uuid
 import dash_core_components as dcc
 import dash_html_components as html
 
+from settings import FILTERS
+
 
 def get_header(app):
     return html.Div(
@@ -32,7 +34,10 @@ def get_scenario_column(scenarios):
                 id="dd_scenario",
                 multi=True,
                 options=[
-                    {"label": f"{scenario['id']}, {scenario['scenario']}, {scenario['source']}", "value": scenario["id"]}
+                    {
+                        "label": f"{scenario['id']}, {scenario['scenario']}, {scenario['source']}",
+                        "value": scenario["id"],
+                    }
                     for scenario in scenarios
                 ],
             ),
@@ -40,7 +45,28 @@ def get_scenario_column(scenarios):
     )
 
 
-# FILTER COLUMN
+aggregation_column = html.Div(
+    children=[
+        html.Label("Aggregation"),
+        html.Label("Group-By:"),
+        dcc.Dropdown(
+            id="aggregation_group_by",
+            multi=True,
+            clearable=True,
+            options=[{"label": filter_, "value": filter_} for filter_ in FILTERS if filter_ != "source"],
+        ),
+        html.Label("Aggregation Function:"),
+        dcc.Dropdown(
+            id="aggregation_func",
+            clearable=True,
+            options=[
+                {"label": "Sum", "value": "sum"},
+                {"label": "Mean", "value": "mean"},
+            ],
+            value="sum"
+        ),
+    ]
+)
 
 filter_column = html.Div(
     style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
@@ -58,15 +84,19 @@ filter_column = html.Div(
                 html.Label("Filter Parameters:"),
                 dcc.Dropdown(id="filter_parameter_name", multi=True, clearable=True),
                 html.Label("Filter Input:"),
-                dcc.Dropdown(id="filter_input_energy_vector", multi=True, clearable=True),
+                dcc.Dropdown(
+                    id="filter_input_energy_vector", multi=True, clearable=True
+                ),
                 html.Label("Filter Output:"),
-                dcc.Dropdown(id="filter_output_energy_vector", multi=True, clearable=True),
+                dcc.Dropdown(
+                    id="filter_output_energy_vector", multi=True, clearable=True
+                ),
                 html.Label("Filter Sources:"),
                 dcc.Checklist(
                     id="filter_source",
                     labelStyle={"display": "inline-block", "size": "50px"},
                 ),
-                html.Button("Refresh", id="refresh_filters"),
+                aggregation_column,
             ],
         ),
     ],

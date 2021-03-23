@@ -26,7 +26,7 @@ def get_scenarios():
 def get_scenario_data(scenario_id):
     response = requests.get(
         CONNECTOR_URL + str(scenario_id),
-        {"mapping": "concrete", "source": "modex_output"},
+        {"mapping": "regions", "source": "modex_output"},
         timeout=10000,
         verify=False,
     )
@@ -37,5 +37,5 @@ def merge_scenario_data(scenario_data):
     # Merge scalars and timeseries, throw away scenario infos:
     return {
         key: list(chain.from_iterable([items[key] for items in scenario_data]))
-        for key in ("oed_scalars", "oed_timeseries")
+        for key in ("scalars", "timeseries")
     }

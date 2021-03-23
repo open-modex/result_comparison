@@ -8,7 +8,7 @@ from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from flask_caching import Cache
 
-import filters
+import preprocessing
 from layout import get_layout
 from settings import FILTERS
 import scenario
@@ -62,20 +62,25 @@ def load_scenario(scenarios):
         raise PreventUpdate
     scenarios = scenarios if isinstance(scenarios, list) else [scenarios]
     data = get_multiple_scenario_data(*scenarios)
-    return filters.get_filter_options(data)
+    return preprocessing.get_filter_options(data)
 
 
 @app.callback(
     Output(component_id='graph_scalar', component_property='figure'),
-    [Input(component_id="dd_scenario", component_property="value")] +
+    [
+        Input(component_id="dd_scenario", component_property="value"),
+        Input(component_id="aggregation_group_by", component_property="value"),
+        Input(component_id="aggregation_func", component_property="value"),
+    ] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS]
 )
-def scalar_graph(scenarios, *filter_args):
+def scalar_graph(scenarios, agg_group_by, agg_func, *filter_args):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
-    filter_kwargs = filters.extract_filters(filter_args)
-    return graphs.get_scalar_plot(data["oed_scalars"], filter_kwargs)
+    filter_kwargs = preprocessing.extract_filters(filter_args)
+    preprocessed_data = preprocessing.prepare_data(data["scalars"], agg_group_by, agg_func, filter_kwargs)
+    return graphs.get_scalar_plot(preprocessed_data)
 
 
 if __name__ == "__main__":
