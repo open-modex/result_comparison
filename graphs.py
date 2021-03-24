@@ -26,9 +26,8 @@ def get_scalar_plot(data, options):
 
 def get_timeseries_plot(data, options):
     fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"])
-    fig = px.bar(
+    fig = px.line(
         data,
-        orientation="h",
         color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
         labels={"source": "Simulation Framework"},
         **fig_options
