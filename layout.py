@@ -143,7 +143,8 @@ graph_column = html.Div(
                                                 {"label": filter_, "value": filter_}
                                                 for filter_ in FILTERS
                                             ],
-                                            value=GRAPHS_DEFAULT_OPTIONS[graph][option]
+                                            value=GRAPHS_DEFAULT_OPTIONS[graph][option],
+                                            clearable=False
                                         )
                                     ]
                                 )
