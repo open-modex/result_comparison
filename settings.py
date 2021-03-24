@@ -80,3 +80,20 @@ FILTERS = {
     "output_energy_vector": {"type": "str"},
     "source": {"type": "str"},
 }
+
+GRAPHS_DEFAULT_OPTIONS = {
+    "scalars": {
+        "x": "value",
+        "y": "source",
+        "text": "parameter_name",
+        "color": "parameter_name",
+        "hover_name": "region"
+    },
+    "timeseries": {
+        "x": "series",
+        "y": "source",
+        "text": "parameter_name",
+        "color": "parameter_name",
+        "hover_name": "region"
+    }
+}

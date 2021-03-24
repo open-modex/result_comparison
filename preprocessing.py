@@ -3,13 +3,13 @@ from functools import reduce
 import pandas
 import numpy as np
 
-from settings import FILTERS
+from settings import FILTERS, GRAPHS_DEFAULT_OPTIONS
 
 
 def get_filter_options(scenario_data):
     filters = {}
     for filter_, filter_format in FILTERS.items():
-        jmespath_str = f"[oed_scalars, oed_timeseries][].{filter_}"
+        jmespath_str = f"[scalars, timeseries][].{filter_}"
         if filter_format["type"] == "list":
             jmespath_str += "[]"
         filters[filter_] = set(jmespath.search(jmespath_str, scenario_data))
@@ -20,8 +20,17 @@ def get_filter_options(scenario_data):
     return list(output)
 
 
-def extract_filters(filters):
-    return {filter_: filters[i] for i, filter_ in enumerate(FILTERS) if filters[i]}
+def extract_filters_and_options(graph, filters, use_graph_options):
+    filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(FILTERS) if filters[i]}
+    if use_graph_options == "default":
+        graph_options = {}
+    else:
+        graph_options = {
+            option: filters[len(FILTERS) + i]
+            for i, option in enumerate(GRAPHS_DEFAULT_OPTIONS[graph])
+            if filters[len(FILTERS) + i]
+        }
+    return filter_kwargs, graph_options
 
 
 def prepare_data(data, group_by, aggregation_func, filters):

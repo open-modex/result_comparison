@@ -3,7 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 from graphs import get_empty_fig
-from settings import FILTERS
+from settings import FILTERS, GRAPHS_DEFAULT_OPTIONS
 
 
 def get_header(app):
@@ -106,11 +106,55 @@ filter_column = html.Div(
 graph_column = html.Div(
     style={"width": "68%", "display": "inline-block"},
     children=[
-        html.Label("Scalars:"),
-        html.P(id="graph_scalar_error", children=""),
-        dcc.Graph(id="graph_scalar", figure=get_empty_fig(), style={}),
-        html.Label("Timeseries:"),
-        dcc.Graph(id="graph_timeseries", figure=get_empty_fig(), style={}),
+        html.Div(
+            children=[
+                html.Div(
+                    style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
+                    children=[
+                        html.Label(f"{graph.capitalize()}:"),
+                        html.P(id=f"graph_{graph}_error", children=""),
+                        dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={})
+                    ]
+                ),
+                html.Div(
+                    style={"width": "15%", "display": "inline-block"},
+                    children=[
+                        dcc.RadioItems(
+                            id=f"graph_{graph}_options_switch",
+                            options=[
+                                {"label": "Default", "value": "default"},
+                                {"label": "Custom", "value": "custom"}
+                            ],
+                            value="default"
+                        ),
+                        html.Div(
+                            id=f"graph_{graph}_options",
+                            children=[
+                                html.Div(
+                                    children=[
+                                        html.Label(option),
+                                        dcc.Dropdown(
+                                            id=f"graph_{graph}_option_{option}",
+                                            options=[
+                                                        {"label": "value", "value": "value"}
+                                                        if graph == "scalars"
+                                                        else {"label": "series", "value": "series"}
+                                                    ] + [
+                                                {"label": filter_, "value": filter_}
+                                                for filter_ in FILTERS
+                                            ],
+                                            value=GRAPHS_DEFAULT_OPTIONS[graph][option]
+                                        )
+                                    ]
+                                )
+                                for option in ("x", "y", "text", "color", "hover_name")
+                            ]
+                        ),
+                    ]
+                ),
+            ]
+        )
+        for graph in ("scalars", "timeseries")
     ],
 )
 
