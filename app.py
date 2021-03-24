@@ -34,7 +34,7 @@ CACHE_CONFIG = {
     # try 'filesystem' if you don't want to setup redis
     "CACHE_TYPE": "filesystem",
     "CACHE_REDIS_URL": os.environ.get("REDIS_URL"),
-    "CACHE_DIR": "cache-directory",
+    "CACHE_DIR": "cache",
 }
 cache = Cache()
 cache.init_app(server, config=CACHE_CONFIG)
