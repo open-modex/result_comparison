@@ -1,5 +1,5 @@
 
-import plotly.express as px
+from plotly import express as px
 
 from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT
 
@@ -22,3 +22,9 @@ def get_scalar_plot(data):
     )
     fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
     return fig
+
+
+def get_empty_fig():
+    empty_fig = px.bar()
+    empty_fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+    return empty_fig

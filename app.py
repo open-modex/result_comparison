@@ -66,7 +66,11 @@ def load_scenario(scenarios):
 
 
 @app.callback(
-    Output(component_id='graph_scalar', component_property='figure'),
+    [
+        Output(component_id='graph_scalar', component_property='figure'),
+        Output(component_id='graph_scalar_error', component_property='children'),
+        Output(component_id='graph_scalar_error', component_property='style'),
+    ],
     [
         Input(component_id="dd_scenario", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
@@ -80,7 +84,11 @@ def scalar_graph(scenarios, agg_group_by, agg_func, *filter_args):
     data = get_multiple_scenario_data(*scenarios)
     filter_kwargs = preprocessing.extract_filters(filter_args)
     preprocessed_data = preprocessing.prepare_data(data["scalars"], agg_group_by, agg_func, filter_kwargs)
-    return graphs.get_scalar_plot(preprocessed_data)
+    try:
+        fig = graphs.get_scalar_plot(preprocessed_data)
+    except ValueError as ve:
+        return graphs.get_empty_fig(), f"Error: {str(ve)}", {"color": "red"}
+    return fig, "", {}
 
 
 if __name__ == "__main__":
