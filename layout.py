@@ -1,8 +1,9 @@
 import uuid
 import dash_core_components as dcc
 import dash_html_components as html
+import plotly.express as px
 
-from settings import FILTERS
+from settings import FILTERS, GRAPHS_DEFAULT_LAYOUT
 
 
 def get_header(app):
@@ -102,13 +103,16 @@ filter_column = html.Div(
     ],
 )
 
+empty_fig = px.bar()
+empty_fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+
 graph_column = html.Div(
     style={"width": "68%", "display": "inline-block"},
     children=[
         html.Label("Scalars:"),
-        dcc.Graph(id="graph_scalar", figure={}, style={}),
+        dcc.Graph(id="graph_scalar", figure=empty_fig, style={}),
         html.Label("Timeseries:"),
-        dcc.Graph(id="graph_timeseries", figure={}, style={}),
+        dcc.Graph(id="graph_timeseries", figure=empty_fig, style={}),
     ],
 )
 
