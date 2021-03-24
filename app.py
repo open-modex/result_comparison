@@ -10,7 +10,7 @@ from flask_caching import Cache
 
 import preprocessing
 from layout import get_layout
-from settings import FILTERS
+from settings import FILTERS, USE_DUMMY_DATA
 import scenario
 import graphs
 
@@ -42,6 +42,8 @@ cache.init_app(server, config=CACHE_CONFIG)
 
 @cache.memoize()
 def get_scenario_data(scenario_id):
+    if USE_DUMMY_DATA:
+        return scenario.get_dummy_data()
     return scenario.get_scenario_data(scenario_id)
 
 

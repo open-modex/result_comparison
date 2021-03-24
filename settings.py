@@ -1,4 +1,9 @@
+
+import os
 import pandas as pd
+
+
+USE_DUMMY_DATA = os.environ.get("USE_DUMMY_DATA", "False") == "True"
 
 
 # GRAPHS

@@ -1,5 +1,6 @@
 import json
 import requests
+import pandas
 from itertools import chain
 
 OEP_URL = "https://openenergy-platform.org"
@@ -31,6 +32,20 @@ def get_scenario_data(scenario_id):
         verify=False,
     )
     return json.loads(response.text)
+
+
+def get_dummy_data():
+    scenario_file = "data/Balmorel/oed_scenario_output.csv"
+    scalar_file = "data/Balmorel/oed_scalar_output.csv"
+    ts_file = "data/Balmorel/oed_timeseries_output.csv"
+    scenario = pandas.read_csv(scenario_file, delimiter=";")
+    scalars = pandas.read_csv(scalar_file, delimiter=";")
+    ts = pandas.read_csv(ts_file, delimiter=";")
+    return {
+        "scenario": json.loads(scenario.to_json(orient="records")),
+        "scalars": json.loads(scalars.to_json(orient="records")),
+        "timeseries": json.loads(ts.to_json(orient="records"))
+    }
 
 
 def merge_scenario_data(scenario_data):
