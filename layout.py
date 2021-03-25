@@ -73,32 +73,17 @@ filter_column = html.Div(
     style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
     children=[
         html.Div(
-            children=[
-                html.Label("Select Year:"),
-                dcc.Dropdown(id="filter_year"),
-                html.Label("Filter Regions:"),
-                dcc.Dropdown(id="filter_region", multi=True, clearable=True,),
-                html.Label("Filter Technologies:"),
-                dcc.Dropdown(id="filter_technology", multi=True, clearable=True),
-                html.Label("Filter Technology Type:"),
-                dcc.Dropdown(id="filter_technology_type", multi=True, clearable=True),
-                html.Label("Filter Parameters:"),
-                dcc.Dropdown(id="filter_parameter_name", multi=True, clearable=True),
-                html.Label("Filter Input:"),
-                dcc.Dropdown(
-                    id="filter_input_energy_vector", multi=True, clearable=True
-                ),
-                html.Label("Filter Output:"),
-                dcc.Dropdown(
-                    id="filter_output_energy_vector", multi=True, clearable=True
-                ),
-                html.Label("Filter Sources:"),
-                dcc.Checklist(
-                    id="filter_source",
-                    labelStyle={"display": "inline-block", "size": "50px"},
-                ),
-                aggregation_column,
-            ],
+            # sum concatenates lists:
+            children=sum(
+                [
+                    [
+                        html.Label(f"Filter {filter_.capitalize()}"),
+                        dcc.Dropdown(id=f"filter_{filter_}", multi=True, clearable=True)
+                    ]
+                    for filter_ in FILTERS
+                ],
+                []
+            ) + [aggregation_column]
         ),
     ],
 )
@@ -129,9 +114,10 @@ graph_column = html.Div(
                         ),
                         html.Div(
                             id=f"graph_{graph}_options",
-                            children=[
-                                html.Div(
-                                    children=[
+                            # sum concatenates lists:
+                            children=sum(
+                                [
+                                    [
                                         html.Label(option),
                                         dcc.Dropdown(
                                             id=f"graph_{graph}_option_{option}",
@@ -147,10 +133,11 @@ graph_column = html.Div(
                                             clearable=False
                                         )
                                     ]
-                                )
-                                for option in ("x", "y", "text", "color", "hover_name")
-                            ]
-                        ),
+                                    for option in ("x", "y", "text", "color", "hover_name")
+                                ],
+                                []
+                            )
+                        )
                     ]
                 ),
             ]
