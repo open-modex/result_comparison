@@ -1,10 +1,17 @@
 import json
 import requests
-import pandas
 from itertools import chain
+
+from frictionless import Resource, validate_resource
+
+from settings import MODEX_OUTPUT_SCHEMA, DATA_PATH
 
 OEP_URL = "https://openenergy-platform.org"
 CONNECTOR_URL = "https://modex.rl-institut.de/scenario/id/"
+
+
+class ScenarioError(Exception):
+    """Raised if scenario data is invalid"""
 
 
 def get_scenarios():
@@ -31,21 +38,29 @@ def get_scenario_data(scenario_id):
         timeout=10000,
         verify=False,
     )
-    return json.loads(response.text)
+    data = json.loads(response.text)
+    with open(f"{DATA_PATH}/dummy_data.json", "w") as dummy_file:
+        json.dump(data, dummy_file)
+    validate_scenario_data(data)
+    return data
+
+
+def validate_scenario_data(data):
+    for table in ("scenario", "scalars", "timeseries"):
+        resource = Resource(
+            name=table, profile="tabular-data-resource", data=data[table], schema=MODEX_OUTPUT_SCHEMA[table]
+        )
+        report = validate_resource(resource)
+        if report["stats"]["errors"] != 0:
+            with open(f"{DATA_PATH}/error_{table}.json", "w") as error_file:
+                error_file.write(report.to_json())
+            raise ScenarioError("Invalid")
 
 
 def get_dummy_data():
-    scenario_file = "data/Balmorel/oed_scenario_output.csv"
-    scalar_file = "data/Balmorel/oed_scalar_output.csv"
-    ts_file = "data/Balmorel/oed_timeseries_output.csv"
-    scenario = pandas.read_csv(scenario_file, delimiter=";")
-    scalars = pandas.read_csv(scalar_file, delimiter=";")
-    ts = pandas.read_csv(ts_file, delimiter=";")
-    return {
-        "scenario": json.loads(scenario.to_json(orient="records")),
-        "scalars": json.loads(scalars.to_json(orient="records")),
-        "timeseries": json.loads(ts.to_json(orient="records"))
-    }
+    with open(f"{DATA_PATH}/dummy_data.json", 'r') as dummy_data_file:
+        data = json.load(dummy_data_file)
+    return data
 
 
 def merge_scenario_data(scenario_data):

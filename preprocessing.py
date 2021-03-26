@@ -34,13 +34,42 @@ def extract_filters_and_options(graph, filters, use_graph_options):
 
 
 def prepare_data(data, group_by, aggregation_func, filters):
-    df = pandas.DataFrame(data)
     if filters:
-        conditions = [df[filter_].isin(filter_value) for filter_, filter_value in filters.items()]
-        df = df[reduce(np.logical_and, conditions)]
+        conditions = [data[filter_].isin(filter_value) for filter_, filter_value in filters.items()]
+        data = data[reduce(np.logical_and, conditions)]
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
-        # Always add "source" to group_by:
-        group_by.append("source")
-        df = df.groupby(group_by).aggregate(aggregation_func).reset_index()
-    return df
+        data = data.groupby(group_by).aggregate(aggregation_func)
+    return data
+
+
+def prepare_scalars(data, group_by, filters):
+    df = pandas.DataFrame(data)
+    return prepare_data(df, group_by, "sum", filters).reset_index()
+
+
+def prepare_timeseries(data, group_by, filters):
+    def sum_series(series):
+        """
+        Enables ndarray summing into one ndarray
+
+        If len == 1 check wasn't there pandas gets confused and neglects series column in agg
+        """
+        if len(series) == 1:
+            return series
+        return sum(series)
+
+    df = pandas.DataFrame.from_dict(data)
+    df.series = df.series.apply(lambda x: np.array(x))
+    if group_by:
+        group_by = group_by if isinstance(group_by, list) else [group_by]
+        group_by = ["timeindex_start", "timeindex_stop", "timeindex_resolution"] + group_by
+    ts_series_grouped = prepare_data(df, group_by, sum_series, filters)
+    timeseries = []
+    for index, row in ts_series_grouped.iterrows():
+        # TODO: Freq should be read from index[2]!
+        dates = pandas.date_range(start=index[0], end=index[1], freq="H")
+        # Create name from groupers:
+        name = "_".join(index[3 + i] for i in range(group_by))
+        timeseries.append(pandas.Series(name=name, data=row.series, index=dates))
+    return pandas.concat(timeseries, axis=1)

@@ -1,10 +1,18 @@
 
 import os
+import json
 import pandas as pd
 
 
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 USE_DUMMY_DATA = os.environ.get("USE_DUMMY_DATA", "False") == "True"
 
+DATA_PATH = "data"
+DATAPACKAGE = "datapackage.json"
+
+with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:
+    datapackage = json.loads(datapackage_file.read())
+    MODEX_OUTPUT_SCHEMA = {resource["name"]: resource["schema"] for resource in datapackage["resources"]}
 
 # GRAPHS
 

@@ -7,3 +7,4 @@ pandas==1.0.3
 urllib3
 Flask-Caching
 jmespath
+frictionless

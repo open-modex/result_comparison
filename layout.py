@@ -55,17 +55,7 @@ aggregation_column = html.Div(
             multi=True,
             clearable=True,
             options=[{"label": filter_, "value": filter_} for filter_ in FILTERS if filter_ != "source"],
-        ),
-        html.Label("Aggregation Function:"),
-        dcc.Dropdown(
-            id="aggregation_func",
-            clearable=True,
-            options=[
-                {"label": "Sum", "value": "sum"},
-                {"label": "Mean", "value": "mean"},
-            ],
-            value="sum"
-        ),
+        )
     ]
 )
 

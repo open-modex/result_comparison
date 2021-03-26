@@ -10,7 +10,7 @@ from flask_caching import Cache
 
 import preprocessing
 from layout import get_layout
-from settings import FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA
+from settings import DEBUG, FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA
 import scenario
 import graphs
 
@@ -114,7 +114,7 @@ def scalar_graph(scenarios, agg_group_by, agg_func, use_custom_graph_options, *f
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
     filters, graph_options = preprocessing.extract_filters_and_options("scalars", filter_args, use_custom_graph_options)
-    preprocessed_data = preprocessing.prepare_data(data["scalars"], agg_group_by, agg_func, filters)
+    preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, agg_func, filters)
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except ValueError as ve:
@@ -131,7 +131,6 @@ def scalar_graph(scenarios, agg_group_by, agg_func, use_custom_graph_options, *f
     [
         Input(component_id="dd_scenario", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
-        Input(component_id="aggregation_func", component_property="value"),
         Input(component_id="graph_timeseries_options_switch", component_property="value"),
     ] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS] +
@@ -140,14 +139,14 @@ def scalar_graph(scenarios, agg_group_by, agg_func, use_custom_graph_options, *f
         for option in GRAPHS_DEFAULT_OPTIONS["timeseries"]
     ]
 )
-def timeseries_graph(scenarios, agg_group_by, agg_func, use_custom_graph_options, *filter_args):
+def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
     filters, graph_options = preprocessing.extract_filters_and_options(
         "timeseries", filter_args, use_custom_graph_options
     )
-    preprocessed_data = preprocessing.prepare_data(data["timeseries"], agg_group_by, agg_func, filters)
+    preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, agg_func, filters)
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
     except ValueError as ve:
@@ -156,4 +155,4 @@ def timeseries_graph(scenarios, agg_group_by, agg_func, use_custom_graph_options
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=DEBUG)
