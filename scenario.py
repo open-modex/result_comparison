@@ -44,8 +44,6 @@ def get_scenario_data(scenario_id):
         verify=False,
     )
     data = json.loads(response.text)
-    with open(f"{DATA_PATH}/dummy_data.json", "w") as dummy_file:
-        json.dump(data, dummy_file)
     validate_scenario_data(data)
     return data
 
@@ -60,12 +58,6 @@ def validate_scenario_data(data):
             with open(f"{DATA_PATH}/error_{table}.json", "w") as error_file:
                 error_file.write(report.to_json())
             raise ScenarioError("Invalid")
-
-
-def get_dummy_data():
-    with open(f"{DATA_PATH}/dummy_data.json", 'r') as dummy_data_file:
-        data = json.load(dummy_data_file)
-    return data
 
 
 def merge_scenario_data(scenario_data):
