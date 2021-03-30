@@ -24,7 +24,12 @@ def get_scenarios():
             "table": "oed_scenario_output",
             "schema": "model_draft",
         },
-        # TODO: Order-by id
+        "order_by": [
+            {
+                "type": "column",
+                "column": "id"
+            }
+        ]
     }
     response = requests.post(OEP_URL + "/api/v0/advanced/search", json={"query": query})
     data = response.json()["data"]
