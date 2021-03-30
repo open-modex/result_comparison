@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  modex_visualization:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: modex_visualization
+    container_name: modex_visualization
+    ports:
+      - "8000:80"
+    expose:
+      - 80
+    restart: always
