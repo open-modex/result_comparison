@@ -1,3 +1,4 @@
+import os
 import json
 
 from scenario import get_scenario_data
@@ -14,3 +15,8 @@ def create_dummy_data(scenario_id):
     data = get_scenario_data(scenario_id)
     with open(f"{DATA_PATH}/dummy_data.json", "w") as dummy_file:
         json.dump(data, dummy_file)
+
+
+if __name__ == "__main__":
+    sc_id = os.environ["SCENARIO_ID"]
+    create_dummy_data(sc_id)

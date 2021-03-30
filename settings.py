@@ -88,6 +88,7 @@ FILTERS = {
     "output_energy_vector": {"type": "str"},
     "source": {"type": "str"},
 }
+TS_FILTERS = {k: v for k, v in FILTERS.items() if k != "year"}
 
 GRAPHS_DEFAULT_OPTIONS = {
     "scalars": {

@@ -8,6 +8,7 @@ from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from flask_caching import Cache
 
+import data.dev
 import preprocessing
 from layout import get_layout
 from settings import DEBUG, FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA
@@ -43,7 +44,7 @@ cache.init_app(server, config=CACHE_CONFIG)
 @cache.memoize()
 def get_scenario_data(scenario_id):
     if USE_DUMMY_DATA:
-        return scenario.get_dummy_data()
+        return data.dev.get_dummy_data()
     return scenario.get_scenario_data(scenario_id)
 
 
@@ -100,7 +101,6 @@ def toggle_timeseries_graph_options(use_custom_graph_options):
     [
         Input(component_id="dd_scenario", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
-        Input(component_id="aggregation_func", component_property="value"),
         Input(component_id="graph_scalars_options_switch", component_property="value"),
     ] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS] +
@@ -109,12 +109,12 @@ def toggle_timeseries_graph_options(use_custom_graph_options):
         for option in GRAPHS_DEFAULT_OPTIONS["scalars"]
     ]
 )
-def scalar_graph(scenarios, agg_group_by, agg_func, use_custom_graph_options, *filter_args):
+def scalar_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
     filters, graph_options = preprocessing.extract_filters_and_options("scalars", filter_args, use_custom_graph_options)
-    preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, agg_func, filters)
+    preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, filters)
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except ValueError as ve:
@@ -146,7 +146,7 @@ def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_
     filters, graph_options = preprocessing.extract_filters_and_options(
         "timeseries", filter_args, use_custom_graph_options
     )
-    preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, agg_func, filters)
+    preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
     except ValueError as ve:

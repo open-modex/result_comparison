@@ -49,7 +49,7 @@ def get_scenario_data(scenario_id):
 
 
 def validate_scenario_data(data):
-    for table in ("scenario", "scalars", "timeseries"):
+    for table in ("scalars", "timeseries"):
         resource = Resource(
             name=table, profile="tabular-data-resource", data=data[table], schema=MODEX_OUTPUT_SCHEMA[table]
         )

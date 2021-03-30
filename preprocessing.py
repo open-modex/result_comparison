@@ -3,7 +3,7 @@ from functools import reduce
 import pandas
 import numpy as np
 
-from settings import FILTERS, GRAPHS_DEFAULT_OPTIONS
+from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS
 
 
 def get_filter_options(scenario_data):
@@ -20,14 +20,17 @@ def get_filter_options(scenario_data):
     return list(output)
 
 
-def extract_filters_and_options(graph, filters, use_graph_options):
-    filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(FILTERS) if filters[i]}
+def extract_filters_and_options(type_, filters, use_graph_options):
+    if type_ == "timeseries":
+        filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(TS_FILTERS) if filters[i]}
+    else:
+        filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(FILTERS) if filters[i]}
     if use_graph_options == "default":
         graph_options = {}
     else:
         graph_options = {
             option: filters[len(FILTERS) + i]
-            for i, option in enumerate(GRAPHS_DEFAULT_OPTIONS[graph])
+            for i, option in enumerate(GRAPHS_DEFAULT_OPTIONS[type_])
             if filters[len(FILTERS) + i]
         }
     return filter_kwargs, graph_options
@@ -68,8 +71,11 @@ def prepare_timeseries(data, group_by, filters):
     timeseries = []
     for index, row in ts_series_grouped.iterrows():
         # TODO: Freq should be read from index[2]!
-        dates = pandas.date_range(start=index[0], end=index[1], freq="H")
-        # Create name from groupers:
-        name = "_".join(index[3 + i] for i in range(group_by))
+        if group_by:
+            dates = pandas.date_range(start=index[0], end=index[1], freq="H")
+            name = "_".join(index[3 + i] for i in range(group_by))
+        else:
+            dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
+            name = "_".join(row[filter_] for filter_ in TS_FILTERS)
         timeseries.append(pandas.Series(name=name, data=row.series, index=dates))
     return pandas.concat(timeseries, axis=1)
