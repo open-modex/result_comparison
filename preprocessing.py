@@ -3,7 +3,7 @@ from functools import reduce
 import pandas
 import numpy as np
 
-from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS
+from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
 
 
 def get_filter_options(scenario_data):
@@ -79,3 +79,13 @@ def prepare_timeseries(data, group_by, filters):
             name = "_".join(row[filter_] for filter_ in TS_FILTERS)
         timeseries.append(pandas.Series(name=name, data=row.series, index=dates))
     return pandas.concat(timeseries, axis=1)
+
+
+def check_timeseries_data(data):
+    warnings = []
+    duplicate_columns = sum(data.columns.duplicated())
+    if duplicate_columns > 0:
+        warnings.append("Found duplicate timeseries; duplicates will be neglected")
+    if len(data.columns) - duplicate_columns > GRAPHS_MAX_TS_PER_PLOT:
+        warnings.append(f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.")
+    return warnings

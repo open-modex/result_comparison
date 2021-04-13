@@ -123,7 +123,7 @@ graph_column = html.Div(
                                             clearable=False
                                         )
                                     ]
-                                    for option in ("x", "y", "text", "color", "hover_name")
+                                    for option in GRAPHS_DEFAULT_OPTIONS[graph]
                                 ],
                                 []
                             )
@@ -152,3 +152,7 @@ def get_layout(app, scenarios):
             ),
         ],
     )
+
+
+def create_warnings(warnings):
+    return html.Div(children=[html.P(warning) for warning in warnings])

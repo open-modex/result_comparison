@@ -8,10 +8,10 @@ from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from flask_caching import Cache
 
-import data.dev
+from data import dev
 import preprocessing
-from layout import get_layout
-from settings import DEBUG, FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA
+from layout import get_layout, create_warnings
+from settings import DEBUG, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA
 import scenario
 import graphs
 
@@ -44,7 +44,7 @@ cache.init_app(server, config=CACHE_CONFIG)
 @cache.memoize()
 def get_scenario_data(scenario_id):
     if USE_DUMMY_DATA:
-        return data.dev.get_dummy_data()
+        return dev.get_dummy_data()
     return scenario.get_scenario_data(scenario_id)
 
 
@@ -133,7 +133,7 @@ def scalar_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args
         Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="graph_timeseries_options_switch", component_property="value"),
     ] +
-    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS] +
+    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS] +
     [
         Input(component_id=f"graph_timeseries_option_{option}", component_property='value')
         for option in GRAPHS_DEFAULT_OPTIONS["timeseries"]
@@ -147,11 +147,15 @@ def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_
         "timeseries", filter_args, use_custom_graph_options
     )
     preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
+    warnings = preprocessing.check_timeseries_data(preprocessed_data)
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
     except ValueError as ve:
         return graphs.get_empty_fig(), f"Error: {str(ve)}", {"color": "red"}
-    return fig, "", {}
+    if warnings:
+        return fig, create_warnings(warnings), {"color": "orange"}
+    else:
+        return fig, "", {}
 
 
 if __name__ == "__main__":

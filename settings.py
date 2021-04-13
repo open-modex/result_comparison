@@ -16,6 +16,8 @@ with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:
 
 # GRAPHS
 
+GRAPHS_MAX_TS_PER_PLOT = 20
+
 GRAPHS_DEFAULT_COLOR_MAP = {
     "BB": "#5E5D5F",
     "BE": "#5E5D5F",
@@ -99,10 +101,10 @@ GRAPHS_DEFAULT_OPTIONS = {
         "hover_name": "region"
     },
     "timeseries": {
-        "x": "series",
-        "y": "source",
-        "text": "parameter_name",
-        "color": "parameter_name",
-        "hover_name": "region"
+        "x": "index",
+        # "y": "source",
+        # "text": "parameter_name",
+        # "color": "parameter_name",
+        # "hover_name": "region"
     }
 }
