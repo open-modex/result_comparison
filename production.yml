@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     image: modex_visualization
     container_name: modex_visualization
+    env_file:
+      - ./.envs/.production/.dash
     expose:
     - 80
     restart: always
