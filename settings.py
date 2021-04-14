@@ -7,6 +7,12 @@ import pandas as pd
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 USE_DUMMY_DATA = os.environ.get("USE_DUMMY_DATA", "False") == "True"
 
+CACHE_CONFIG = {
+    "CACHE_TYPE": "filesystem" if DEBUG else "redis",
+    "CACHE_REDIS_URL": os.environ.get("REDIS_URL"),
+    "CACHE_DIR": "cache",
+}
+
 DATA_PATH = "data"
 DATAPACKAGE = "datapackage.json"
 

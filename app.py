@@ -1,4 +1,3 @@
-import os
 import pathlib
 
 import urllib3
@@ -11,7 +10,7 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, create_warnings
-from settings import DEBUG, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA
+from settings import DEBUG, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
 
@@ -30,13 +29,6 @@ app.layout = get_layout(app, scenarios=scenario.get_scenarios())
 server = app.server
 
 # Cache
-
-CACHE_CONFIG = {
-    # try 'filesystem' if you don't want to setup redis
-    "CACHE_TYPE": "filesystem",
-    "CACHE_REDIS_URL": os.environ.get("REDIS_URL"),
-    "CACHE_DIR": "cache",
-}
 cache = Cache()
 cache.init_app(server, config=CACHE_CONFIG)
 

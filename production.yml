@@ -12,8 +12,16 @@ services:
     restart: always
     networks:
     - caddy_network
+    - modex_visualization
+
+  redis:
+    image: redis:6.2
+    networks:
+    - modex_visualization
+
 
 networks:
+  modex_visualization:
   caddy_network:
     external:
       name: docker_caddy_network
