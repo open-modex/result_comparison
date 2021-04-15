@@ -88,7 +88,11 @@ graph_column = html.Div(
                     style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
                     children=[
                         html.Label(f"{graph.capitalize()}:"),
-                        html.P(id=f"graph_{graph}_error", children=""),
+                        dcc.Loading(
+                            style={"padding-bottom": "30px"},
+                            type="default",
+                            children=html.P(id=f"graph_{graph}_error", children="")
+                        ),
                         dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={})
                     ]
                 ),

@@ -9,6 +9,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - Timeseries plot (from https://plotly.com/python/time-series/#time-series-with-range-selector-buttons)
 - button to reload scenarios
 - pinned requirements
+- loading spinner
 
 ### Fixed
 - added redis to requirements
