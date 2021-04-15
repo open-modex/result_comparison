@@ -5,6 +5,10 @@ from plotly import express as px
 from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
 
 
+class PlottingError(Exception):
+    """Thrown if plotting goes wrong"""
+
+
 def get_empty_fig():
     empty_fig = px.bar()
     empty_fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
@@ -13,13 +17,16 @@ def get_empty_fig():
 
 def get_scalar_plot(data, options):
     fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"])
-    fig = px.bar(
-        data,
-        orientation="h",
-        color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
-        labels={"source": "Simulation Framework"},
-        **fig_options
-    )
+    try:
+        fig = px.bar(
+            data,
+            orientation="h",
+            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
+            labels={"source": "Simulation Framework"},
+            **fig_options
+        )
+    except ValueError as ve:
+        raise PlottingError(f"Scalar plot error: {ve}")
     fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
     return fig
 
@@ -29,11 +36,14 @@ def get_timeseries_plot(data, options):
     data = data.loc[:, ~data.columns.duplicated()]
     fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"])
     fig_options["y"] = [column for column in data.columns[:GRAPHS_MAX_TS_PER_PLOT] if column != "index"]
-    fig = px.line(
-        data.reset_index(),
-        color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
-        **fig_options
-    )
+    try:
+        fig = px.line(
+            data.reset_index(),
+            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
+            **fig_options
+        )
+    except ValueError as ve:
+        raise PlottingError(f"Scalar plot error: {ve}")
     fig.update_xaxes(
         rangeslider_visible=True,
         rangeselector={

@@ -13,3 +13,4 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ### Fixed
 - added redis to requirements
+- error message if daterange index is wrong

@@ -122,11 +122,14 @@ def scalar_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
     filters, graph_options = preprocessing.extract_filters_and_options("scalars", filter_args, use_custom_graph_options)
-    preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, filters)
+    try:
+        preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, filters)
+    except preprocessing.PreprocessingError as pe:
+        return graphs.get_empty_fig(), f"Preprocessing error: {pe}", {"color": "red"}
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
-    except ValueError as ve:
-        return graphs.get_empty_fig(), f"Error: {str(ve)}", {"color": "red"}
+    except graphs.PlottingError as pe:
+        return graphs.get_empty_fig(), f"Plotting error: {pe}", {"color": "red"}
     return fig, "", {}
 
 
@@ -154,12 +157,15 @@ def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_
     filters, graph_options = preprocessing.extract_filters_and_options(
         "timeseries", filter_args, use_custom_graph_options
     )
-    preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
+    try:
+        preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
+    except preprocessing.PreprocessingError as pe:
+        return graphs.get_empty_fig(), f"Preprocessing error: {pe}", {"color": "red"}
     warnings = preprocessing.check_timeseries_data(preprocessed_data)
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
-    except ValueError as ve:
-        return graphs.get_empty_fig(), f"Error: {str(ve)}", {"color": "red"}
+    except graphs.PlottingError as pe:
+        return graphs.get_empty_fig(), f"Plotting error: {pe}", {"color": "red"}
     if warnings:
         return fig, create_warnings(warnings), {"color": "orange"}
     else:

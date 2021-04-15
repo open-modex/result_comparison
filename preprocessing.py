@@ -6,6 +6,10 @@ import numpy as np
 from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
 
 
+class PreprocessingError(Exception):
+    """Error is thrown if preprocessing goes wrong"""
+
+
 def get_filter_options(scenario_data):
     filters = {}
     for filter_, filter_format in FILTERS.items():
@@ -77,7 +81,11 @@ def prepare_timeseries(data, group_by, filters):
         else:
             dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
             name = "_".join(row[filter_] for filter_ in TS_FILTERS)
-        timeseries.append(pandas.Series(name=name, data=row.series, index=dates))
+        try:
+            series = pandas.Series(name=name, data=row.series, index=dates)
+        except ValueError as ve:
+            raise PreprocessingError(f"Timeseries entries and date range don't fit: {ve}")
+        timeseries.append(series)
     return pandas.concat(timeseries, axis=1)
 
 
