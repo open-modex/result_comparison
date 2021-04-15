@@ -54,7 +54,7 @@ aggregation_column = html.Div(
             id="aggregation_group_by",
             multi=True,
             clearable=True,
-            options=[{"label": filter_, "value": filter_} for filter_ in FILTERS if filter_ != "source"],
+            options=[{"label": filter_, "value": filter_} for filter_ in FILTERS],
         )
     ]
 )

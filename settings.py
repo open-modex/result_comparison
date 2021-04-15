@@ -6,6 +6,7 @@ import pandas as pd
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 USE_DUMMY_DATA = os.environ.get("USE_DUMMY_DATA", "False") == "True"
+SKIP_TS = os.environ.get("SKIP_TS", "False") == "True"
 
 CACHE_CONFIG = {
     "CACHE_TYPE": "filesystem" if DEBUG else "redis",

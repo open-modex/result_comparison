@@ -1,6 +1,7 @@
 
 from collections import ChainMap
 from plotly import express as px
+from plotly import graph_objects as go
 
 from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
 
@@ -12,6 +13,7 @@ def get_empty_fig():
 
 
 def get_scalar_plot(data, options):
+    return radar_plot(data)
     fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"])
     fig = px.bar(
         data,
@@ -21,6 +23,33 @@ def get_scalar_plot(data, options):
         **fig_options
     )
     fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+    return fig
+
+
+def radar_plot(data):
+    categories = data["technology"].unique()
+
+    fig = go.Figure()
+
+    for source in data["source"].unique():
+        fig.add_trace(
+            go.Scatterpolar(
+                r=data[data["source"] == source]["value"],
+                theta=categories,
+                fill='toself',
+                name=source
+            )
+        )
+
+    fig.update_layout(
+        polar={
+            "radialaxis": {
+                "visible": True,
+                "range": [data["value"].min(), data["value"].max()]
+            }
+        },
+        showlegend=False
+    )
     return fig
 
 

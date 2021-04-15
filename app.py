@@ -10,7 +10,7 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, create_warnings
-from settings import DEBUG, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA, CACHE_CONFIG
+from settings import DEBUG, SKIP_TS, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
 
@@ -132,7 +132,7 @@ def scalar_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args
     ]
 )
 def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args):
-    if scenarios is None:
+    if scenarios is None or SKIP_TS:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
     filters, graph_options = preprocessing.extract_filters_and_options(
