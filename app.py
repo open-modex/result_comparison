@@ -49,6 +49,22 @@ def get_multiple_scenario_data(*scenario_ids):
 
 
 @app.callback(
+    Output(component_id="dd_scenario", component_property="options"),
+    Input('scenario_reload', 'n_clicks'),
+)
+def reload_scenarios(_):
+    scenarios = scenario.get_scenarios()
+    options = [
+        {
+            "label": f"{sc['id']}, {sc['scenario']}, {sc['source']}",
+            "value": sc["id"],
+        }
+        for sc in scenarios
+    ]
+    return options
+
+
+@app.callback(
     [Output(component_id=f"filter_{filter_}", component_property="options") for filter_ in FILTERS],
     [Input(component_id="dd_scenario", component_property="value")],
 )

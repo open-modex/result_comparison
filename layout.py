@@ -42,6 +42,7 @@ def get_scenario_column(scenarios):
                     for scenario in scenarios
                 ],
             ),
+            html.Button("Reload", id="scenario_reload")
         ],
     )
 
