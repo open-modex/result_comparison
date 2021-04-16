@@ -1,5 +1,6 @@
 
 from collections import ChainMap
+from flask import flash
 from plotly import express as px
 
 from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
@@ -26,6 +27,7 @@ def get_scalar_plot(data, options):
             **fig_options
         )
     except ValueError as ve:
+        flash(f"Scalar plot error: {ve}", category="error")
         raise PlottingError(f"Scalar plot error: {ve}")
     fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
     return fig
@@ -43,7 +45,8 @@ def get_timeseries_plot(data, options):
             **fig_options
         )
     except ValueError as ve:
-        raise PlottingError(f"Scalar plot error: {ve}")
+        flash(f"Timeseries plot error: {ve}", category="error")
+        raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_xaxes(
         rangeslider_visible=True,
         rangeselector={

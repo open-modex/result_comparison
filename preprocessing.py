@@ -2,6 +2,7 @@ import jmespath
 from functools import reduce
 import pandas
 import numpy as np
+from flask import flash
 
 from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
 
@@ -84,16 +85,15 @@ def prepare_timeseries(data, group_by, filters):
         try:
             series = pandas.Series(name=name, data=row.series, index=dates)
         except ValueError as ve:
+            flash(f"Timeseries '{name}' entries and date range don't fit: {ve}", category="error")
             raise PreprocessingError(f"Timeseries entries and date range don't fit: {ve}")
         timeseries.append(series)
     return pandas.concat(timeseries, axis=1)
 
 
 def check_timeseries_data(data):
-    warnings = []
     duplicate_columns = sum(data.columns.duplicated())
     if duplicate_columns > 0:
-        warnings.append("Found duplicate timeseries; duplicates will be neglected")
+        flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
     if len(data.columns) - duplicate_columns > GRAPHS_MAX_TS_PER_PLOT:
-        warnings.append(f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.")
-    return warnings
+        flash(f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.", category="warning")

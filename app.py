@@ -5,12 +5,13 @@ import urllib3
 import dash
 from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
+from flask import get_flashed_messages
 from flask_caching import Cache
 
 from data import dev
 import preprocessing
-from layout import get_layout, create_warnings
-from settings import DEBUG, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA, CACHE_CONFIG
+from layout import get_layout, get_error_and_warnings_div
+from settings import SECRET_KEY, DEBUG, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
 
@@ -27,6 +28,7 @@ app = dash.Dash(
 )
 app.layout = get_layout(app, scenarios=scenario.get_scenarios())
 server = app.server
+server.secret_key = SECRET_KEY
 
 # Cache
 cache = Cache()
@@ -103,9 +105,7 @@ def toggle_timeseries_graph_options(use_custom_graph_options):
 @app.callback(
     [
         Output(component_id='graph_scalars', component_property='figure'),
-        Output(component_id='graph_scalars_error', component_property='children'),
-        Output(component_id='graph_scalars_error', component_property='style'),
-    ],
+        Output(component_id='graph_scalars_error', component_property='children'),    ],
     [
         Input(component_id="dd_scenario", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
@@ -124,20 +124,19 @@ def scalar_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args
     filters, graph_options = preprocessing.extract_filters_and_options("scalars", filter_args, use_custom_graph_options)
     try:
         preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, filters)
-    except preprocessing.PreprocessingError as pe:
-        return graphs.get_empty_fig(), f"Preprocessing error: {pe}", {"color": "red"}
+    except preprocessing.PreprocessingError:
+        return graphs.get_empty_fig(), show_errors_and_warnings()
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
-    except graphs.PlottingError as pe:
-        return graphs.get_empty_fig(), f"Plotting error: {pe}", {"color": "red"}
-    return fig, "", {}
+    except graphs.PlottingError:
+        return graphs.get_empty_fig(), show_errors_and_warnings()
+    return fig, show_errors_and_warnings()
 
 
 @app.callback(
     [
         Output(component_id='graph_timeseries', component_property='figure'),
         Output(component_id='graph_timeseries_error', component_property='children'),
-        Output(component_id='graph_timeseries_error', component_property='style'),
     ],
     [
         Input(component_id="dd_scenario", component_property="value"),
@@ -159,17 +158,21 @@ def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_
     )
     try:
         preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
-    except preprocessing.PreprocessingError as pe:
-        return graphs.get_empty_fig(), f"Preprocessing error: {pe}", {"color": "red"}
-    warnings = preprocessing.check_timeseries_data(preprocessed_data)
+    except preprocessing.PreprocessingError:
+        return graphs.get_empty_fig(), show_errors_and_warnings()
+    preprocessing.check_timeseries_data(preprocessed_data)
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
-    except graphs.PlottingError as pe:
-        return graphs.get_empty_fig(), f"Plotting error: {pe}", {"color": "red"}
-    if warnings:
-        return fig, create_warnings(warnings), {"color": "orange"}
-    else:
-        return fig, "", {}
+    except graphs.PlottingError:
+        return graphs.get_empty_fig(), show_errors_and_warnings()
+    return fig, show_errors_and_warnings()
+
+
+def show_errors_and_warnings():
+    errors = get_flashed_messages(category_filter=["error"])
+    warnings = get_flashed_messages(category_filter=["warning"])
+    infos = get_flashed_messages(category_filter=["info"])
+    return get_error_and_warnings_div(errors, warnings, infos)
 
 
 if __name__ == "__main__":

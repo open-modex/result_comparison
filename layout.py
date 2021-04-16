@@ -159,5 +159,11 @@ def get_layout(app, scenarios):
     )
 
 
-def create_warnings(warnings):
-    return html.Div(children=[html.P(warning) for warning in warnings])
+def get_error_and_warnings_div(errors, warnings, infos):
+    return html.Div(
+        children=(
+            [html.P(error, style={"color": "red"}) for error in errors] +
+            [html.P(warning, style={"color": "orange"}) for warning in warnings] +
+            [html.P(info) for info in infos]
+        )
+    )
