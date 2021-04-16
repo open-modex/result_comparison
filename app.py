@@ -160,7 +160,6 @@ def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_
         preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), show_errors_and_warnings()
-    preprocessing.check_timeseries_data(preprocessed_data)
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:

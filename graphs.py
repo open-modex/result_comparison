@@ -34,10 +34,8 @@ def get_scalar_plot(data, options):
 
 
 def get_timeseries_plot(data, options):
-    # Remove duplicate columns:
-    data = data.loc[:, ~data.columns.duplicated()]
     fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"])
-    fig_options["y"] = [column for column in data.columns[:GRAPHS_MAX_TS_PER_PLOT] if column != "index"]
+    fig_options["y"] = [column for column in data.columns if column != "index"]
     try:
         fig = px.line(
             data.reset_index(),

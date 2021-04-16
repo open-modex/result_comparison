@@ -73,7 +73,34 @@ def prepare_timeseries(data, group_by, filters):
         group_by = group_by if isinstance(group_by, list) else [group_by]
         group_by = ["timeindex_start", "timeindex_stop", "timeindex_resolution"] + group_by
     ts_series_grouped = prepare_data(df, group_by, sum_series, filters)
+    timeseries, fixed_timeseries = concat_timeseries(group_by, ts_series_grouped)
+    reduced_timeseries = remove_duplicates_and_trim_timeseries(timeseries)
+    for name, (dates, entries) in fixed_timeseries.items():
+        if name not in reduced_timeseries.columns:
+            continue
+        flash(
+            f"Timeindex of timeseries '{name}' has different length than series elements "
+            f"({dates}/{entries}). Timeindex has been guessed.",
+            category="warning"
+        )
+    return reduced_timeseries
+
+
+def remove_duplicates_and_trim_timeseries(timeseries):
+    duplicate_columns = sum(timeseries.columns.duplicated())
+    if duplicate_columns > 0:
+        flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
+    # Remove duplicate columns:
+    timeseries = timeseries.loc[:, ~timeseries.columns.duplicated()]
+    if len(timeseries.columns) > GRAPHS_MAX_TS_PER_PLOT:
+        flash(f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.", category="warning")
+        timeseries = timeseries.loc[:, timeseries.columns[:GRAPHS_MAX_TS_PER_PLOT]]
+    return timeseries
+
+
+def concat_timeseries(group_by, ts_series_grouped):
     timeseries = []
+    fixed_timeseries = {}
     for index, row in ts_series_grouped.iterrows():
         # TODO: Freq should be read from index[2]!
         if group_by:
@@ -83,20 +110,8 @@ def prepare_timeseries(data, group_by, filters):
             dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
             name = "_".join(row[filter_] for filter_ in TS_FILTERS)
         if len(dates) != len(row.series):
-            flash(
-                f"Timeindex of timeseries '{name}' has different length than series elements "
-                f"({len(dates)}/{len(row.series)}). Timeindex has been guessed.",
-                category="warning"
-            )
+            fixed_timeseries[name] = len(dates), len(row.series)
             dates = pandas.date_range(start=row["timeindex_start"], freq="H", periods=len(row.series))
         series = pandas.Series(name=name, data=row.series, index=dates)
         timeseries.append(series)
-    return pandas.concat(timeseries, axis=1)
-
-
-def check_timeseries_data(data):
-    duplicate_columns = sum(data.columns.duplicated())
-    if duplicate_columns > 0:
-        flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
-    if len(data.columns) - duplicate_columns > GRAPHS_MAX_TS_PER_PLOT:
-        flash(f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.", category="warning")
+    return pandas.concat(timeseries, axis=1), fixed_timeseries
