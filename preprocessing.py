@@ -82,11 +82,14 @@ def prepare_timeseries(data, group_by, filters):
         else:
             dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
             name = "_".join(row[filter_] for filter_ in TS_FILTERS)
-        try:
-            series = pandas.Series(name=name, data=row.series, index=dates)
-        except ValueError as ve:
-            flash(f"Timeseries '{name}' entries and date range don't fit: {ve}", category="error")
-            raise PreprocessingError(f"Timeseries entries and date range don't fit: {ve}")
+        if len(dates) != len(row.series):
+            flash(
+                f"Timeindex of timeseries '{name}' has different length than series elements "
+                f"({len(dates)}/{len(row.series)}). Timeindex has been guessed.",
+                category="warning"
+            )
+            dates = pandas.date_range(start=row["timeindex_start"], freq="H", periods=len(row.series))
+        series = pandas.Series(name=name, data=row.series, index=dates)
         timeseries.append(series)
     return pandas.concat(timeseries, axis=1)
 

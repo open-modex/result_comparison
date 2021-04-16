@@ -11,6 +11,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - pinned requirements
 - loading spinner
 - messaging to handle warnings and errors
+- corrupt timeseries dates are fixed and user gets warned
 
 ### Fixed
 - added redis to requirements
