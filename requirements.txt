@@ -4,7 +4,8 @@ cufflinks==0.17.3
 gunicorn==20.0.4
 numpy==1.18.4
 pandas==1.0.3
-urllib3
-Flask-Caching
-jmespath
-frictionless
+urllib3==1.26.4
+Flask-Caching==1.10.1
+jmespath==0.10.0
+frictionless==4.7.1
+redis==3.5.3

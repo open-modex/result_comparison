@@ -42,6 +42,7 @@ def get_scenario_column(scenarios):
                     for scenario in scenarios
                 ],
             ),
+            html.Button("Reload", id="scenario_reload")
         ],
     )
 
@@ -116,7 +117,11 @@ graph_column = html.Div(
                     style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
                     children=[
                         html.Label(f"{graph.capitalize()}:"),
-                        html.P(id=f"graph_{graph}_error", children=""),
+                        dcc.Loading(
+                            style={"padding-bottom": "30px"},
+                            type="default",
+                            children=html.P(id=f"graph_{graph}_error", children="")
+                        ),
                         dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={})
                     ]
                 ),
@@ -161,5 +166,11 @@ def get_layout(app, scenarios):
     )
 
 
-def create_warnings(warnings):
-    return html.Div(children=[html.P(warning) for warning in warnings])
+def get_error_and_warnings_div(errors, warnings, infos):
+    return html.Div(
+        children=(
+            [html.P(error, style={"color": "red"}) for error in errors] +
+            [html.P(warning, style={"color": "orange"}) for warning in warnings] +
+            [html.P(info) for info in infos]
+        )
+    )

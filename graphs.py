@@ -1,9 +1,14 @@
 
 from collections import ChainMap
+from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
 
 from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
+
+
+class PlottingError(Exception):
+    """Thrown if plotting goes wrong"""
 
 
 def get_empty_fig():
@@ -13,15 +18,18 @@ def get_empty_fig():
 
 
 def get_scalar_plot(data, options):
-    return radar_plot(data)
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"]["bar"])
-    fig = px.bar(
-        data,
-        orientation="h",
-        color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
-        labels={"source": "Simulation Framework"},
-        **fig_options
-    )
+    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"])
+    try:
+        fig = px.bar(
+            data,
+            orientation="h",
+            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
+            labels={"source": "Simulation Framework"},
+            **fig_options
+        )
+    except ValueError as ve:
+        flash(f"Scalar plot error: {ve}", category="error")
+        raise PlottingError(f"Scalar plot error: {ve}")
     fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
     return fig
 
@@ -54,15 +62,17 @@ def radar_plot(data):
 
 
 def get_timeseries_plot(data, options):
-    # Remove duplicate columns:
-    data = data.loc[:, ~data.columns.duplicated()]
     fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"])
-    fig_options["y"] = [column for column in data.columns[:GRAPHS_MAX_TS_PER_PLOT] if column != "index"]
-    fig = px.line(
-        data.reset_index(),
-        color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
-        **fig_options
-    )
+    fig_options["y"] = [column for column in data.columns if column != "index"]
+    try:
+        fig = px.line(
+            data.reset_index(),
+            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
+            **fig_options
+        )
+    except ValueError as ve:
+        flash(f"Timeseries plot error: {ve}", category="error")
+        raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_xaxes(
         rangeslider_visible=True,
         rangeselector={
