@@ -3,7 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 from graphs import get_empty_fig
-from settings import FILTERS, GRAPHS_DEFAULT_OPTIONS
+from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS
 
 
 def get_header(app):
@@ -43,6 +43,35 @@ def get_scenario_column(scenarios):
                 ],
             ),
         ],
+    )
+
+
+def get_graph_options(data_type, graph_type):
+    options = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type]
+    if data_type == "scalars":
+        dd_options = [{"label": "value", "value": "value"}] + [
+            {"label": filter_, "value": filter_} for filter_ in FILTERS
+        ]
+    else:
+        dd_options = [{"label": "series", "value": "series"}] + [
+            {"label": filter_, "value": filter_} for filter_ in TS_FILTERS
+        ]
+
+    # sum concatenates lists:
+    return sum(
+        [
+            [
+                html.Label(option),
+                dcc.Dropdown(
+                    id=f"{data_type}_{option}",
+                    options=dd_options,
+                    value=value,
+                    clearable=False
+                )
+            ]
+            for option, value in options.items()
+        ],
+        []
     )
 
 
@@ -95,38 +124,16 @@ graph_column = html.Div(
                     style={"width": "15%", "display": "inline-block"},
                     children=[
                         dcc.RadioItems(
-                            id=f"graph_{graph}_options_switch",
+                            id=f"graph_{graph}_plot_switch",
                             options=[
-                                {"label": "Default", "value": "default"},
-                                {"label": "Custom", "value": "custom"}
+                                {"label": graph_type.capitalize(), "value": graph_type}
+                                for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
                             ],
-                            value="default"
+                            value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
                         ),
                         html.Div(
                             id=f"graph_{graph}_options",
-                            # sum concatenates lists:
-                            children=sum(
-                                [
-                                    [
-                                        html.Label(option),
-                                        dcc.Dropdown(
-                                            id=f"graph_{graph}_option_{option}",
-                                            options=[
-                                                        {"label": "value", "value": "value"}
-                                                        if graph == "scalars"
-                                                        else {"label": "series", "value": "series"}
-                                                    ] + [
-                                                {"label": filter_, "value": filter_}
-                                                for filter_ in FILTERS
-                                            ],
-                                            value=GRAPHS_DEFAULT_OPTIONS[graph][option],
-                                            clearable=False
-                                        )
-                                    ]
-                                    for option in GRAPHS_DEFAULT_OPTIONS[graph]
-                                ],
-                                []
-                            )
+                            children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
                         )
                     ]
                 ),

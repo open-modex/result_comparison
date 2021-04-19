@@ -25,6 +25,25 @@ with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:
 
 GRAPHS_MAX_TS_PER_PLOT = 20
 
+GRAPHS_DEFAULT_OPTIONS = {
+    "scalars": {
+        "bar": {
+            "x": "value",
+            "y": "source",
+        },
+        "radar": {
+            "r": "value",
+            "theta": "technology"
+        }
+    },
+    "timeseries": {
+        "line": {
+            "x": "index",
+            "y": "source",
+        }
+    }
+}
+
 GRAPHS_DEFAULT_COLOR_MAP = {
     "BB": "#5E5D5F",
     "BE": "#5E5D5F",
@@ -98,20 +117,3 @@ FILTERS = {
     "source": {"type": "str"},
 }
 TS_FILTERS = {k: v for k, v in FILTERS.items() if k != "year"}
-
-GRAPHS_DEFAULT_OPTIONS = {
-    "scalars": {
-        "x": "value",
-        "y": "source",
-        "text": "parameter_name",
-        "color": "parameter_name",
-        "hover_name": "region"
-    },
-    "timeseries": {
-        "x": "index",
-        # "y": "source",
-        # "text": "parameter_name",
-        # "color": "parameter_name",
-        # "hover_name": "region"
-    }
-}

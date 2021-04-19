@@ -14,7 +14,7 @@ def get_empty_fig():
 
 def get_scalar_plot(data, options):
     return radar_plot(data)
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"])
+    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"]["bar"])
     fig = px.bar(
         data,
         orientation="h",
@@ -56,7 +56,7 @@ def radar_plot(data):
 def get_timeseries_plot(data, options):
     # Remove duplicate columns:
     data = data.loc[:, ~data.columns.duplicated()]
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"])
+    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"])
     fig_options["y"] = [column for column in data.columns[:GRAPHS_MAX_TS_PER_PLOT] if column != "index"]
     fig = px.line(
         data.reset_index(),

@@ -8,3 +8,6 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Added
 - Timeseries plot (from https://plotly.com/python/time-series/#time-series-with-range-selector-buttons)
 - Radar plot for scalars
+
+### Changed
+- multiple plots with different options can be loaded
