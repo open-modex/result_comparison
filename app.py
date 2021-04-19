@@ -123,35 +123,35 @@ def scalar_graph(scenarios, agg_group_by, graph_scalars_options, *filter_args):
     return fig, show_errors_and_warnings()
 
 
-# @app.callback(
-#     [
-#         Output(component_id='graph_timeseries', component_property='figure'),
-#         Output(component_id='graph_timeseries_error', component_property='children'),
-#     ],
-#     [
-#         Input(component_id="dd_scenario", component_property="value"),
-#         Input(component_id="aggregation_group_by", component_property="value"),
-#     ] +
-#     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS],
-#     [State(component_id="graph_timeseries_options", component_property='children')]
-# )
-# def timeseries_graph(scenarios, agg_group_by, *filter_args, graph_timeseries_options):
-#     if scenarios is None or SKIP_TS:
-#         raise PreventUpdate
-#     data = get_multiple_scenario_data(*scenarios)
-#     filters = preprocessing.extract_filters(
-#         "timeseries", filter_args
-#     )
-#     graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
-#     try:
-#         preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
-#     except preprocessing.PreprocessingError:
-#         return graphs.get_empty_fig(), show_errors_and_warnings()
-#     try:
-#         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
-#     except graphs.PlottingError:
-#         return graphs.get_empty_fig(), show_errors_and_warnings()
-#     return fig, show_errors_and_warnings()
+@app.callback(
+    [
+        Output(component_id='graph_timeseries', component_property='figure'),
+        Output(component_id='graph_timeseries_error', component_property='children'),
+    ],
+    [
+        Input(component_id="dd_scenario", component_property="value"),
+        Input(component_id="aggregation_group_by", component_property="value"),
+        Input(component_id="graph_timeseries_options", component_property='children')
+    ] +
+    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS]
+)
+def timeseries_graph(scenarios, agg_group_by, graph_timeseries_options, *filter_args):
+    if scenarios is None or SKIP_TS:
+        raise PreventUpdate
+    data = get_multiple_scenario_data(*scenarios)
+    filters = preprocessing.extract_filters(
+        "timeseries", filter_args
+    )
+    graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
+    try:
+        preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
+    except preprocessing.PreprocessingError:
+        return graphs.get_empty_fig(), show_errors_and_warnings()
+    try:
+        fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
+    except graphs.PlottingError:
+        return graphs.get_empty_fig(), show_errors_and_warnings()
+    return fig, show_errors_and_warnings()
 
 
 def show_errors_and_warnings():

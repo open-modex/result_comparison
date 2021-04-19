@@ -29,22 +29,17 @@ GRAPHS_MAX_TS_PER_PLOT = 20
 GRAPHS_DEFAULT_OPTIONS = {
     "scalars": {
         "bar": {
-            "x": "value",
             "y": "source",
             "text": "parameter_name",
             "color": "parameter_name",
             "hover_name": "region"
         },
         "radar": {
-            "r": "value",
             "theta": "technology"
         }
     },
     "timeseries": {
-        "line": {
-            "x": "index",
-            "y": "source",
-        }
+        "line": {}
     }
 }
 

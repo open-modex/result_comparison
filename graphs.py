@@ -29,6 +29,7 @@ def bar_plot(data, options):
     try:
         fig = px.bar(
             data,
+            x="value",
             orientation="h",
             color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
             labels={"source": "Simulation Framework"},
@@ -74,6 +75,7 @@ def get_timeseries_plot(data, options):
     try:
         fig = px.line(
             data.reset_index(),
+            x="index",
             color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
             **fig_options
         )
