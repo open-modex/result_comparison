@@ -25,20 +25,23 @@ def get_filter_options(scenario_data):
     return list(output)
 
 
-def extract_filters_and_options(type_, filters, use_graph_options):
+def extract_filters(type_, filters):
     if type_ == "timeseries":
         filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(TS_FILTERS) if filters[i]}
     else:
         filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(FILTERS) if filters[i]}
-    if use_graph_options == "default":
-        graph_options = {}
-    else:
-        graph_options = {
-            option: filters[len(FILTERS) + i]
-            for i, option in enumerate(GRAPHS_DEFAULT_OPTIONS[type_])
-            if filters[len(FILTERS) + i]
+    return filter_kwargs
+
+
+def extract_graph_options(graph_div):
+    options = {
+        "type": graph_div[0]["props"]["value"],
+        "options": {
+            item["props"]["id"].split("-")[1]: item["props"]["value"]
+            for item in graph_div if item["type"] == "Dropdown"
         }
-    return filter_kwargs, graph_options
+    }
+    return options
 
 
 def prepare_data(data, group_by, aggregation_func, filters):

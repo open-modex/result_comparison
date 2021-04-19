@@ -64,7 +64,7 @@ def get_graph_options(data_type, graph_type):
             [
                 html.Label(option),
                 dcc.Dropdown(
-                    id=f"{data_type}_{option}",
+                    id=f"{data_type}-{option}",
                     options=dd_options,
                     value=value,
                     clearable=False
@@ -72,7 +72,7 @@ def get_graph_options(data_type, graph_type):
             ]
             for option, value in options.items()
         ],
-        []
+        [dcc.Input(type="hidden", name="graph_type", value=graph_type)]
     )
 
 

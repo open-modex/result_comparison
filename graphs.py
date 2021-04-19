@@ -4,7 +4,7 @@ from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
 
-from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
+from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS
 
 
 class PlottingError(Exception):
@@ -18,7 +18,14 @@ def get_empty_fig():
 
 
 def get_scalar_plot(data, options):
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"])
+    if options["type"] == "bar":
+        return bar_plot(data, options["options"])
+    elif options["type"] == "radar":
+        return radar_plot(data, options["options"])
+
+
+def bar_plot(data, options):
+    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"]["bar"])
     try:
         fig = px.bar(
             data,
@@ -34,7 +41,7 @@ def get_scalar_plot(data, options):
     return fig
 
 
-def radar_plot(data):
+def radar_plot(data, options):
     categories = data["technology"].unique()
 
     fig = go.Figure()
@@ -62,7 +69,7 @@ def radar_plot(data):
 
 
 def get_timeseries_plot(data, options):
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"])
+    fig_options = ChainMap(options["options"], GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"])
     fig_options["y"] = [column for column in data.columns if column != "index"]
     try:
         fig = px.line(

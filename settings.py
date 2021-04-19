@@ -31,6 +31,9 @@ GRAPHS_DEFAULT_OPTIONS = {
         "bar": {
             "x": "value",
             "y": "source",
+            "text": "parameter_name",
+            "color": "parameter_name",
+            "hover_name": "region"
         },
         "radar": {
             "r": "value",

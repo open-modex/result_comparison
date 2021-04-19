@@ -3,7 +3,7 @@ import pathlib
 import urllib3
 
 import dash
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from flask import get_flashed_messages
 from flask_caching import Cache
@@ -94,27 +94,24 @@ def toggle_timeseries_graph_options(plot_type):
     return get_graph_options("timeseries", plot_type),
 
 
-
 @app.callback(
     [
         Output(component_id='graph_scalars', component_property='figure'),
-        Output(component_id='graph_scalars_error', component_property='children'),    ],
+        Output(component_id='graph_scalars_error', component_property='children'),
+    ],
     [
         Input(component_id="dd_scenario", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
-        Input(component_id="graph_scalars_options_switch", component_property="value"),
+        Input(component_id=f"graph_scalars_options", component_property='children')
     ] +
-    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS] +
-    [
-        Input(component_id=f"graph_scalars_option_{option}", component_property='value')
-        for option in GRAPHS_DEFAULT_OPTIONS["scalars"]
-    ]
+    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS],
 )
-def scalar_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args):
+def scalar_graph(scenarios, agg_group_by, graph_scalars_options, *filter_args):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
-    filters, graph_options = preprocessing.extract_filters_and_options("scalars", filter_args, use_custom_graph_options)
+    filters = preprocessing.extract_filters("scalars", filter_args)
+    graph_options = preprocessing.extract_graph_options(graph_scalars_options)
     try:
         preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, filters)
     except preprocessing.PreprocessingError:
@@ -126,38 +123,35 @@ def scalar_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args
     return fig, show_errors_and_warnings()
 
 
-@app.callback(
-    [
-        Output(component_id='graph_timeseries', component_property='figure'),
-        Output(component_id='graph_timeseries_error', component_property='children'),
-    ],
-    [
-        Input(component_id="dd_scenario", component_property="value"),
-        Input(component_id="aggregation_group_by", component_property="value"),
-        Input(component_id="graph_timeseries_options_switch", component_property="value"),
-    ] +
-    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS] +
-    [
-        Input(component_id=f"graph_timeseries_option_{option}", component_property='value')
-        for option in GRAPHS_DEFAULT_OPTIONS["timeseries"]
-    ]
-)
-def timeseries_graph(scenarios, agg_group_by, use_custom_graph_options, *filter_args):
-    if scenarios is None:
-        raise PreventUpdate
-    data = get_multiple_scenario_data(*scenarios)
-    filters, graph_options = preprocessing.extract_filters_and_options(
-        "timeseries", filter_args, use_custom_graph_options
-    )
-    try:
-        preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
-    except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), show_errors_and_warnings()
-    try:
-        fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
-    except graphs.PlottingError:
-        return graphs.get_empty_fig(), show_errors_and_warnings()
-    return fig, show_errors_and_warnings()
+# @app.callback(
+#     [
+#         Output(component_id='graph_timeseries', component_property='figure'),
+#         Output(component_id='graph_timeseries_error', component_property='children'),
+#     ],
+#     [
+#         Input(component_id="dd_scenario", component_property="value"),
+#         Input(component_id="aggregation_group_by", component_property="value"),
+#     ] +
+#     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS],
+#     [State(component_id="graph_timeseries_options", component_property='children')]
+# )
+# def timeseries_graph(scenarios, agg_group_by, *filter_args, graph_timeseries_options):
+#     if scenarios is None or SKIP_TS:
+#         raise PreventUpdate
+#     data = get_multiple_scenario_data(*scenarios)
+#     filters = preprocessing.extract_filters(
+#         "timeseries", filter_args
+#     )
+#     graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
+#     try:
+#         preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
+#     except preprocessing.PreprocessingError:
+#         return graphs.get_empty_fig(), show_errors_and_warnings()
+#     try:
+#         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
+#     except graphs.PlottingError:
+#         return graphs.get_empty_fig(), show_errors_and_warnings()
+#     return fig, show_errors_and_warnings()
 
 
 def show_errors_and_warnings():
@@ -165,6 +159,7 @@ def show_errors_and_warnings():
     warnings = get_flashed_messages(category_filter=["warning"])
     infos = get_flashed_messages(category_filter=["info"])
     return get_error_and_warnings_div(errors, warnings, infos)
+
 
 if __name__ == "__main__":
     app.run_server(debug=DEBUG)
