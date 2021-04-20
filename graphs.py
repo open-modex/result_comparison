@@ -3,6 +3,7 @@ from collections import ChainMap
 from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
+import dash_table
 
 from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS
 
@@ -70,7 +71,12 @@ def radar_plot(data, options):
 
 
 def get_timeseries_plot(data, options):
-    fig_options = ChainMap(options["options"], GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"])
+    if options["type"] == "line":
+        return line_plot(data, options["options"])
+
+
+def line_plot(data, options):
+    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"])
     fig_options["y"] = [column for column in data.columns if column != "index"]
     try:
         fig = px.line(

@@ -6,13 +6,14 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ## [Unreleased]
 ### Added
-- Timeseries plot (from https://plotly.com/python/time-series/#time-series-with-range-selector-buttons)
+- timeseries plot (from https://plotly.com/python/time-series/#time-series-with-range-selector-buttons)
 - button to reload scenarios
 - pinned requirements
 - loading spinner
 - messaging to handle warnings and errors
 - corrupt timeseries dates are fixed and user gets warned
-- Radar plot for scalars
+- radar plot for scalars
+- data table is shown
 
 ### Changed
 - multiple plots with different options can be loaded

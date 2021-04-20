@@ -1,6 +1,7 @@
 import uuid
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_table
 
 from graphs import get_empty_fig
 from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS
@@ -122,7 +123,15 @@ graph_column = html.Div(
                             type="default",
                             children=html.P(id=f"graph_{graph}_error", children="")
                         ),
-                        dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={})
+                        dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={}),
+                        dash_table.DataTable(
+                            id=f"table_{graph}",
+                            style_header={'backgroundColor': 'rgb(30, 30, 30)'},
+                            style_cell={
+                                'backgroundColor': 'rgb(50, 50, 50)',
+                                'color': 'white'
+                            },
+                        )
                     ]
                 ),
                 html.Div(

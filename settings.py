@@ -36,10 +36,10 @@ GRAPHS_DEFAULT_OPTIONS = {
         },
         "radar": {
             "theta": "technology"
-        }
+        },
     },
     "timeseries": {
-        "line": {}
+        "line": {},
     }
 }
 

@@ -1,5 +1,6 @@
 import pathlib
 
+import pandas
 import urllib3
 
 import dash
@@ -11,7 +12,7 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, get_graph_options, get_error_and_warnings_div
-from settings import SECRET_KEY, DEBUG, SKIP_TS, FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, USE_DUMMY_DATA, CACHE_CONFIG
+from settings import SECRET_KEY, DEBUG, SKIP_TS, FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
 
@@ -97,6 +98,8 @@ def toggle_timeseries_graph_options(plot_type):
 @app.callback(
     [
         Output(component_id='graph_scalars', component_property='figure'),
+        Output(component_id='table_scalars', component_property='data'),
+        Output(component_id='table_scalars', component_property='columns'),
         Output(component_id='graph_scalars_error', component_property='children'),
     ],
     [
@@ -115,12 +118,13 @@ def scalar_graph(scenarios, agg_group_by, graph_scalars_options, *filter_args):
     try:
         preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, filters)
     except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), show_errors_and_warnings()
+        return graphs.get_empty_fig(), pandas.DataFrame(), [], show_errors_and_warnings()
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
-        return graphs.get_empty_fig(), show_errors_and_warnings()
-    return fig, show_errors_and_warnings()
+        return graphs.get_empty_fig(), pandas.DataFrame(), [], show_errors_and_warnings()
+    columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
+    return fig, preprocessed_data.applymap(str).to_dict("records"), columns, show_errors_and_warnings()
 
 
 @app.callback(
