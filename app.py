@@ -105,11 +105,12 @@ def toggle_timeseries_graph_options(plot_type):
     [
         Input(component_id="dd_scenario", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
-        Input(component_id=f"graph_scalars_options", component_property='children')
+        Input(component_id=f"graph_scalars_options", component_property='children'),
+        Input(component_id="show_scalars_data", component_property='value'),
     ] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS],
 )
-def scalar_graph(scenarios, agg_group_by, graph_scalars_options, *filter_args):
+def scalar_graph(scenarios, agg_group_by, graph_scalars_options, show_data, *filter_args):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
@@ -118,28 +119,37 @@ def scalar_graph(scenarios, agg_group_by, graph_scalars_options, *filter_args):
     try:
         preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, filters)
     except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), pandas.DataFrame(), [], show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
-        return graphs.get_empty_fig(), pandas.DataFrame(), [], show_errors_and_warnings()
-    columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
-    return fig, preprocessed_data.applymap(str).to_dict("records"), columns, show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+
+    if show_data and "True" in show_data:
+        columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
+        data_table = preprocessed_data.applymap(str).to_dict("records")
+    else:
+        columns = []
+        data_table = []
+    return fig, data_table, columns, show_errors_and_warnings()
 
 
 @app.callback(
     [
         Output(component_id='graph_timeseries', component_property='figure'),
+        Output(component_id='table_timeseries', component_property='data'),
+        Output(component_id='table_timeseries', component_property='columns'),
         Output(component_id='graph_timeseries_error', component_property='children'),
     ],
     [
         Input(component_id="dd_scenario", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
-        Input(component_id="graph_timeseries_options", component_property='children')
+        Input(component_id="graph_timeseries_options", component_property='children'),
+        Input(component_id="show_timeseries_data", component_property='value'),
     ] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS]
 )
-def timeseries_graph(scenarios, agg_group_by, graph_timeseries_options, *filter_args):
+def timeseries_graph(scenarios, agg_group_by, graph_timeseries_options, show_data, *filter_args):
     if scenarios is None or SKIP_TS:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
@@ -150,12 +160,20 @@ def timeseries_graph(scenarios, agg_group_by, graph_timeseries_options, *filter_
     try:
         preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, filters)
     except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
-        return graphs.get_empty_fig(), show_errors_and_warnings()
-    return fig, show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+
+    if show_data and "True" in show_data:
+        columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
+        data_table = preprocessed_data.applymap(str).to_dict("records")
+    else:
+        columns = []
+        data_table = []
+
+    return fig, data_table, columns, show_errors_and_warnings()
 
 
 def show_errors_and_warnings():

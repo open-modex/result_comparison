@@ -118,6 +118,7 @@ graph_column = html.Div(
                     style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
                     children=[
                         html.Label(f"{graph.capitalize()}:"),
+                        dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
                         dcc.Loading(
                             style={"padding-bottom": "30px"},
                             type="default",
