@@ -6,8 +6,11 @@ import pandas as pd
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = os.environ.get("DEBUG", "False") == "True"
+
 USE_DUMMY_DATA = os.environ.get("USE_DUMMY_DATA", "False") == "True"
 SKIP_TS = os.environ.get("SKIP_TS", "False") == "True"
+
+DB_URL = os.environ["DB_URL"]
 
 CACHE_CONFIG = {
     "CACHE_TYPE": "filesystem" if DEBUG else "redis",

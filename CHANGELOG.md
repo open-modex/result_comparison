@@ -14,6 +14,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - corrupt timeseries dates are fixed and user gets warned
 - radar plot for scalars
 - data table is shown
+- filters can be saved/loaded
 
 ### Changed
 - multiple plots with different options can be loaded

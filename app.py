@@ -1,10 +1,9 @@
 import pathlib
 
-import pandas
 import urllib3
 
 import dash
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from flask import get_flashed_messages
 from flask_caching import Cache
@@ -12,9 +11,10 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, get_graph_options, get_error_and_warnings_div
-from settings import SECRET_KEY, DEBUG, SKIP_TS, FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
+from settings import SECRET_KEY, DB_URL, DEBUG, SKIP_TS, FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
+from models import db
 
 urllib3.disable_warnings()
 
@@ -28,8 +28,11 @@ app = dash.Dash(
     ],
 )
 app.layout = get_layout(app, scenarios=scenario.get_scenarios())
+
 server = app.server
 server.secret_key = SECRET_KEY
+server.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+db.init_app(server)
 
 # Cache
 cache = Cache()

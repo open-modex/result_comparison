@@ -9,3 +9,7 @@ Flask-Caching==1.10.1
 jmespath==0.10.0
 frictionless==4.7.1
 redis==3.5.3
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.10
+greenlet==1.0.0
+psycopg2-binary==2.8.6
