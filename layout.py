@@ -5,6 +5,7 @@ import dash_table
 
 from graphs import get_empty_fig
 from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS
+from models import Filter
 
 
 def get_header(app):
@@ -77,86 +78,110 @@ def get_graph_options(data_type, graph_type):
     )
 
 
-aggregation_column = html.Div(
-    children=[
-        html.Label("Aggregation"),
-        html.Label("Group-By:"),
-        dcc.Dropdown(
-            id="aggregation_group_by",
-            multi=True,
-            clearable=True,
-            options=[{"label": filter_, "value": filter_} for filter_ in FILTERS],
-        )
-    ]
-)
+def get_save_load_column(app):
+    with app.server.app_context():
+        saved_filters = Filter.query.all()
+    options = [{"label": filter_.name, "value": filter_.name} for filter_ in saved_filters]
+    return html.P(
+        children=[
+            html.Label("Save filters as:"),
+            dcc.Input(id="save_filters_name", type="text"),
+            html.Button("Save", id="save_filters"),
+            html.Label("Load filters"),
+            dcc.Dropdown(
+                id=f"load_filters",
+                options=options,
+                clearable=False
+            )
+        ]
+    )
 
-filter_column = html.Div(
-    style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
-    children=[
-        html.Div(
-            # sum concatenates lists:
-            children=sum(
-                [
+
+def get_aggregation_column():
+    return html.Div(
+        children=[
+            html.Label("Aggregation"),
+            html.Label("Group-By:"),
+            dcc.Dropdown(
+                id="aggregation_group_by",
+                multi=True,
+                clearable=True,
+                options=[{"label": filter_, "value": filter_} for filter_ in FILTERS],
+            )
+        ]
+    )
+
+
+def get_filter_column(app):
+    return html.Div(
+        style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
+        children=[
+            html.Div(
+                # sum concatenates lists:
+                children=sum(
                     [
-                        html.Label(f"Filter {filter_.capitalize()}"),
-                        dcc.Dropdown(id=f"filter_{filter_}", multi=True, clearable=True)
-                    ]
-                    for filter_ in FILTERS
-                ],
-                []
-            ) + [aggregation_column]
-        ),
-    ],
-)
+                        [
+                            html.Label(f"Filter {filter_.capitalize()}"),
+                            dcc.Dropdown(id=f"filter_{filter_}", multi=True, clearable=True)
+                        ]
+                        for filter_ in FILTERS
+                    ],
+                    []
+                ) + [get_aggregation_column(), get_save_load_column(app)]
+            ),
+        ],
+    )
 
-graph_column = html.Div(
-    style={"width": "68%", "display": "inline-block"},
-    children=[
-        html.Div(
-            children=[
-                html.Div(
-                    style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
-                    children=[
-                        html.Label(f"{graph.capitalize()}:"),
-                        dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
-                        dcc.Loading(
-                            style={"padding-bottom": "30px"},
-                            type="default",
-                            children=html.P(id=f"graph_{graph}_error", children="")
-                        ),
-                        dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={}),
-                        dash_table.DataTable(
-                            id=f"table_{graph}",
-                            style_header={'backgroundColor': 'rgb(30, 30, 30)'},
-                            style_cell={
-                                'backgroundColor': 'rgb(50, 50, 50)',
-                                'color': 'white'
-                            },
-                        )
-                    ]
-                ),
-                html.Div(
-                    style={"width": "15%", "display": "inline-block"},
-                    children=[
-                        dcc.RadioItems(
-                            id=f"graph_{graph}_plot_switch",
-                            options=[
-                                {"label": graph_type.capitalize(), "value": graph_type}
-                                for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
-                            ],
-                            value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
-                        ),
-                        html.Div(
-                            id=f"graph_{graph}_options",
-                            children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
-                        )
-                    ]
-                ),
-            ]
-        )
-        for graph in ("scalars", "timeseries")
-    ],
-)
+
+def get_graph_column():
+    return html.Div(
+        style={"width": "68%", "display": "inline-block"},
+        children=[
+            html.Div(
+                children=[
+                    html.Div(
+                        style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
+                        children=[
+                            html.Label(f"{graph.capitalize()}:"),
+                            dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
+                            dcc.Loading(
+                                style={"padding-bottom": "30px"},
+                                type="default",
+                                children=html.P(id=f"graph_{graph}_error", children="")
+                            ),
+                            dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={}),
+                            dash_table.DataTable(
+                                id=f"table_{graph}",
+                                style_header={'backgroundColor': 'rgb(30, 30, 30)'},
+                                style_cell={
+                                    'backgroundColor': 'rgb(50, 50, 50)',
+                                    'color': 'white'
+                                },
+                            )
+                        ]
+                    ),
+                    html.Div(
+                        style={"width": "15%", "display": "inline-block"},
+                        children=[
+                            dcc.RadioItems(
+                                id=f"graph_{graph}_plot_switch",
+                                options=[
+                                    {"label": graph_type.capitalize(), "value": graph_type}
+                                    for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
+                                ],
+                                value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
+                            ),
+                            html.Div(
+                                id=f"graph_{graph}_options",
+                                children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
+                            )
+                        ]
+                    ),
+                ]
+            )
+            for graph in ("scalars", "timeseries")
+        ],
+    )
 
 
 def get_layout(app, scenarios):
@@ -169,7 +194,7 @@ def get_layout(app, scenarios):
             html.Div(
                 children=[
                     get_scenario_column(scenarios),
-                    html.Div(children=[filter_column, graph_column]),
+                    html.Div(children=[get_filter_column(app), get_graph_column()]),
                 ],
             ),
         ],

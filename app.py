@@ -3,7 +3,7 @@ import pathlib
 import urllib3
 
 import dash
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from flask import get_flashed_messages
 from flask_caching import Cache
@@ -11,10 +11,10 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, get_graph_options, get_error_and_warnings_div
-from settings import SECRET_KEY, DB_URL, DEBUG, SKIP_TS, FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
+from settings import SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
-from models import db
+from models import db, Filter
 
 urllib3.disable_warnings()
 
@@ -27,16 +27,21 @@ app = dash.Dash(
         {"name": "viewport", "content": "width=device-width, initial-scale=4.0"},
     ],
 )
-app.layout = get_layout(app, scenarios=scenario.get_scenarios())
-
 server = app.server
 server.secret_key = SECRET_KEY
-server.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+
+# Database
+server.config["SQLALCHEMY_DATABASE_URI"] = DB_URL
+server.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(server)
 
 # Cache
 cache = Cache()
 cache.init_app(server, config=CACHE_CONFIG)
+
+# Layout
+if not MANAGE_DB:
+    app.layout = get_layout(app, scenarios=scenario.get_scenarios())
 
 
 @cache.memoize()
@@ -68,6 +73,40 @@ def reload_scenarios(_):
         for sc in scenarios
     ]
     return options
+
+
+@app.callback(
+    Output(component_id="load_filters", component_property="options"),
+    Input('save_filters', 'n_clicks'),
+    [
+        State(component_id="save_filters_name", component_property="value"),
+        State(component_id=f"graph_scalars_options", component_property='children'),
+        State(component_id=f"graph_timeseries_options", component_property='children'),
+        State(component_id="aggregation_group_by", component_property="value")
+    ] +
+    [State(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS]
+)
+def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_group_by, *filter_args):
+    if not name:
+        raise PreventUpdate
+
+    filters = preprocessing.extract_filters("scalars", filter_args)
+    filters["agg_group_by"] = agg_group_by
+    scalar_graph_options = preprocessing.extract_graph_options(graph_scalars_options)
+    ts_graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
+
+    db_filter = Filter(
+        name=name,
+        filters=filters,
+        scalar_graph_options=scalar_graph_options,
+        ts_graph_options=ts_graph_options
+    )
+    db.session.add(db_filter)
+    db.session.commit()
+
+    saved_filters = Filter.query.all()
+    saved_filters_options = [{"label": filter_.name, "value": filter_.name} for filter_ in saved_filters]
+    return saved_filters_options
 
 
 @app.callback(
