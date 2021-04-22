@@ -1,10 +1,12 @@
 import pathlib
 
 import urllib3
+from functools import partial
 
 import dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
+from dash.dash import no_update
 from flask import get_flashed_messages
 from flask_caching import Cache
 
@@ -41,7 +43,7 @@ cache.init_app(server, config=CACHE_CONFIG)
 
 # Layout
 if not MANAGE_DB:
-    app.layout = get_layout(app, scenarios=scenario.get_scenarios())
+    app.layout = partial(get_layout, app, scenarios=scenario.get_scenarios())
 
 
 @cache.memoize()
@@ -76,7 +78,10 @@ def reload_scenarios(_):
 
 
 @app.callback(
-    Output(component_id="load_filters", component_property="options"),
+    [
+        Output(component_id="load_filters", component_property="options"),
+        Output(component_id="save_filters_name", component_property="value"),
+    ],
     Input('save_filters', 'n_clicks'),
     [
         State(component_id="save_filters_name", component_property="value"),
@@ -106,7 +111,7 @@ def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_g
 
     saved_filters = Filter.query.all()
     saved_filters_options = [{"label": filter_.name, "value": filter_.name} for filter_ in saved_filters]
-    return saved_filters_options
+    return saved_filters_options, ""
 
 
 @app.callback(
@@ -115,18 +120,31 @@ def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_g
         Output(component_id="graph_timeseries_plot_switch", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value")
     ] +
-    [Output(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS],
+    [Output(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS] +
+    [Output(component_id="save_load_errors", component_property="children")],
     Input('load_filters', "value"),
+    State(component_id="dd_scenario", component_property="value"),
     prevent_initial_call=True
 )
-def load_filters(name):
+def load_filters(name, scenarios):
+    if not name:
+        raise PreventUpdate
+    if not scenarios:
+        return (
+            no_update,
+            no_update,
+            no_update,
+            *([no_update] * len(FILTERS)),
+            get_error_and_warnings_div(["No scenario selected - cannot load filters without scenario"]),
+        )
     db_filter = Filter.query.filter_by(name=name).first()
     filters = [db_filter.filters.get(filter_, None) for filter_ in FILTERS]
     return (
         db_filter.scalar_graph_options["type"],
         db_filter.ts_graph_options["type"],
         db_filter.filters["agg_group_by"],
-        *filters
+        *filters,
+        get_error_and_warnings_div(infos=["Successfully loaded filters"]),
     )
 
 
@@ -156,6 +174,8 @@ def toggle_scalar_graph_options(plot_type, name):
     if ctx.triggered[0]["prop_id"] == "graph_scalars_plot_switch.value":
         graph_scalar_options = get_graph_options("scalars", plot_type)
     else:
+        if not name:
+            raise PreventUpdate
         db_filter = Filter.query.filter_by(name=name).first()
         graph_scalar_options = get_graph_options(
             "scalars", db_filter.scalar_graph_options["type"], db_filter.scalar_graph_options["options"])
@@ -176,6 +196,8 @@ def toggle_timeseries_graph_options(plot_type, name):
     if ctx.triggered[0]["prop_id"] == "graph_timeseries_plot_switch.value":
         graph_timeseries_options = get_graph_options("timeseries", plot_type)
     else:
+        if not name:
+            raise PreventUpdate
         db_filter = Filter.query.filter_by(name=name).first()
         graph_timeseries_options = get_graph_options(
             "timeseries", db_filter.ts_graph_options["type"], db_filter.ts_graph_options["options"])

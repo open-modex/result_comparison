@@ -87,6 +87,7 @@ def get_save_load_column(app):
     options = [{"label": filter_.name, "value": filter_.name} for filter_ in saved_filters]
     return html.P(
         children=[
+            html.P(id=f"save_load_errors", children=""),
             html.Label("Save filters as:"),
             dcc.Input(id="save_filters_name", type="text"),
             html.Button("Save", id="save_filters"),
@@ -94,7 +95,7 @@ def get_save_load_column(app):
             dcc.Dropdown(
                 id="load_filters",
                 options=options,
-                clearable=False
+                clearable=True
             )
         ]
     )
@@ -204,7 +205,10 @@ def get_layout(app, scenarios):
     )
 
 
-def get_error_and_warnings_div(errors, warnings, infos):
+def get_error_and_warnings_div(errors=None, warnings=None, infos=None):
+    errors = errors or []
+    warnings = warnings or []
+    infos = infos or []
     return html.Div(
         children=(
             [html.P(error, style={"color": "red"}) for error in errors] +
