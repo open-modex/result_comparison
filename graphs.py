@@ -3,7 +3,6 @@ from collections import ChainMap
 from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
-import dash_table
 
 from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS
 

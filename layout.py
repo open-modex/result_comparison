@@ -1,4 +1,6 @@
 import uuid
+from collections import ChainMap
+
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
@@ -49,8 +51,9 @@ def get_scenario_column(scenarios):
     )
 
 
-def get_graph_options(data_type, graph_type):
-    options = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type]
+def get_graph_options(data_type, graph_type, preset_options=None):
+    preset_options = preset_options or {}
+    options = ChainMap(preset_options, GRAPHS_DEFAULT_OPTIONS[data_type][graph_type])
     if data_type == "scalars":
         dd_options = [{"label": "value", "value": "value"}] + [
             {"label": filter_, "value": filter_} for filter_ in FILTERS
@@ -89,7 +92,7 @@ def get_save_load_column(app):
             html.Button("Save", id="save_filters"),
             html.Label("Load filters"),
             dcc.Dropdown(
-                id=f"load_filters",
+                id="load_filters",
                 options=options,
                 clearable=False
             )

@@ -4,7 +4,7 @@ import pandas
 import numpy as np
 from flask import flash
 
-from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
+from settings import FILTERS, TS_FILTERS, GRAPHS_MAX_TS_PER_PLOT
 
 
 class PreprocessingError(Exception):

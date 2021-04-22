@@ -110,6 +110,27 @@ def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_g
 
 
 @app.callback(
+    [
+        Output(component_id="graph_scalars_plot_switch", component_property="value"),
+        Output(component_id="graph_timeseries_plot_switch", component_property="value"),
+        Output(component_id="aggregation_group_by", component_property="value")
+    ] +
+    [Output(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS],
+    Input('load_filters', "value"),
+    prevent_initial_call=True
+)
+def load_filters(name):
+    db_filter = Filter.query.filter_by(name=name).first()
+    filters = [db_filter.filters.get(filter_, None) for filter_ in FILTERS]
+    return (
+        db_filter.scalar_graph_options["type"],
+        db_filter.ts_graph_options["type"],
+        db_filter.filters["agg_group_by"],
+        *filters
+    )
+
+
+@app.callback(
     [Output(component_id=f"filter_{filter_}", component_property="options") for filter_ in FILTERS],
     [Input(component_id="dd_scenario", component_property="value")],
 )
@@ -123,18 +144,42 @@ def load_scenario(scenarios):
 
 @app.callback(
     [Output(component_id=f"graph_scalars_options", component_property="children")],
-    [Input(component_id="graph_scalars_plot_switch", component_property="value")],
+    [
+        Input(component_id="graph_scalars_plot_switch", component_property="value"),
+        Input('load_filters', "value"),
+    ],
+    prevent_initial_call=True
 )
-def toggle_scalar_graph_options(plot_type):
-    return get_graph_options("scalars", plot_type),
+def toggle_scalar_graph_options(plot_type, name):
+    # Have to use "callback_context" as every component can only have one output callback
+    ctx = dash.callback_context
+    if ctx.triggered[0]["prop_id"] == "graph_scalars_plot_switch.value":
+        graph_scalar_options = get_graph_options("scalars", plot_type)
+    else:
+        db_filter = Filter.query.filter_by(name=name).first()
+        graph_scalar_options = get_graph_options(
+            "scalars", db_filter.scalar_graph_options["type"], db_filter.scalar_graph_options["options"])
+    return graph_scalar_options,
 
 
 @app.callback(
     [Output(component_id=f"graph_timeseries_options", component_property="children")],
-    [Input(component_id="graph_timeseries_plot_switch", component_property="value")],
+    [
+        Input(component_id="graph_timeseries_plot_switch", component_property="value"),
+        Input('load_filters', "value"),
+    ],
+    prevent_initial_call=True
 )
-def toggle_timeseries_graph_options(plot_type):
-    return get_graph_options("timeseries", plot_type),
+def toggle_timeseries_graph_options(plot_type, name):
+    # Have to use "callback_context" as every component can only have one output callback
+    ctx = dash.callback_context
+    if ctx.triggered[0]["prop_id"] == "graph_timeseries_plot_switch.value":
+        graph_timeseries_options = get_graph_options("timeseries", plot_type)
+    else:
+        db_filter = Filter.query.filter_by(name=name).first()
+        graph_timeseries_options = get_graph_options(
+            "timeseries", db_filter.ts_graph_options["type"], db_filter.ts_graph_options["options"])
+    return graph_timeseries_options,
 
 
 @app.callback(
