@@ -1,5 +1,8 @@
 version: "3"
 
+volumes:
+  local_postgres_data: {}
+
 services:
   modex_visualization:
     build:
@@ -7,8 +10,29 @@ services:
       dockerfile: Dockerfile
     image: modex_visualization
     container_name: modex_visualization
+    env_file:
+      - ./.envs/.local/.dash
     ports:
       - "8000:80"
     expose:
       - 80
     restart: always
+    networks:
+      - modex_visualization
+
+  redis:
+    image: redis:6.2
+    networks:
+      - modex_visualization
+
+  postgres:
+    image: postgres:13.2-alpine
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.local/.postgres
+    networks:
+      - modex_visualization
+
+networks:
+  modex_visualization:

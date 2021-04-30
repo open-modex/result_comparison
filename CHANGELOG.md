@@ -15,6 +15,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - radar plot for scalars
 - data table is shown
 - filters can be saved/loaded
+- postgres db to docker (local and production)
 
 ### Changed
 - multiple plots with different options can be loaded

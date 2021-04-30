@@ -1,5 +1,8 @@
 version: "3"
 
+volumes:
+  production_postgres_data: {}
+
 services:
   modex_visualization:
     build:
@@ -11,6 +14,8 @@ services:
       - ./.envs/.production/.dash
     expose:
     - 80
+    depends_on:
+     - postgres
     restart: always
     networks:
     - caddy_network
@@ -21,6 +26,14 @@ services:
     networks:
     - modex_visualization
 
+  postgres:
+    image: postgres:13.2-alpine
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.production/.postgres
+    networks:
+    - modex_visualization
 
 networks:
   modex_visualization:

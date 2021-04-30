@@ -10,6 +10,13 @@ To run a development instance locally, create a virtualenv, install the
 requirements from `requirements.txt` and launch `app.py` using the 
 Python executable from the virtualenv.
 
+## Running locally with docker:
+
+```
+sudo docker-compose -f local.yml run --rm -e MANAGE_DB=True modex_visualization python manage.py
+sudo docker-compose -f local.yml up -d --build
+```
+
 ## Deploying on ECS
 
 Use `make image` to create a Docker image. Then, follow [these 
