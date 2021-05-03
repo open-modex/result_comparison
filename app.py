@@ -213,13 +213,14 @@ def toggle_timeseries_graph_options(plot_type, name):
     ],
     [
         Input(component_id="dd_scenario", component_property="value"),
+        Input(component_id="graph_scalars_refresh", component_property="n_clicks"),
         Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id=f"graph_scalars_options", component_property='children'),
         Input(component_id="show_scalars_data", component_property='value'),
     ] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS],
 )
-def scalar_graph(scenarios, agg_group_by, graph_scalars_options, show_data, *filter_args):
+def scalar_graph(scenarios, _, agg_group_by, graph_scalars_options, show_data, *filter_args):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
@@ -252,13 +253,14 @@ def scalar_graph(scenarios, agg_group_by, graph_scalars_options, show_data, *fil
     ],
     [
         Input(component_id="dd_scenario", component_property="value"),
+        Input(component_id="graph_timeseries_refresh", component_property="n_clicks"),
         Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="graph_timeseries_options", component_property='children'),
         Input(component_id="show_timeseries_data", component_property='value'),
     ] +
     [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS]
 )
-def timeseries_graph(scenarios, agg_group_by, graph_timeseries_options, show_data, *filter_args):
+def timeseries_graph(scenarios, _, agg_group_by, graph_timeseries_options, show_data, *filter_args):
     if scenarios is None or SKIP_TS:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)

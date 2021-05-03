@@ -16,6 +16,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - data table is shown
 - filters can be saved/loaded
 - postgres db to docker (local and production)
+- refresh button to plot options
 
 ### Changed
 - multiple plots with different options can be loaded

@@ -175,6 +175,7 @@ def get_graph_column():
                                 ],
                                 value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
                             ),
+                            html.Button("Refresh", id=f"graph_{graph}_refresh"),
                             html.Div(
                                 id=f"graph_{graph}_options",
                                 children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
