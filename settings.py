@@ -39,7 +39,9 @@ GRAPHS_DEFAULT_OPTIONS = {
             "hover_name": "region"
         },
         "radar": {
-            "theta": "technology"
+            "r": "value",
+            "theta": "technology",
+            "color": "source"
         },
     },
     "timeseries": {

@@ -43,17 +43,16 @@ def bar_plot(data, options):
 
 
 def radar_plot(data, options):
-    categories = data["technology"].unique()
+    categories = data[options["theta"]].unique()
 
     fig = go.Figure()
-
-    for source in data["source"].unique():
+    for ellipse in data[options["color"]].unique():
         fig.add_trace(
             go.Scatterpolar(
-                r=data[data["source"] == source]["value"],
+                r=data[data[options["color"]] == ellipse][options["r"]],
                 theta=categories,
                 fill='toself',
-                name=source
+                name=ellipse
             )
         )
 
@@ -61,7 +60,7 @@ def radar_plot(data, options):
         polar={
             "radialaxis": {
                 "visible": True,
-                "range": [data["value"].min(), data["value"].max()]
+                "range": [data[options["r"]].min(), data[options["r"]].max()]
             }
         },
         showlegend=False
