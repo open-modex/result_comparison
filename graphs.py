@@ -22,6 +22,8 @@ def get_scalar_plot(data, options):
         return bar_plot(data, options["options"])
     elif options["type"] == "radar":
         return radar_plot(data, options["options"])
+    elif options["type"] == "dot":
+        return dot_plot(data, options["options"])
 
 
 def bar_plot(data, options):
@@ -65,6 +67,22 @@ def radar_plot(data, options):
         },
         showlegend=False
     )
+    return fig
+
+
+def dot_plot(data, options):
+    y = data[options["y"]].unique()
+
+    fig = go.Figure()
+
+    for category in data[options["color"]].unique():
+        cat_data = data[data[options["color"]] == category][options["x"]]
+        fig.add_trace(go.Scatter(
+            x=cat_data,
+            y=y,
+            name=category,
+        ))
+    fig.update_traces(mode='markers', marker=dict(line_width=1, symbol='circle', size=16))
     return fig
 
 

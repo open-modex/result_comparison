@@ -43,6 +43,11 @@ GRAPHS_DEFAULT_OPTIONS = {
             "theta": "technology",
             "color": "source"
         },
+        "dot": {
+            "x": "value",
+            "y": "technology",
+            "color": "source"
+        },
     },
     "timeseries": {
         "line": {},
