@@ -127,3 +127,24 @@ FILTERS = {
     "source": {"type": "str"},
 }
 TS_FILTERS = {k: v for k, v in FILTERS.items() if k != "year"}
+
+# UNITS
+
+UNITS = {
+    "Energy": {
+        "units": ["kWh", "MWh", "GWh", "TWh"],
+        "default": "GWh"
+    },
+    "Energy per Year": {
+        "units": ["kWh/a", "MWh/a", "GWh/a", "TWh/a"],
+        "default": "GWh/a"
+    },
+    "Power per Hour": {
+        "units": ["kW/h", "MW/h", "GW/h", "TW/h"],
+        "default": "MW/h"
+    },
+    "Mass": {
+        "units": ["Mt", "Gt"],
+        "default": "Gt"
+    }
+}

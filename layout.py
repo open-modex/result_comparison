@@ -6,7 +6,7 @@ import dash_html_components as html
 import dash_table
 
 from graphs import get_empty_fig
-from settings import FILTERS, TS_FILTERS, GRAPHS_DEFAULT_OPTIONS
+from settings import FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS
 from models import Filter
 
 
@@ -104,7 +104,7 @@ def get_save_load_column(app):
 def get_aggregation_column():
     return html.Div(
         children=[
-            html.Label("Aggregation"),
+            html.P("Aggregation"),
             html.Label("Group-By:"),
             dcc.Dropdown(
                 id="aggregation_group_by",
@@ -113,6 +113,26 @@ def get_aggregation_column():
                 options=[{"label": filter_, "value": filter_} for filter_ in FILTERS],
             )
         ]
+    )
+
+
+def get_units_column():
+    return html.Div(
+        id="units",
+        children=sum(
+            [
+                [
+                    html.Label(unit_name),
+                    dcc.Dropdown(
+                        options=[{"label": unit, "value": unit} for unit in unit_data["units"]],
+                        value=unit_data["default"],
+                        clearable=False
+                    )
+                ]
+                for unit_name, unit_data in UNITS.items()
+            ],
+            [html.P("Units")]
+        ) + [html.Button("Refresh units", id="refresh_units")]
     )
 
 
@@ -131,7 +151,7 @@ def get_filter_column(app):
                         for filter_ in FILTERS
                     ],
                     []
-                ) + [get_aggregation_column(), get_save_load_column(app)]
+                ) + [get_aggregation_column(), get_save_load_column(app), get_units_column()]
             ),
         ],
     )

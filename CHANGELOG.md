@@ -18,6 +18,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - postgres db to docker (local and production)
 - refresh button to plot options
 - added dot plot to scalar graph
+- unit support 
 
 ### Changed
 - multiple plots with different options can be loaded

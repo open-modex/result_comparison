@@ -3,8 +3,65 @@ from functools import reduce
 import pandas
 import numpy as np
 from flask import flash
+from units import unit, scaled_unit, NamedComposedUnit
+from units.predefined import define_units
+from units.registry import REGISTRY
+from units.exception import IncompatibleUnitsError
 
 from settings import FILTERS, TS_FILTERS, GRAPHS_MAX_TS_PER_PLOT
+
+
+def define_energy_model_units():
+    scaled_unit("kW", "W", 1e3)
+    scaled_unit("MW", "kW", 1e3)
+    scaled_unit("GW", "MW", 1e3)
+    scaled_unit("TW", "GW", 1e3)
+
+    scaled_unit('a', 'day', 365)
+
+    scaled_unit('kt', 't', 1e3)
+    scaled_unit('Mt', 'kt', 1e3)
+    scaled_unit('Gt', 'Mt', 1e3)
+
+    NamedComposedUnit("kWh", unit("kW") * unit("h"))
+    NamedComposedUnit("MWh", unit("MW") * unit("h"))
+    NamedComposedUnit("GWh", unit("GW") * unit("h"))
+    NamedComposedUnit("TWh", unit("TW") * unit("h"))
+
+    NamedComposedUnit("kWh/a", unit("kWh") / unit("a"))
+    NamedComposedUnit("MWh/a", unit("MWh") / unit("a"))
+    NamedComposedUnit("GWh/a", unit("GWh") / unit("a"))
+    NamedComposedUnit("TWh/a", unit("TWh") / unit("a"))
+
+    NamedComposedUnit("kW/h", unit("kW") / unit("h"))
+    NamedComposedUnit("MW/h", unit("MW") / unit("h"))
+    NamedComposedUnit("GW/h", unit("GW") / unit("h"))
+    NamedComposedUnit("TW/h", unit("TW") / unit("h"))
+
+
+define_units()
+define_energy_model_units()
+
+
+def convert_units(row, convert_to):
+    if "unit" not in row or row["unit"] not in REGISTRY:
+        return row
+    if "value" in row:
+        value = unit(row["unit"])(row["value"])
+        try:
+            row["value"] = unit(convert_to)(value).get_num()
+        except IncompatibleUnitsError:
+            return row
+    elif "series" in row:
+        try:
+            mul = unit(convert_to)(unit(row["unit"])(1)).get_num()
+        except IncompatibleUnitsError:
+            return row
+        row["series"] = row["series"] * mul
+    else:
+        return row
+    row["unit"] = convert_to
+    return row
 
 
 class PreprocessingError(Exception):
@@ -44,22 +101,29 @@ def extract_graph_options(graph_div):
     return options
 
 
-def prepare_data(data, group_by, aggregation_func, filters):
+def extract_unit_options(units_div):
+    return [unit_div["props"]["value"] for unit_div in units_div if unit_div["type"] == "Dropdown"]
+
+
+def prepare_data(data, group_by, aggregation_func, units, filters):
     if filters:
         conditions = [data[filter_].isin(filter_value) for filter_, filter_value in filters.items()]
         data = data[reduce(np.logical_and, conditions)]
+    for unit_ in units:
+        data = data.apply(convert_units, axis=1, convert_to=unit_)
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
         data = data.groupby(group_by).aggregate(aggregation_func)
     return data
 
 
-def prepare_scalars(data, group_by, filters):
+def prepare_scalars(data, group_by, units, filters):
     df = pandas.DataFrame(data)
-    return prepare_data(df, group_by, "sum", filters).reset_index()
+    df = prepare_data(df, group_by, "sum", units, filters).reset_index()
+    return df
 
 
-def prepare_timeseries(data, group_by, filters):
+def prepare_timeseries(data, group_by, units, filters):
     def sum_series(series):
         """
         Enables ndarray summing into one ndarray
@@ -75,7 +139,7 @@ def prepare_timeseries(data, group_by, filters):
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
         group_by = ["timeindex_start", "timeindex_stop", "timeindex_resolution"] + group_by
-    ts_series_grouped = prepare_data(df, group_by, sum_series, filters)
+    ts_series_grouped = prepare_data(df, group_by, sum_series, units, filters)
     timeseries, fixed_timeseries = concat_timeseries(group_by, ts_series_grouped)
     reduced_timeseries = remove_duplicates_and_trim_timeseries(timeseries)
     for name, (dates, entries) in fixed_timeseries.items():
