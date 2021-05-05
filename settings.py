@@ -146,5 +146,9 @@ UNITS = {
     "Mass": {
         "units": ["Mt", "Gt"],
         "default": "Gt"
+    },
+    "Mass per year": {
+        "units": ["Mt/a", "Gt/a"],
+        "default": "Gt/a"
     }
 }
