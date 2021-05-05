@@ -113,6 +113,11 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
     if filters:
         conditions = [data[filter_].isin(filter_value) for filter_, filter_value in filters.items()]
         data = data[reduce(np.logical_and, conditions)]
+    # Check units:
+    all_units = data["unit"].unique()
+    for unit_ in all_units:
+        if unit_ not in REGISTRY:
+            flash(f"Unknown unit '{unit_}' found in data.", category="warning")
     for unit_ in units:
         data = data.apply(convert_units, axis=1, convert_to=unit_)
     if group_by:
