@@ -109,6 +109,21 @@ def extract_unit_options(units_div):
     return [unit_div["props"]["value"] for unit_div in units_div if unit_div["type"] == "Dropdown"]
 
 
+def sum_series(series):
+    """
+    Enables ndarray summing into one ndarray
+
+    If len == 1 check wasn't there pandas gets confused and neglects series column in agg
+    """
+    if len(series) == 1:
+        return series.tolist()
+    summed_series = sum(series)
+    if isinstance(summed_series, np.ndarray):
+        return summed_series.tolist()
+    else:
+        return summed_series
+
+
 def prepare_data(data, group_by, aggregation_func, units, filters):
     if filters:
         conditions = [data[filter_].isin(filter_value) for filter_, filter_value in filters.items()]
@@ -133,16 +148,6 @@ def prepare_scalars(data, group_by, units, filters):
 
 
 def prepare_timeseries(data, group_by, units, filters):
-    def sum_series(series):
-        """
-        Enables ndarray summing into one ndarray
-
-        If len == 1 check wasn't there pandas gets confused and neglects series column in agg
-        """
-        if len(series) == 1:
-            return series
-        return sum(series)
-
     df = pandas.DataFrame.from_dict(data)
     df.series = df.series.apply(lambda x: np.array(x))
     if group_by:
@@ -181,7 +186,7 @@ def concat_timeseries(group_by, ts_series_grouped):
         # TODO: Freq should be read from index[2]!
         if group_by:
             dates = pandas.date_range(start=index[0], end=index[1], freq="H")
-            name = "_".join(index[3 + i] for i in range(group_by))
+            name = "_".join(index[3 + i] for i in range(len(group_by) - 3))
         else:
             dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
             name = "_".join(row[filter_] for filter_ in TS_FILTERS)
