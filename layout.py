@@ -53,7 +53,7 @@ def get_scenario_column(scenarios):
 
 def get_graph_options(data_type, graph_type, preset_options=None):
     preset_options = preset_options or {}
-    options = ChainMap(preset_options, GRAPHS_DEFAULT_OPTIONS[data_type][graph_type])
+    chosen_options = ChainMap(preset_options, GRAPHS_DEFAULT_OPTIONS[data_type][graph_type].get_defaults())
     if data_type == "scalars":
         dd_options = [{"label": "value", "value": "value"}] + [
             {"label": filter_, "value": filter_} for filter_ in FILTERS
@@ -64,21 +64,22 @@ def get_graph_options(data_type, graph_type, preset_options=None):
         ]
 
     # sum concatenates lists:
-    return sum(
-        [
-            [
-                html.Label(option),
-                dcc.Dropdown(
-                    id=f"{data_type}-{option}",
-                    options=dd_options,
-                    value=value,
-                    clearable=False
-                )
-            ]
-            for option, value in options.items()
-        ],
-        [dcc.Input(type="hidden", name="graph_type", value=graph_type)]
-    )
+    div = [dcc.Input(type="hidden", name="graph_type", value=graph_type)]
+    for option, value in chosen_options.items():
+        if GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].from_filter:
+            options = dd_options
+        else:
+            options = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].value
+        div += [
+            html.Label(option),
+            dcc.Dropdown(
+                id=f"{data_type}-{option}",
+                options=options,
+                value=value,
+                clearable=False
+            )
+        ]
+    return div
 
 
 def get_save_load_column(app):

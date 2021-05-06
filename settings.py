@@ -1,8 +1,9 @@
 
 import os
 import json
+from dataclasses import dataclass
+from typing import Union, List, Dict
 import pandas as pd
-
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = os.environ.get("DEBUG", "False") == "True"
@@ -30,27 +31,51 @@ with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:
 
 GRAPHS_MAX_TS_PER_PLOT = 20
 
+
+@dataclass
+class GraphOption:
+    value: Union[str, List[Dict[str, str]]]
+    from_filter: bool = True
+
+
+class GraphOptions:
+    def __init__(self, **kwargs):
+        self.options = dict(**kwargs)
+
+    def get_defaults(self):
+        return {
+            name: option.value if option.from_filter else option.value[0]["value"]
+            for name, option in self.options.items()
+        }
+
+    def __getitem__(self, item):
+        return self.options[item]
+
+
 GRAPHS_DEFAULT_OPTIONS = {
     "scalars": {
-        "bar": {
-            "y": "source",
-            "text": "parameter_name",
-            "color": "parameter_name",
-            "hover_name": "region"
-        },
-        "radar": {
-            "r": "value",
-            "theta": "technology",
-            "color": "source"
-        },
-        "dot": {
-            "x": "value",
-            "y": "technology",
-            "color": "source"
-        },
+        "bar": GraphOptions(
+            x=GraphOption("value"),
+            y=GraphOption("source"),
+            text=GraphOption("parameter_name"),
+            color=GraphOption("parameter_name"),
+            hover_name=GraphOption("region"),
+            orientation=GraphOption(
+                [{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}], False)
+        ),
+        "radar": GraphOptions(
+            r=GraphOption("value"),
+            theta=GraphOption("technology"),
+            color=GraphOption("source")
+        ),
+        "dot": GraphOptions(
+            x=GraphOption("value"),
+            y=GraphOption("technology"),
+            color=GraphOption("source")
+        ),
     },
     "timeseries": {
-        "line": {},
+        "line": GraphOptions(),
     }
 }
 

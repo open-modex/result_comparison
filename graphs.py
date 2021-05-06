@@ -27,12 +27,10 @@ def get_scalar_plot(data, options):
 
 
 def bar_plot(data, options):
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"]["bar"])
+    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["scalars"]["bar"].get_defaults())
     try:
         fig = px.bar(
             data,
-            x="value",
-            orientation="h",
             color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
             labels={"source": "Simulation Framework"},
             **fig_options
@@ -92,7 +90,7 @@ def get_timeseries_plot(data, options):
 
 
 def line_plot(data, options):
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"])
+    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults())
     fig_options["y"] = [column for column in data.columns if column != "index"]
     try:
         fig = px.line(
