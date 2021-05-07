@@ -35,8 +35,11 @@ GRAPHS_MAX_TS_PER_PLOT = 20
 
 @dataclass
 class GraphOption:
-    value: Union[str, List[Dict[str, str]]]
+    label: str
+    default: Union[str, List[Dict[str, str]]]
     from_filter: bool = True
+    clearable: bool = False
+    fix: bool = False
 
 
 class GraphOptions:
@@ -45,7 +48,7 @@ class GraphOptions:
 
     def get_defaults(self):
         return {
-            name: option.value if option.from_filter else option.value[0]["value"]
+            name: option.default if option.from_filter else option.default[0]["value"]
             for name, option in self.options.items()
         }
 
@@ -56,23 +59,27 @@ class GraphOptions:
 GRAPHS_DEFAULT_OPTIONS = {
     "scalars": {
         "bar": GraphOptions(
-            x=GraphOption("value"),
-            y=GraphOption("source"),
-            text=GraphOption("parameter_name"),
-            color=GraphOption("parameter_name"),
-            hover_name=GraphOption("region"),
+            x=GraphOption("X-Axis", "value"),
+            y=GraphOption("Y-Axis", "source"),
+            text=GraphOption("Text", "parameter_name"),
+            color=GraphOption("Color", "parameter_name"),
+            hover_name=GraphOption("Hover", "region"),
             orientation=GraphOption(
-                [{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}], False)
+                label="Orientation",
+                default=[{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}],
+                from_filter=False,
+            ),
+            facet_col=GraphOption("Subplots", "", clearable=True)
         ),
         "radar": GraphOptions(
-            r=GraphOption("value"),
-            theta=GraphOption("technology"),
-            color=GraphOption("source")
+            r=GraphOption("Radius", "value"),
+            theta=GraphOption("Theta", "technology"),
+            color=GraphOption("Color", "source")
         ),
         "dot": GraphOptions(
-            x=GraphOption("value"),
-            y=GraphOption("technology"),
-            color=GraphOption("source")
+            x=GraphOption("X-Axis", "value"),
+            y=GraphOption("Y-Axis", "technology"),
+            color=GraphOption("Color", "source")
         ),
     },
     "timeseries": {

@@ -90,7 +90,10 @@ def get_timeseries_plot(data, options):
 
 
 def line_plot(data, options):
-    fig_options = ChainMap(options, GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults())
+    fig_options = ChainMap(
+        options,
+        GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults()
+    )
     fig_options["y"] = [column for column in data.columns if column != "index"]
     try:
         fig = px.line(

@@ -69,9 +69,9 @@ def get_graph_options(data_type, graph_type, preset_options=None):
         if GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].from_filter:
             options = dd_options
         else:
-            options = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].value
+            options = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].default
         div += [
-            html.Label(option),
+            html.Label(GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].label),
             dcc.Dropdown(
                 id=f"{data_type}-{option}",
                 options=options,
