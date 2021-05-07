@@ -49,7 +49,7 @@ if not MANAGE_DB:
 @cache.memoize()
 def get_scenario_data(scenario_id):
     if USE_DUMMY_DATA:
-        return dev.get_dummy_data()
+        return dev.get_dummy_data(scenario_id)
     return scenario.get_scenario_data(scenario_id)
 
 

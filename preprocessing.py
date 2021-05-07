@@ -156,14 +156,12 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
 
 def prepare_scalars(data, group_by, units, filters):
     df = pandas.DataFrame(data)
-    df.region = df.region.apply(lambda x: str(x))
     df = prepare_data(df, group_by, "sum", units, filters).reset_index()
     return df
 
 
 def prepare_timeseries(data, group_by, units, filters):
     df = pandas.DataFrame.from_dict(data)
-    df.region = df.region.apply(lambda x: str(x))
     df.series = df.series.apply(lambda x: np.array(x))
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]

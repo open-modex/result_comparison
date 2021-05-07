@@ -143,7 +143,7 @@ REGIONS = {state["abbrev"]: state["Bundesland"] for _, state in STATES.iterrows(
 
 FILTERS = {
     "year": {"type": "int"},
-    "region": {"type": "list"},
+    "region": {"type": "str"},
     "technology": {"type": "str"},
     "technology_type": {"type": "str"},
     "parameter_name": {"type": "str"},

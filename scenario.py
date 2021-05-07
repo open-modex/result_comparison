@@ -39,7 +39,7 @@ def get_scenarios():
 def get_scenario_data(scenario_id):
     response = requests.get(
         CONNECTOR_URL + str(scenario_id),
-        {"mapping": "concrete", "source": "modex_output"},
+        {"mapping": "dashboard", "source": "modex_output"},
         timeout=10000,
         verify=False,
     )
