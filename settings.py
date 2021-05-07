@@ -21,6 +21,7 @@ CACHE_CONFIG = {
 }
 
 DATA_PATH = "data"
+DATA_SCENARIO_PATH = "scenarios"
 DATAPACKAGE = "datapackage.json"
 
 with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:

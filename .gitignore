@@ -7,4 +7,4 @@ __pycache__/
 
 cache/*
 
-data/dummy_data.json
+data/scenarios/*
