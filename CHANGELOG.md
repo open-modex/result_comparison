@@ -11,6 +11,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ### Fixed
 - timeseries groupby 
+- removed regions mapping 
 
 ## [0.1.0] - 2021-05-05
 ### Added

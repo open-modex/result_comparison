@@ -133,28 +133,24 @@ def get_units_column():
                 for unit_name, unit_data in UNITS.items()
             ],
             [html.P("Units")]
-        ) + [html.Button("Refresh units", id="refresh_units")]
+        )
     )
 
 
-def get_filter_column(app):
+def get_filter_column():
     return html.Div(
-        style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
-        children=[
-            html.Div(
-                # sum concatenates lists:
-                children=sum(
-                    [
-                        [
-                            html.Label(f"Filter {filter_.capitalize()}"),
-                            dcc.Dropdown(id=f"filter_{filter_}", multi=True, clearable=True)
-                        ]
-                        for filter_ in FILTERS
-                    ],
-                    []
-                ) + [get_aggregation_column(), get_save_load_column(app), get_units_column()]
-            ),
-        ],
+        id="filters",
+        # sum concatenates lists:
+        children=sum(
+            [
+                [
+                    html.Label(f"Filter {filter_.capitalize()}"),
+                    dcc.Dropdown(id=f"filter-{filter_}", multi=True, clearable=True)
+                ]
+                for filter_ in FILTERS
+            ],
+            []
+        )
     )
 
 
@@ -196,7 +192,6 @@ def get_graph_column():
                                 ],
                                 value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
                             ),
-                            html.Button("Refresh", id=f"graph_{graph}_refresh"),
                             html.Div(
                                 id=f"graph_{graph}_options",
                                 children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
@@ -220,7 +215,21 @@ def get_layout(app, scenarios):
             html.Div(
                 children=[
                     get_scenario_column(scenarios),
-                    html.Div(children=[get_filter_column(app), get_graph_column()]),
+                    html.Div(
+                        children=[
+                            html.Div(
+                                style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
+                                children=[
+                                    html.Button("Refresh graphs", id="refresh"),
+                                    get_filter_column(),
+                                    get_aggregation_column(),
+                                    get_save_load_column(app),
+                                    get_units_column()
+                                ]
+                            ),
+                            get_graph_column()
+                        ]
+                    ),
                 ],
             ),
         ],

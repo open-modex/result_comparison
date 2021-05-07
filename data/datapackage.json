@@ -3,7 +3,7 @@
   "resources": [
     {
       "profile": "tabular-data-resource",
-      "name": "scenario",
+      "name": "oed_scenario",
       "path": "oed_scenario_output.csv",
       "scheme": "file",
       "format": "csv",
@@ -25,7 +25,7 @@
     },
     {
     "profile": "tabular-data-resource",
-    "name": "scalars",
+    "name": "oed_scalars",
     "path": "oed_scalar_output.csv",
     "format": "csv",
     "encoding" : "cp1252",
@@ -33,7 +33,7 @@
       "fields": [
         {"name": "id", "description": "Unique identifier", "type": "integer", "unit": null},
         {"name": "scenario_id", "description": "Scenario name", "type": "integer", "unit": null},
-        {"name": "region", "description": "Country or region, add a flow from region a -> b: ['a', 'b']", "type": "string", "unit": null},
+        {"name": "region", "description": "Country or region, add a flow from region a -> b: ['a', 'b']", "type": "array", "unit": null},
         {"name": "input_energy_vector", "description": "It describes any type of energy or energy carrier (e.g. electricity, heat, solar radiation, natural gas, ...) that enters a technology.", "type": "string", "unit": null},
         {"name": "output_energy_vector", "description": "It describes any type of energy or energy carrier (e.g. electricity, heat, hydrogen, LNG, CO2, ...) that exits a technology.", "type": "string", "unit": null},
 	    {"name": "parameter_name", "description": "It describes a considered property of an element in the energy system.", "type": "string", "unit": null},
@@ -56,7 +56,7 @@
     },
     {
       "profile": "tabular-data-resource",
-      "name": "timeseries",
+      "name": "oed_timeseries",
       "path": "oed_timeseries_output.csv",
       "format": "csv",
       "encoding" : "cp1252",
@@ -64,7 +64,7 @@
         "fields": [
           {"name": "id", "description": "Unique identifier", "type": "integer", "unit": null},
           {"name": "scenario_id", "description": "Scenario name", "type": "integer", "unit": null},
-          {"name": "region", "description": "Country or region", "type": "string", "unit": null},
+          {"name": "region", "description": "Country or region", "type": "array", "unit": null},
           {"name": "input_energy_vector", "description": "It describes any type of energy or energy carrier (e.g. electricity, heat, solar radiation, natural gas, ...) that enters a technology.", "type": "string", "unit": null},
           {"name": "output_energy_vector", "description": "It describes any type of energy or energy carrier (e.g. electricity, heat, hydrogen, LNG, CO2, ...) that exits a technology.", "type": "string", "unit": null},
 	      {"name": "parameter_name", "description": "It describes a considered property of an element in the energy system.", "type": "string", "unit": null},

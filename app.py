@@ -89,7 +89,7 @@ def reload_scenarios(_):
         State(component_id=f"graph_timeseries_options", component_property='children'),
         State(component_id="aggregation_group_by", component_property="value")
     ] +
-    [State(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS]
+    [State(component_id=f"filter-{filter_}", component_property='value') for filter_ in FILTERS]
 )
 def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_group_by, *filter_args):
     if not name:
@@ -120,7 +120,7 @@ def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_g
         Output(component_id="graph_timeseries_plot_switch", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value")
     ] +
-    [Output(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS] +
+    [Output(component_id=f"filter-{filter_}", component_property='value') for filter_ in FILTERS] +
     [Output(component_id="save_load_errors", component_property="children")],
     Input('load_filters', "value"),
     State(component_id="dd_scenario", component_property="value"),
@@ -149,7 +149,7 @@ def load_filters(name, scenarios):
 
 
 @app.callback(
-    [Output(component_id=f"filter_{filter_}", component_property="options") for filter_ in FILTERS],
+    [Output(component_id=f"filter-{filter_}", component_property="options") for filter_ in FILTERS],
     [Input(component_id="dd_scenario", component_property="value")],
 )
 def load_scenario(scenarios):
@@ -212,25 +212,25 @@ def toggle_timeseries_graph_options(plot_type, name):
         Output(component_id='graph_scalars_error', component_property='children'),
     ],
     [
-        Input(component_id="dd_scenario", component_property="value"),
-        Input(component_id="graph_scalars_refresh", component_property="n_clicks"),
+        Input(component_id="refresh", component_property="n_clicks"),
         Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="units", component_property='children'),
-        Input(component_id="refresh_units", component_property='n_clicks'),
         Input(component_id=f"graph_scalars_options", component_property='children'),
         Input(component_id="show_scalars_data", component_property='value'),
-    ] +
-    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in FILTERS],
+        Input(component_id=f"filters", component_property='children')
+    ],
+    State(component_id="dd_scenario", component_property="value"),
+    prevent_initial_call=True
 )
-def scalar_graph(scenarios, _, agg_group_by, units_div, __, graph_scalars_options, show_data, *filter_args):
+def scalar_graph(_, agg_group_by, units_div, graph_scalars_options, show_data, filter_div, scenarios):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
-    filters = preprocessing.extract_filters("scalars", filter_args)
+    filters = preprocessing.extract_filters("scalars", filter_div)
     units = preprocessing.extract_unit_options(units_div)
     graph_options = preprocessing.extract_graph_options(graph_scalars_options)
     try:
-        preprocessed_data = preprocessing.prepare_scalars(data["scalars"], agg_group_by, units, filters)
+        preprocessed_data = preprocessing.prepare_scalars(data["oed_scalars"], agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     try:
@@ -255,27 +255,27 @@ def scalar_graph(scenarios, _, agg_group_by, units_div, __, graph_scalars_option
         Output(component_id='graph_timeseries_error', component_property='children'),
     ],
     [
-        Input(component_id="dd_scenario", component_property="value"),
-        Input(component_id="graph_timeseries_refresh", component_property="n_clicks"),
+        Input(component_id="refresh", component_property="n_clicks"),
         Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="units", component_property='children'),
-        Input(component_id="refresh_units", component_property='n_clicks'),
         Input(component_id="graph_timeseries_options", component_property='children'),
         Input(component_id="show_timeseries_data", component_property='value'),
-    ] +
-    [Input(component_id=f"filter_{filter_}", component_property='value') for filter_ in TS_FILTERS]
+        Input(component_id=f"filters", component_property='children')
+    ],
+    State(component_id="dd_scenario", component_property="value"),
+    prevent_initial_call=True
 )
-def timeseries_graph(scenarios, _, agg_group_by, units_div, __, graph_timeseries_options, show_data, *filter_args):
+def timeseries_graph(_, agg_group_by, units_div, graph_timeseries_options, show_data, filter_div, scenarios):
     if scenarios is None or SKIP_TS:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios)
     filters = preprocessing.extract_filters(
-        "timeseries", filter_args
+        "timeseries", filter_div
     )
     units = preprocessing.extract_unit_options(units_div)
     graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
     try:
-        preprocessed_data = preprocessing.prepare_timeseries(data["timeseries"], agg_group_by, units, filters)
+        preprocessed_data = preprocessing.prepare_timeseries(data["oed_timeseries"], agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     try:

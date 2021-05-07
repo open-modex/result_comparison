@@ -39,7 +39,7 @@ def get_scenarios():
 def get_scenario_data(scenario_id):
     response = requests.get(
         CONNECTOR_URL + str(scenario_id),
-        {"mapping": "regions", "source": "modex_output"},
+        {"mapping": "concrete", "source": "modex_output"},
         timeout=10000,
         verify=False,
     )
@@ -49,7 +49,7 @@ def get_scenario_data(scenario_id):
 
 
 def validate_scenario_data(data):
-    for table in ("scalars", "timeseries"):
+    for table in ("oed_scalars", "oed_timeseries"):
         resource = Resource(
             name=table, profile="tabular-data-resource", data=data[table], schema=MODEX_OUTPUT_SCHEMA[table]
         )
@@ -64,5 +64,5 @@ def merge_scenario_data(scenario_data):
     # Merge scalars and timeseries, throw away scenario infos:
     return {
         key: list(chain.from_iterable([items[key] for items in scenario_data]))
-        for key in ("scalars", "timeseries")
+        for key in ("oed_scalars", "oed_timeseries")
     }

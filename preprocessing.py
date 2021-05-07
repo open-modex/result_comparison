@@ -75,7 +75,7 @@ class PreprocessingError(Exception):
 def get_filter_options(scenario_data):
     filters = {}
     for filter_, filter_format in FILTERS.items():
-        jmespath_str = f"[scalars, timeseries][].{filter_}"
+        jmespath_str = f"[oed_scalars, od_timeseries][].{filter_}"
         if filter_format["type"] == "list":
             jmespath_str += "[]"
         filters[filter_] = set(jmespath.search(jmespath_str, scenario_data))
@@ -86,11 +86,18 @@ def get_filter_options(scenario_data):
     return list(output)
 
 
-def extract_filters(type_, filters):
+def extract_filters(type_, filter_div):
     if type_ == "timeseries":
-        filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(TS_FILTERS) if filters[i]}
+        filters = TS_FILTERS
     else:
-        filter_kwargs = {filter_: filters[i] for i, filter_ in enumerate(FILTERS) if filters[i]}
+        filters = FILTERS
+    filter_kwargs = {}
+    for item in filter_div:
+        if item["type"] != "Dropdown":
+            continue
+        name = item["props"]["id"].split("-")[1]
+        if name in filters and "value" in item["props"] and item["props"]["value"]:
+            filter_kwargs[name] = item["props"]["value"]
     return filter_kwargs
 
 
@@ -126,7 +133,13 @@ def sum_series(series):
 
 def prepare_data(data, group_by, aggregation_func, units, filters):
     if filters:
-        conditions = [data[filter_].isin(filter_value) for filter_, filter_value in filters.items()]
+        conditions = []
+        for filter_, filter_value in filters.items():
+            if FILTERS[filter_]["type"] == "list":
+                # Build regex to filter for substrings:
+                conditions.append(data[filter_].str.contains("|".join(filter_value)))
+            else:
+                conditions.append(data[filter_].isin(filter_value))
         data = data[reduce(np.logical_and, conditions)]
     # Check units:
     all_units = data["unit"].unique()
@@ -143,12 +156,14 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
 
 def prepare_scalars(data, group_by, units, filters):
     df = pandas.DataFrame(data)
+    df.region = df.region.apply(lambda x: str(x))
     df = prepare_data(df, group_by, "sum", units, filters).reset_index()
     return df
 
 
 def prepare_timeseries(data, group_by, units, filters):
     df = pandas.DataFrame.from_dict(data)
+    df.region = df.region.apply(lambda x: str(x))
     df.series = df.series.apply(lambda x: np.array(x))
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
@@ -189,7 +204,7 @@ def concat_timeseries(group_by, ts_series_grouped):
             name = "_".join(index[3 + i] for i in range(len(group_by) - 3))
         else:
             dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
-            name = "_".join(row[filter_] for filter_ in TS_FILTERS)
+            name = "_".join(str(row[filter_]) for filter_ in TS_FILTERS)
         if len(dates) != len(row.series):
             fixed_timeseries[name] = len(dates), len(row.series)
             dates = pandas.date_range(start=row["timeindex_start"], freq="H", periods=len(row.series))
