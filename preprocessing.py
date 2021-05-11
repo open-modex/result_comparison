@@ -118,12 +118,8 @@ def extract_unit_options(units_div):
 
 def sum_series(series):
     """
-    Enables ndarray summing into one ndarray
-
-    If len == 1 check wasn't there pandas gets confused and neglects series column in agg
+    Enables ndarray summing into one list
     """
-    if len(series) == 1:
-        return series.tolist()
     summed_series = sum(series)
     if isinstance(summed_series, np.ndarray):
         return summed_series.tolist()
@@ -151,12 +147,12 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
         data = data.groupby(group_by).aggregate(aggregation_func)
-    return data
+    return data.reset_index()
 
 
 def prepare_scalars(data, group_by, units, filters):
     df = pandas.DataFrame(data)
-    df = prepare_data(df, group_by, "sum", units, filters).reset_index()
+    df = prepare_data(df, group_by, "sum", units, filters)
     return df
 
 
@@ -198,8 +194,10 @@ def concat_timeseries(group_by, ts_series_grouped):
     for index, row in ts_series_grouped.iterrows():
         # TODO: Freq should be read from index[2]!
         if group_by:
-            dates = pandas.date_range(start=index[0], end=index[1], freq="H")
-            name = "_".join(index[3 + i] for i in range(len(group_by) - 3))
+            dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
+            name = "_".join(
+                [row[g] for g in group_by if g not in ["timeindex_start", "timeindex_stop", "timeindex_resolution"]]
+            )
         else:
             dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
             name = "_".join(str(row[filter_]) for filter_ in TS_FILTERS)
