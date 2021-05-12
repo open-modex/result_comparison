@@ -84,6 +84,17 @@ GRAPHS_DEFAULT_OPTIONS = {
     },
     "timeseries": {
         "line": GraphOptions(),
+        "box": GraphOptions(
+            x=GraphOption("X-Axis", "value"),
+            y=GraphOption("Y-Axis", "source"),
+            color=GraphOption("Color", "parameter_name"),
+            orientation=GraphOption(
+                label="Orientation",
+                default=[{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}],
+                from_filter=False,
+            ),
+            facet_col=GraphOption("Subplots", "", clearable=True)
+        ),
     }
 }
 

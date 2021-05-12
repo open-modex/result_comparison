@@ -87,6 +87,8 @@ def dot_plot(data, options):
 def get_timeseries_plot(data, options):
     if options["type"] == "line":
         return line_plot(data, options["options"])
+    elif options["type"] == "box":
+        return box_plot(data, options["options"])
 
 
 def line_plot(data, options):
@@ -117,5 +119,24 @@ def line_plot(data, options):
             ]
         }
     )
+    fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+    return fig
+
+
+def box_plot(data, options):
+    fig_options = ChainMap(
+        options,
+        GRAPHS_DEFAULT_OPTIONS["timeseries"]["box"].get_defaults()
+    )
+    fig_options["y"] = [column for column in data.columns if column != "index"]
+    try:
+        fig = px.box(
+            data.reset_index(),
+            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
+            **fig_options
+        )
+    except ValueError as ve:
+        flash(f"Timeseries plot error: {ve}", category="error")
+        raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
     return fig
