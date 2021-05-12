@@ -198,11 +198,11 @@ def prepare_timeseries(data, group_by, units, filters):
 
 
 def remove_duplicates_and_trim_timeseries(timeseries):
-    # duplicate_columns = sum(timeseries.columns.duplicated())
-    # if duplicate_columns > 0:
-    #     flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
-    # # Remove duplicate columns:
-    # timeseries = timeseries.loc[:, ~timeseries.columns.duplicated()]
+    duplicate_columns = sum(timeseries.columns.duplicated())
+    if duplicate_columns > 0:
+        flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
+    # Remove duplicate columns:
+    timeseries = timeseries.loc[:, ~timeseries.columns.duplicated()]
     if len(timeseries.columns) > GRAPHS_MAX_TS_PER_PLOT:
         flash(
             f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.",
