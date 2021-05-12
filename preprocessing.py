@@ -115,7 +115,7 @@ def extract_graph_options(graph_div):
     options = {
         "type": graph_div[0]["props"]["value"],
         "options": {
-            item["props"]["id"].split("-")[1]: item["props"]["value"]
+            item["props"]["id"].split("-")[1]: None if (value := item["props"]["value"]) == "" else value
             for item in graph_div
             if item["type"] == "Dropdown"
         },
