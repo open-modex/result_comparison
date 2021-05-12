@@ -13,7 +13,7 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, get_graph_options, get_error_and_warnings_div
-from settings import SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
+from settings import SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, SC_FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
 from models import db, Filter
@@ -89,7 +89,7 @@ def reload_scenarios(_):
         State(component_id=f"graph_timeseries_options", component_property='children'),
         State(component_id="aggregation_group_by", component_property="value")
     ] +
-    [State(component_id=f"filter-{filter_}", component_property='value') for filter_ in FILTERS]
+    [State(component_id=f"filter-{filter_}", component_property='value') for filter_ in SC_FILTERS]
 )
 def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_group_by, *filter_args):
     if not name:
@@ -120,7 +120,7 @@ def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_g
         Output(component_id="graph_timeseries_plot_switch", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value")
     ] +
-    [Output(component_id=f"filter-{filter_}", component_property='value') for filter_ in FILTERS] +
+    [Output(component_id=f"filter-{filter_}", component_property='value') for filter_ in SC_FILTERS] +
     [Output(component_id="save_load_errors", component_property="children")],
     Input('load_filters', "value"),
     State(component_id="dd_scenario", component_property="value"),
@@ -134,11 +134,11 @@ def load_filters(name, scenarios):
             no_update,
             no_update,
             no_update,
-            *([no_update] * len(FILTERS)),
+            *([no_update] * len(SC_FILTERS)),
             get_error_and_warnings_div(["No scenario selected - cannot load filters without scenario"]),
         )
     db_filter = Filter.query.filter_by(name=name).first()
-    filters = [db_filter.filters.get(filter_, None) for filter_ in FILTERS]
+    filters = [db_filter.filters.get(filter_, None) for filter_ in SC_FILTERS]
     return (
         db_filter.scalar_graph_options["type"],
         db_filter.ts_graph_options["type"],
@@ -149,7 +149,7 @@ def load_filters(name, scenarios):
 
 
 @app.callback(
-    [Output(component_id=f"filter-{filter_}", component_property="options") for filter_ in FILTERS],
+    [Output(component_id=f"filter-{filter_}", component_property="options") for filter_ in SC_FILTERS],
     [Input(component_id="dd_scenario", component_property="value")],
 )
 def load_scenario(scenarios):

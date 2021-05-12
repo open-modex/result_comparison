@@ -6,7 +6,7 @@ import dash_html_components as html
 import dash_table
 
 from graphs import get_empty_fig
-from settings import FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS
+from settings import SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS
 from models import Filter
 
 
@@ -56,7 +56,7 @@ def get_graph_options(data_type, graph_type, preset_options=None):
     chosen_options = ChainMap(preset_options, GRAPHS_DEFAULT_OPTIONS[data_type][graph_type].get_defaults())
     if data_type == "scalars":
         dd_options = [{"label": "value", "value": "value"}] + [
-            {"label": filter_, "value": filter_} for filter_ in FILTERS
+            {"label": filter_, "value": filter_} for filter_ in SC_FILTERS
         ]
     else:
         dd_options = [{"label": "series", "value": "series"}] + [
@@ -111,7 +111,7 @@ def get_aggregation_column():
                 id="aggregation_group_by",
                 multi=True,
                 clearable=True,
-                options=[{"label": filter_, "value": filter_} for filter_ in FILTERS],
+                options=[{"label": filter_, "value": filter_} for filter_ in SC_FILTERS],
             )
         ]
     )
@@ -147,7 +147,7 @@ def get_filter_column():
                     html.Label(f"Filter {filter_.capitalize()}"),
                     dcc.Dropdown(id=f"filter-{filter_}", multi=True, clearable=True)
                 ]
-                for filter_ in FILTERS
+                for filter_ in SC_FILTERS
             ],
             []
         )

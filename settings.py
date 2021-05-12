@@ -24,6 +24,8 @@ DATA_PATH = "data"
 DATA_SCENARIO_PATH = "scenarios"
 DATAPACKAGE = "datapackage.json"
 
+COLUMN_JOINER = "-"
+
 with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:
     datapackage = json.loads(datapackage_file.read())
     MODEX_OUTPUT_SCHEMA = {resource["name"]: resource["schema"] for resource in datapackage["resources"]}
@@ -160,7 +162,7 @@ REGIONS = {state["abbrev"]: state["Bundesland"] for _, state in STATES.iterrows(
 
 # FILTERS
 
-FILTERS = {
+SC_FILTERS = {
     "year": {"type": "int"},
     "region": {"type": "str"},
     "technology": {"type": "str"},
@@ -170,7 +172,10 @@ FILTERS = {
     "output_energy_vector": {"type": "str"},
     "source": {"type": "str"},
 }
-TS_FILTERS = {k: v for k, v in FILTERS.items() if k != "year"}
+TS_FILTERS = {k: v for k, v in SC_FILTERS.items() if k != "year"}
+
+SC_COLUMNS = list(SC_FILTERS) + ["value", "unit"]
+TS_COLUMNS = list(TS_FILTERS) + ["series", "unit", "timeindex_start", "timeindex_stop", "timeindex_resolution"]
 
 # UNITS
 

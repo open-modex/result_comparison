@@ -4,7 +4,7 @@ from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
 
-from settings import GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS
+from settings import COLUMN_JOINER, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS
 
 
 class PlottingError(Exception):
@@ -96,7 +96,8 @@ def line_plot(data, options):
         options,
         GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults()
     )
-    fig_options["y"] = [column for column in data.columns if column != "index"]
+    data.columns = [COLUMN_JOINER.join(map(str, column)) for column in data.columns]
+    fig_options["y"] = [column for column in data.columns]
     try:
         fig = px.line(
             data.reset_index(),

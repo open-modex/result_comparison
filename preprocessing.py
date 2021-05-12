@@ -8,7 +8,14 @@ from units.predefined import define_units
 from units.registry import REGISTRY
 from units.exception import IncompatibleUnitsError
 
-from settings import FILTERS, TS_FILTERS, GRAPHS_MAX_TS_PER_PLOT
+from settings import (
+    SC_COLUMNS,
+    TS_COLUMNS,
+    SC_FILTERS,
+    TS_FILTERS,
+    GRAPHS_MAX_TS_PER_PLOT,
+    COLUMN_JOINER
+)
 
 
 def define_energy_model_units():
@@ -17,11 +24,11 @@ def define_energy_model_units():
     scaled_unit("GW", "MW", 1e3)
     scaled_unit("TW", "GW", 1e3)
 
-    scaled_unit('a', 'day', 365)
+    scaled_unit("a", "day", 365)
 
-    scaled_unit('kt', 't', 1e3)
-    scaled_unit('Mt', 'kt', 1e3)
-    scaled_unit('Gt', 'Mt', 1e3)
+    scaled_unit("kt", "t", 1e3)
+    scaled_unit("Mt", "kt", 1e3)
+    scaled_unit("Gt", "Mt", 1e3)
 
     NamedComposedUnit("kt/a", unit("kt") / unit("a"))
     NamedComposedUnit("Mt/a", unit("Mt") / unit("a"))
@@ -74,13 +81,16 @@ class PreprocessingError(Exception):
 
 def get_filter_options(scenario_data):
     filters = {}
-    for filter_, filter_format in FILTERS.items():
+    for filter_, filter_format in SC_FILTERS.items():
         jmespath_str = f"[oed_scalars, od_timeseries][].{filter_}"
         if filter_format["type"] == "list":
             jmespath_str += "[]"
         filters[filter_] = set(jmespath.search(jmespath_str, scenario_data))
     output = (
-        [{"label": filter_option, "value": filter_option} for filter_option in filter_options]
+        [
+            {"label": filter_option, "value": filter_option}
+            for filter_option in filter_options
+        ]
         for _, filter_options in filters.items()
     )
     return list(output)
@@ -90,7 +100,7 @@ def extract_filters(type_, filter_div):
     if type_ == "timeseries":
         filters = TS_FILTERS
     else:
-        filters = FILTERS
+        filters = SC_FILTERS
     filter_kwargs = {}
     for item in filter_div:
         if item["type"] != "Dropdown":
@@ -106,14 +116,19 @@ def extract_graph_options(graph_div):
         "type": graph_div[0]["props"]["value"],
         "options": {
             item["props"]["id"].split("-")[1]: item["props"]["value"]
-            for item in graph_div if item["type"] == "Dropdown"
-        }
+            for item in graph_div
+            if item["type"] == "Dropdown"
+        },
     }
     return options
 
 
 def extract_unit_options(units_div):
-    return [unit_div["props"]["value"] for unit_div in units_div if unit_div["type"] == "Dropdown"]
+    return [
+        unit_div["props"]["value"]
+        for unit_div in units_div
+        if unit_div["type"] == "Dropdown"
+    ]
 
 
 def sum_series(series):
@@ -131,7 +146,7 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
     if filters:
         conditions = []
         for filter_, filter_value in filters.items():
-            if FILTERS[filter_]["type"] == "list":
+            if SC_FILTERS[filter_]["type"] == "list":
                 # Build regex to filter for substrings:
                 conditions.append(data[filter_].str.contains("|".join(filter_value)))
             else:
@@ -146,24 +161,30 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
         data = data.apply(convert_units, axis=1, convert_to=unit_)
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
-        data = data.groupby(group_by).aggregate(aggregation_func)
-    return data.reset_index()
+        data = data.groupby(group_by).aggregate(aggregation_func).reset_index()
+    return data
 
 
 def prepare_scalars(data, group_by, units, filters):
     df = pandas.DataFrame(data)
+    df = df.loc[:, [column for column in SC_COLUMNS]]
     df = prepare_data(df, group_by, "sum", units, filters)
     return df
 
 
 def prepare_timeseries(data, group_by, units, filters):
     df = pandas.DataFrame.from_dict(data)
+    df = df.loc[:, [column for column in TS_COLUMNS]]
     df.series = df.series.apply(lambda x: np.array(x))
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
-        group_by = ["timeindex_start", "timeindex_stop", "timeindex_resolution"] + group_by
+        group_by = [
+            "timeindex_start",
+            "timeindex_stop",
+            "timeindex_resolution",
+        ] + group_by
     ts_series_grouped = prepare_data(df, group_by, sum_series, units, filters)
-    timeseries, fixed_timeseries = concat_timeseries(group_by, ts_series_grouped)
+    timeseries, fixed_timeseries = concat_timeseries(ts_series_grouped)
     reduced_timeseries = remove_duplicates_and_trim_timeseries(timeseries)
     for name, (dates, entries) in fixed_timeseries.items():
         if name not in reduced_timeseries.columns:
@@ -171,39 +192,43 @@ def prepare_timeseries(data, group_by, units, filters):
         flash(
             f"Timeindex of timeseries '{name}' has different length than series elements "
             f"({dates}/{entries}). Timeindex has been guessed.",
-            category="warning"
+            category="warning",
         )
     return reduced_timeseries
 
 
 def remove_duplicates_and_trim_timeseries(timeseries):
-    duplicate_columns = sum(timeseries.columns.duplicated())
-    if duplicate_columns > 0:
-        flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
-    # Remove duplicate columns:
-    timeseries = timeseries.loc[:, ~timeseries.columns.duplicated()]
+    # duplicate_columns = sum(timeseries.columns.duplicated())
+    # if duplicate_columns > 0:
+    #     flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
+    # # Remove duplicate columns:
+    # timeseries = timeseries.loc[:, ~timeseries.columns.duplicated()]
     if len(timeseries.columns) > GRAPHS_MAX_TS_PER_PLOT:
-        flash(f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.", category="warning")
+        flash(
+            f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.",
+            category="warning",
+        )
         timeseries = timeseries.loc[:, timeseries.columns[:GRAPHS_MAX_TS_PER_PLOT]]
     return timeseries
 
 
-def concat_timeseries(group_by, ts_series_grouped):
+def concat_timeseries(ts):
+    columns = [
+        column for column in ts.columns
+        if column not in ("timeindex_start", "timeindex_stop", "timeindex_resolution", "series")
+    ]
     timeseries = []
     fixed_timeseries = {}
-    for index, row in ts_series_grouped.iterrows():
-        # TODO: Freq should be read from index[2]!
-        if group_by:
-            dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
-            name = "_".join(
-                [row[g] for g in group_by if g not in ["timeindex_start", "timeindex_stop", "timeindex_resolution"]]
-            )
-        else:
-            dates = pandas.date_range(start=row["timeindex_start"], end=row["timeindex_stop"], freq="H")
-            name = "_".join(str(row[filter_]) for filter_ in TS_FILTERS)
+    for index, row in ts.iterrows():
+        dates = pandas.date_range(
+            start=row["timeindex_start"], end=row["timeindex_stop"], freq="H"
+        )
         if len(dates) != len(row.series):
+            name = COLUMN_JOINER.join(map(str, row[columns]))
             fixed_timeseries[name] = len(dates), len(row.series)
-            dates = pandas.date_range(start=row["timeindex_start"], freq="H", periods=len(row.series))
-        series = pandas.Series(name=name, data=row.series, index=dates)
-        timeseries.append(series)
-    return pandas.concat(timeseries, axis=1), fixed_timeseries
+            dates = pandas.date_range(
+                start=row["timeindex_start"], freq="H", periods=len(row.series)
+            )
+        mi = pandas.MultiIndex.from_tuples([tuple(row[columns])], names=columns)
+        timeseries.append(pandas.DataFrame(index=dates, columns=mi, data=row.series))
+    return pandas.concat(timeseries, axis=1), {}
