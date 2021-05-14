@@ -6,6 +6,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ## [Unreleased]
 ### Added
+- box plots for timeseries
 - subplots for bar charts
 
 ## [0.2.0] - 2021-05-07
