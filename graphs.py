@@ -4,7 +4,8 @@ from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
 
-from settings import COLUMN_JOINER, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS
+from settings import COLUMN_JOINER, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS, \
+    GRAPHS_MAX_TS_PER_PLOT
 
 
 class PlottingError(Exception):
@@ -15,6 +16,16 @@ def get_empty_fig():
     empty_fig = px.bar()
     empty_fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
     return empty_fig
+
+
+def trim_timeseries(timeseries, max_entries=GRAPHS_MAX_TS_PER_PLOT):
+    if len(timeseries.columns) > max_entries:
+        flash(
+            f"Too many timeseries to plot; only {max_entries} series are plotted.",
+            category="warning",
+        )
+        timeseries = timeseries.loc[:, timeseries.columns[:max_entries]]
+    return timeseries
 
 
 def get_scalar_plot(data, options):
@@ -96,6 +107,7 @@ def line_plot(data, options):
         options,
         GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults()
     )
+    data = trim_timeseries(data)
     data.columns = [COLUMN_JOINER.join(map(str, column)) for column in data.columns]
     fig_options["y"] = [column for column in data.columns]
     try:
@@ -125,15 +137,24 @@ def line_plot(data, options):
 
 
 def box_plot(data, options):
+    sample = options.pop("sample")
     fig_options = ChainMap(
         options,
-        GRAPHS_DEFAULT_OPTIONS["timeseries"]["box"].get_defaults()
+        GRAPHS_DEFAULT_OPTIONS["timeseries"]["box"].get_defaults(exclude_non_plotly_options=True)
     )
-    fig_options["y"] = [column for column in data.columns if column != "index"]
+    fig_options["x"] = "time"
+    fig_options["y"] = "value"
+
+    ts_resampled = data.resample(sample).sum()
+    ts_resampled.index.name = "time"
+    ts_unstacked = ts_resampled.unstack()
+    ts_unstacked.name = "value"
+
     try:
         fig = px.box(
-            data.reset_index(),
-            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
+            ts_unstacked.reset_index(),
+            notched=True,
+            points="outliers",
             **fig_options
         )
     except ValueError as ve:

@@ -13,7 +13,6 @@ from settings import (
     TS_COLUMNS,
     SC_FILTERS,
     TS_FILTERS,
-    GRAPHS_MAX_TS_PER_PLOT,
     COLUMN_JOINER
 )
 
@@ -185,30 +184,12 @@ def prepare_timeseries(data, group_by, units, filters):
         ] + group_by
     ts_series_grouped = prepare_data(df, group_by, sum_series, units, filters)
     timeseries, fixed_timeseries = concat_timeseries(ts_series_grouped)
-    reduced_timeseries = remove_duplicates_and_trim_timeseries(timeseries)
     for name, (dates, entries) in fixed_timeseries.items():
-        if name not in reduced_timeseries.columns:
-            continue
         flash(
             f"Timeindex of timeseries '{name}' has different length than series elements "
             f"({dates}/{entries}). Timeindex has been guessed.",
             category="warning",
         )
-    return reduced_timeseries
-
-
-def remove_duplicates_and_trim_timeseries(timeseries):
-    duplicate_columns = sum(timeseries.columns.duplicated())
-    if duplicate_columns > 0:
-        flash("Found duplicate timeseries; duplicates will be neglected", category="warning")
-    # Remove duplicate columns:
-    timeseries = timeseries.loc[:, ~timeseries.columns.duplicated()]
-    if len(timeseries.columns) > GRAPHS_MAX_TS_PER_PLOT:
-        flash(
-            f"Too many timeseries to plot; only {GRAPHS_MAX_TS_PER_PLOT} series are plotted.",
-            category="warning",
-        )
-        timeseries = timeseries.loc[:, timeseries.columns[:GRAPHS_MAX_TS_PER_PLOT]]
     return timeseries
 
 

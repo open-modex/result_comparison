@@ -41,17 +41,18 @@ class GraphOption:
     default: Union[str, List[Dict[str, str]]]
     from_filter: bool = True
     clearable: bool = False
-    fix: bool = False
+    plotly_option: bool = True
 
 
 class GraphOptions:
     def __init__(self, **kwargs):
         self.options = dict(**kwargs)
 
-    def get_defaults(self):
+    def get_defaults(self, exclude_non_plotly_options=False):
+
         return {
             name: option.default if option.from_filter else option.default[0]["value"]
-            for name, option in self.options.items()
+            for name, option in self.options.items() if not (exclude_non_plotly_options and not option.plotly_option)
         }
 
     def __getitem__(self, item):
@@ -87,15 +88,18 @@ GRAPHS_DEFAULT_OPTIONS = {
     "timeseries": {
         "line": GraphOptions(),
         "box": GraphOptions(
-            x=GraphOption("X-Axis", "value"),
-            y=GraphOption("Y-Axis", "source"),
-            color=GraphOption("Color", "parameter_name"),
-            orientation=GraphOption(
-                label="Orientation",
-                default=[{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}],
+            color=GraphOption("Color", "source"),
+            sample=GraphOption(
+                label="Sample",
+                default=[
+                    {"label": "1 month", "value": "M"},
+                    {"label": "6 months", "value": "6M"},
+                    {"label": "1 year", "value": "Y"}
+                ],
                 from_filter=False,
+                plotly_option=False
             ),
-            facet_col=GraphOption("Subplots", "", clearable=True)
+            # facet_col=GraphOption("Subplots", "", clearable=True)
         ),
     }
 }
