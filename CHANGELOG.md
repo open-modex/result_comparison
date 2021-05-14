@@ -6,6 +6,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ## [Unreleased]
 ### Added
+- unit to x-/y-axis (if unit is unique)
 - box plots for timeseries
 - subplots for bar charts
 

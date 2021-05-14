@@ -1,5 +1,7 @@
 
 from collections import ChainMap
+
+import pandas
 from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
@@ -28,6 +30,16 @@ def trim_timeseries(timeseries, max_entries=GRAPHS_MAX_TS_PER_PLOT):
     return timeseries
 
 
+def add_unit_to_label(label, data):
+    if isinstance(data.columns, pandas.MultiIndex):
+        units = data.columns.get_level_values("unit").unique()
+    else:
+        units = data["unit"].unique()
+    if len(units) == 1:
+        return f"{label} [{units[0]}]"
+    return label
+
+
 def get_scalar_plot(data, options):
     if options["type"] == "bar":
         return bar_plot(data, options["options"])
@@ -49,7 +61,13 @@ def bar_plot(data, options):
     except ValueError as ve:
         flash(f"Scalar plot error: {ve}", category="error")
         raise PlottingError(f"Scalar plot error: {ve}")
-    fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+
+    unit_axis = "x" if fig_options["orientation"] == "h" else "y"
+    axis_title = {f"{unit_axis}axis_title": add_unit_to_label(fig_options[unit_axis], data)}
+    fig.update_layout(
+        **axis_title,
+        **GRAPHS_DEFAULT_LAYOUT
+    )
     return fig
 
 
@@ -70,11 +88,13 @@ def radar_plot(data, options):
     fig.update_layout(
         polar={
             "radialaxis": {
+                "title": add_unit_to_label(options["r"], data),
                 "visible": True,
                 "range": [data[options["r"]].min(), data[options["r"]].max()]
             }
         },
-        showlegend=False
+        showlegend=False,
+        **GRAPHS_DEFAULT_LAYOUT
     )
     return fig
 
@@ -92,6 +112,10 @@ def dot_plot(data, options):
             name=category,
         ))
     fig.update_traces(mode='markers', marker=dict(line_width=1, symbol='circle', size=16))
+    fig.update_layout(
+        xaxis_title=add_unit_to_label(options["x"], data),
+        **GRAPHS_DEFAULT_LAYOUT
+    )
     return fig
 
 
@@ -108,6 +132,7 @@ def line_plot(data, options):
         GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults()
     )
     data = trim_timeseries(data)
+    yaxis_title = add_unit_to_label("", data)
     data.columns = [COLUMN_JOINER.join(map(str, column)) for column in data.columns]
     fig_options["y"] = [column for column in data.columns]
     try:
@@ -132,7 +157,10 @@ def line_plot(data, options):
             ]
         }
     )
-    fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+    fig.update_layout(
+        yaxis_title=yaxis_title,
+        **GRAPHS_DEFAULT_LAYOUT
+    )
     return fig
 
 
@@ -149,10 +177,11 @@ def box_plot(data, options):
     ts_resampled.index.name = "time"
     ts_unstacked = ts_resampled.unstack()
     ts_unstacked.name = "value"
+    ts_flattened = ts_unstacked.reset_index()
 
     try:
         fig = px.box(
-            ts_unstacked.reset_index(),
+            ts_flattened,
             notched=True,
             points="outliers",
             **fig_options
@@ -160,5 +189,8 @@ def box_plot(data, options):
     except ValueError as ve:
         flash(f"Timeseries plot error: {ve}", category="error")
         raise PlottingError(f"Timeseries plot error: {ve}")
-    fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+    fig.update_layout(
+        yaxis_title=add_unit_to_label(fig_options["y"], ts_flattened),
+        **GRAPHS_DEFAULT_LAYOUT
+    )
     return fig
