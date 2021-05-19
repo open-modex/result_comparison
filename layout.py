@@ -170,7 +170,16 @@ def get_graph_column():
                                 type="default",
                                 children=html.P(id=f"graph_{graph}_error", children="")
                             ),
-                            dcc.Graph(id=f"graph_{graph}", figure=get_empty_fig(), style={}),
+                            dcc.Graph(
+                                id=f"graph_{graph}",
+                                figure=get_empty_fig(),
+                                style={},
+                                config={
+                                    'toImageButtonOptions': {
+                                        'format': 'svg',
+                                    }
+                                }
+                            ),
                             dash_table.DataTable(
                                 id=f"table_{graph}",
                                 style_header={'backgroundColor': 'rgb(30, 30, 30)'},
