@@ -182,7 +182,6 @@ def box_plot(data, options):
     try:
         fig = px.box(
             ts_flattened,
-            notched=True,
             points="outliers",
             **fig_options
         )
