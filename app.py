@@ -13,7 +13,7 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, get_graph_options, get_error_and_warnings_div
-from settings import SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, SC_FILTERS, TS_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
+from settings import SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, SC_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
 import scenario
 import graphs
 from models import db, Filter
