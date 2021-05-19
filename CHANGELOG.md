@@ -9,6 +9,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - unit to x-/y-axis (if unit is unique)
 - box plots for timeseries
 - subplots for bar charts
+- facets for box plots
 
 ## [0.2.0] - 2021-05-07
 ### Added 

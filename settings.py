@@ -99,7 +99,7 @@ GRAPHS_DEFAULT_OPTIONS = {
                 from_filter=False,
                 plotly_option=False
             ),
-            # facet_col=GraphOption("Subplots", "", clearable=True)
+            facet_col=GraphOption("Subplots", "", clearable=True)
         ),
     }
 }
