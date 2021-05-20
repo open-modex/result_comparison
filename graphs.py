@@ -124,6 +124,8 @@ def get_timeseries_plot(data, options):
         return line_plot(data, options["options"])
     elif options["type"] == "box":
         return box_plot(data, options["options"])
+    elif options["type"] == "heat_map":
+        return heat_map(data, options["options"])
 
 
 def line_plot(data, options):
@@ -188,6 +190,44 @@ def box_plot(data, options):
     except ValueError as ve:
         flash(f"Timeseries plot error: {ve}", category="error")
         raise PlottingError(f"Timeseries plot error: {ve}")
+    fig.update_layout(
+        yaxis_title=add_unit_to_label(fig_options["y"], ts_flattened),
+        **GRAPHS_DEFAULT_LAYOUT
+    )
+    return fig
+
+
+def heat_map(data, options):
+    x = options.pop("x")
+    y = options.pop("y")
+    fig_options = ChainMap(
+        options,
+        GRAPHS_DEFAULT_OPTIONS["timeseries"]["box"].get_defaults(exclude_non_plotly_options=True)
+    )
+    fig_options["x"] = "time"
+    fig_options["y"] = "value"
+
+    data.index.name = "time"
+    x = "M"
+    y = "D"
+    ts_unstacked = data.unstack()
+    ts_unstacked.name = "value"
+    ts_flattened = ts_unstacked.reset_index()
+    ts_flattened["day"] = ts_flattened["time"].apply(lambda time: time.day)
+    ts_flattened["month"] = ts_flattened["time"].apply(lambda time: time.month)
+    ts_grouped = ts_flattened.groupby(["month", "day"], as_index=False).sum()
+    ts_pivot = ts_grouped.pivot(index="month", columns="day", values="value")
+
+    try:
+        fig = px.imshow(
+            ts_pivot,
+            labels=dict(x="Day of Week", y="Time of Day", color="Productivity"),
+            **fig_options
+        )
+    except ValueError as ve:
+        flash(f"Timeseries plot error: {ve}", category="error")
+        raise PlottingError(f"Timeseries plot error: {ve}")
+    fig.update_xaxes(side="top")
     fig.update_layout(
         yaxis_title=add_unit_to_label(fig_options["y"], ts_flattened),
         **GRAPHS_DEFAULT_LAYOUT

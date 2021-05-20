@@ -1,18 +1,23 @@
 
 import os
 import json
+import warnings
 from dataclasses import dataclass
 from typing import Union, List, Dict
 import pandas as pd
 
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.environ.get("SECRET_KEY")
+if not SECRET_KEY:
+    warnings.warn("No secret key found - never run in production mode without a secret key!")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 MANAGE_DB = os.environ.get("MANAGE_DB", "False") == "True"
 
 USE_DUMMY_DATA = os.environ.get("USE_DUMMY_DATA", "False") == "True"
 SKIP_TS = os.environ.get("SKIP_TS", "False") == "True"
 
-DB_URL = os.environ["DB_URL"]
+DB_URL = os.environ.get("DB_URL")
+if not DB_URL:
+    warnings.warn("No DB set up - runnning without DB support!")
 
 CACHE_CONFIG = {
     "CACHE_TYPE": "filesystem" if DEBUG else "redis",
@@ -29,6 +34,25 @@ COLUMN_JOINER = "-"
 with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:
     datapackage = json.loads(datapackage_file.read())
     MODEX_OUTPUT_SCHEMA = {resource["name"]: resource["schema"] for resource in datapackage["resources"]}
+
+
+# FILTERS
+
+SC_FILTERS = {
+    "year": {"type": "int"},
+    "region": {"type": "str"},
+    "technology": {"type": "str"},
+    "technology_type": {"type": "str"},
+    "parameter_name": {"type": "str"},
+    "input_energy_vector": {"type": "str"},
+    "output_energy_vector": {"type": "str"},
+    "source": {"type": "str"},
+}
+TS_FILTERS = {k: v for k, v in SC_FILTERS.items() if k != "year"}
+
+SC_COLUMNS = list(SC_FILTERS) + ["value", "unit"]
+TS_COLUMNS = list(TS_FILTERS) + ["series", "unit", "timeindex_start", "timeindex_stop", "timeindex_resolution"]
+
 
 # GRAPHS
 
@@ -49,7 +73,6 @@ class GraphOptions:
         self.options = dict(**kwargs)
 
     def get_defaults(self, exclude_non_plotly_options=False):
-
         return {
             name: option.default if option.from_filter else option.default[0]["value"]
             for name, option in self.options.items() if not (exclude_non_plotly_options and not option.plotly_option)
@@ -96,6 +119,30 @@ GRAPHS_DEFAULT_OPTIONS = {
                     {"label": "6 months", "value": "6M"},
                     {"label": "1 year", "value": "Y"}
                 ],
+                from_filter=False,
+                plotly_option=False
+            ),
+            facet_col=GraphOption("Subplots", "", clearable=True)
+        ),
+        "heat_map": GraphOptions(
+            color=GraphOption("Color", "source"),
+            x=GraphOption(
+                label="X-Axis",
+                default=[
+                    {"label": "1 month", "value": "M"},
+                    {"label": "6 months", "value": "6M"},
+                    {"label": "1 year", "value": "Y"}
+                ],
+                from_filter=False,
+                plotly_option=False
+            ),
+            y=GraphOption(
+                label="Y-Axis",
+                default=[
+                    {"label": "1 month", "value": "M"},
+                    {"label": "6 months", "value": "6M"},
+                    {"label": "1 year", "value": "Y"}
+                ] + [{"label": filter_, "value": filter_} for filter_ in TS_FILTERS],
                 from_filter=False,
                 plotly_option=False
             ),
@@ -163,23 +210,6 @@ STATES = pd.read_csv(
     dtype={"abbrev": str},
 )
 REGIONS = {state["abbrev"]: state["Bundesland"] for _, state in STATES.iterrows()}
-
-# FILTERS
-
-SC_FILTERS = {
-    "year": {"type": "int"},
-    "region": {"type": "str"},
-    "technology": {"type": "str"},
-    "technology_type": {"type": "str"},
-    "parameter_name": {"type": "str"},
-    "input_energy_vector": {"type": "str"},
-    "output_energy_vector": {"type": "str"},
-    "source": {"type": "str"},
-}
-TS_FILTERS = {k: v for k, v in SC_FILTERS.items() if k != "year"}
-
-SC_COLUMNS = list(SC_FILTERS) + ["value", "unit"]
-TS_COLUMNS = list(TS_FILTERS) + ["series", "unit", "timeindex_start", "timeindex_stop", "timeindex_resolution"]
 
 # UNITS
 
