@@ -9,6 +9,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - heat map for timeseries
 - simple loggings for scenario loading
 - warning if data is empty for current filter settings
+- barmode options to bar plot
 
 ### Changed
 - plots can be downloaded as SVG

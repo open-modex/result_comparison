@@ -95,6 +95,11 @@ GRAPHS_DEFAULT_OPTIONS = {
                 default=[{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}],
                 from_filter=False,
             ),
+            barmode=GraphOption(
+                label="Mode",
+                default=[{"label": mode, "value": mode} for mode in ('relative', 'group', 'overlay')],
+                from_filter=False,
+            ),
             facet_col=GraphOption("Subplots", "", clearable=True)
         ),
         "radar": GraphOptions(
