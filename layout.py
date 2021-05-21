@@ -6,7 +6,7 @@ import dash_html_components as html
 import dash_table
 
 from graphs import get_empty_fig
-from settings import SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS
+from settings import VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS
 from models import Filter
 
 
@@ -19,6 +19,7 @@ def get_header(app):
                         src=app.get_asset_url("open_Modex-logo.png"),
                         style={"height": "100px", "width": "auto"},
                     ),
+                    html.P(children=f"Version v{VERSION}"),
                     html.H4(children="Energy Frameworks to Germany"),
                     html.P(
                         children="How to efficiently sustain Germany's energy "

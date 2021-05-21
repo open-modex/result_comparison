@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from typing import Union, List, Dict
 import pandas as pd
 
+VERSION = "0.4.0"
+
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
     warnings.warn("No secret key found - never run in production mode without a secret key!")
