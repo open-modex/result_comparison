@@ -8,12 +8,14 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Added
 - heat map for timeseries
 - simple loggings for scenario loading
+- warning if data is empty for current filter settings
 
 ### Changed
 - plots can be downloaded as SVG
 
 ### Fixed
 - removed artefacts
+- empty data in timeseries error
 
 ## [0.3.0] - 2021-05-19
 ### Added

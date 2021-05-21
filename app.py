@@ -7,7 +7,7 @@ import dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from dash.dash import no_update
-from flask import get_flashed_messages
+from flask import flash, get_flashed_messages
 from flask_caching import Cache
 
 from data import dev
@@ -238,6 +238,9 @@ def scalar_graph(_, agg_group_by, units_div, graph_scalars_options, show_data, f
         preprocessed_data = preprocessing.prepare_scalars(data["oed_scalars"], agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+    if preprocessed_data.empty:
+        flash("No data for current filter settings", "warning")
+        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
@@ -282,6 +285,9 @@ def timeseries_graph(_, agg_group_by, units_div, graph_timeseries_options, show_
     try:
         preprocessed_data = preprocessing.prepare_timeseries(data["oed_timeseries"], agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
+        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+    if preprocessed_data.empty:
+        flash("No data for current filter settings", "warning")
         return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)

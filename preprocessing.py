@@ -212,4 +212,6 @@ def concat_timeseries(ts):
             )
         mi = pandas.MultiIndex.from_tuples([tuple(row[columns])], names=columns)
         timeseries.append(pandas.DataFrame(index=dates, columns=mi, data=row.series))
-    return pandas.concat(timeseries, axis=1), {}
+    if timeseries:
+        return pandas.concat(timeseries, axis=1), fixed_timeseries
+    return pandas.DataFrame(), fixed_timeseries
