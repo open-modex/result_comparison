@@ -125,13 +125,11 @@ GRAPHS_DEFAULT_OPTIONS = {
             facet_col=GraphOption("Subplots", "", clearable=True)
         ),
         "heat_map": GraphOptions(
-            color=GraphOption("Color", "source"),
             x=GraphOption(
                 label="X-Axis",
                 default=[
-                    {"label": "1 month", "value": "M"},
-                    {"label": "6 months", "value": "6M"},
-                    {"label": "1 year", "value": "Y"}
+                    {"label": "Months", "value": "month"},
+                    {"label": "Years", "value": "year"},
                 ],
                 from_filter=False,
                 plotly_option=False
@@ -139,14 +137,13 @@ GRAPHS_DEFAULT_OPTIONS = {
             y=GraphOption(
                 label="Y-Axis",
                 default=[
-                    {"label": "1 month", "value": "M"},
-                    {"label": "6 months", "value": "6M"},
-                    {"label": "1 year", "value": "Y"}
+                    {"label": "Days", "value": "day"},
+                    {"label": "Months", "value": "month"},
+                    {"label": "Years", "value": "year"}
                 ] + [{"label": filter_, "value": filter_} for filter_ in TS_FILTERS],
                 from_filter=False,
                 plotly_option=False
             ),
-            facet_col=GraphOption("Subplots", "", clearable=True)
         ),
     }
 }

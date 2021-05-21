@@ -202,26 +202,27 @@ def heat_map(data, options):
     y = options.pop("y")
     fig_options = ChainMap(
         options,
-        GRAPHS_DEFAULT_OPTIONS["timeseries"]["box"].get_defaults(exclude_non_plotly_options=True)
+        GRAPHS_DEFAULT_OPTIONS["timeseries"]["heat_map"].get_defaults(exclude_non_plotly_options=True)
     )
-    fig_options["x"] = "time"
-    fig_options["y"] = "value"
 
     data.index.name = "time"
-    x = "M"
-    y = "D"
     ts_unstacked = data.unstack()
     ts_unstacked.name = "value"
     ts_flattened = ts_unstacked.reset_index()
     ts_flattened["day"] = ts_flattened["time"].apply(lambda time: time.day)
     ts_flattened["month"] = ts_flattened["time"].apply(lambda time: time.month)
-    ts_grouped = ts_flattened.groupby(["month", "day"], as_index=False).sum()
-    ts_pivot = ts_grouped.pivot(index="month", columns="day", values="value")
+    ts_flattened["year"] = ts_flattened["time"].apply(lambda time: time.year)
+    ts_grouped = ts_flattened.groupby([x, y], as_index=False).sum()
+    ts_pivot = ts_grouped.pivot(index=y, columns=x, values="value")
 
     try:
         fig = px.imshow(
             ts_pivot,
-            labels=dict(x="Day of Week", y="Time of Day", color="Productivity"),
+            labels={
+                "x": x,
+                "y": y,
+                "color": add_unit_to_label("Value", data)
+            },
             **fig_options
         )
     except ValueError as ve:
@@ -229,7 +230,6 @@ def heat_map(data, options):
         raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_xaxes(side="top")
     fig.update_layout(
-        yaxis_title=add_unit_to_label(fig_options["y"], ts_flattened),
         **GRAPHS_DEFAULT_LAYOUT
     )
     return fig
