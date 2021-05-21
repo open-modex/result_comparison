@@ -12,9 +12,9 @@ def get_dummy_data(scenario_id):
 
 
 def create_dummy_data(scenario_id):
-    data = get_scenario_data(scenario_id)
+    data = get_scenario_data(scenario_id, as_text=True)
     with open(f"{DATA_PATH}/{DATA_SCENARIO_PATH}/{scenario_id}.json", "w") as dummy_file:
-        json.dump(data, dummy_file)
+        dummy_file.write(data)
 
 
 if __name__ == "__main__":

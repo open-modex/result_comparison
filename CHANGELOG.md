@@ -7,6 +7,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ## [Unreleased]
 ### Added
 - heat map for timeseries
+- simple loggings for scenario loading
 
 ### Changed
 - plots can be downloaded as SVG

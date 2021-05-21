@@ -37,14 +37,19 @@ def get_scenarios():
 
 
 def get_scenario_data(scenario_id):
+    # TODO: Logging instead of print (could not find corresponding dash logger - "app.access"?)
+    print(f"Requesting data for scenario #{scenario_id}...")
     response = requests.get(
         CONNECTOR_URL + str(scenario_id),
         {"mapping": "dashboard", "source": "modex_output"},
         timeout=10000,
         verify=False,
     )
+    print(f"Loading data for scenario #{scenario_id}...")
     data = json.loads(response.text)
+    print(f"Validating data for scenario #{scenario_id}...")
     validate_scenario_data(data)
+    print(f"Successfully loaded data for scenario #{scenario_id}.")
     return data
 
 
