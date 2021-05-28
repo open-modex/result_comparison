@@ -122,19 +122,22 @@ def get_units_column():
     return html.Div(
         id="units",
         children=sum(
-            [
+            (
                 [
                     html.Label(unit_name),
                     dcc.Dropdown(
-                        options=[{"label": unit, "value": unit} for unit in unit_data["units"]],
+                        options=[
+                            {"label": unit, "value": unit}
+                            for unit in unit_data["units"]
+                        ],
                         value=unit_data["default"],
-                        clearable=False
-                    )
+                        clearable=False,
+                    ),
                 ]
                 for unit_name, unit_data in UNITS.items()
-            ],
-            [html.P("Units")]
-        )
+            ),
+            [html.P("Units")],
+        ),
     )
 
 
@@ -164,7 +167,7 @@ def get_graph_column():
                     html.Div(
                         style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
                         children=[
-                            html.Label(f"{graph.capitalize()}:"),
+                            html.Button(f"Refresh {graph}", id=f"refresh_{graph}"),
                             dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
                             dcc.Loading(
                                 style={"padding-bottom": "30px"},
@@ -230,7 +233,6 @@ def get_layout(app, scenarios):
                             html.Div(
                                 style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
                                 children=[
-                                    html.Button("Refresh graphs", id="refresh"),
                                     get_filter_column(),
                                     get_aggregation_column(),
                                     get_save_load_column(app),

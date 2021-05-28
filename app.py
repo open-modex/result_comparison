@@ -227,7 +227,7 @@ def toggle_timeseries_graph_options(plot_type, name):
         Output(component_id='graph_scalars_error', component_property='children'),
     ],
     [
-        Input(component_id="refresh", component_property="n_clicks"),
+        Input(component_id="refresh_scalars", component_property="n_clicks"),
         Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="units", component_property='children'),
         Input(component_id=f"graph_scalars_options", component_property='children'),
@@ -273,7 +273,7 @@ def scalar_graph(_, agg_group_by, units_div, graph_scalars_options, show_data, f
         Output(component_id='graph_timeseries_error', component_property='children'),
     ],
     [
-        Input(component_id="refresh", component_property="n_clicks"),
+        Input(component_id="refresh_timeseries", component_property="n_clicks"),
         Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="units", component_property='children'),
         Input(component_id="graph_timeseries_options", component_property='children'),
