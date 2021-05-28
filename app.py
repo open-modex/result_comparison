@@ -47,18 +47,29 @@ if not MANAGE_DB:
 
 
 @cache.memoize()
-def get_scenario_data(scenario_id):
+def get_scenario_data(scenario_id, table):
     app.logger.info(f"Loading scenario data #{scenario_id} (not cached)...")
     if USE_DUMMY_DATA:
         return dev.get_dummy_data(scenario_id)
-    return scenario.get_scenario_data(scenario_id)
+    return scenario.get_scenario_data(scenario_id, table)
 
 
 @cache.memoize()
-def get_multiple_scenario_data(*scenario_ids):
+def get_multiple_scenario_data(*scenario_ids, table):
     app.logger.info("Merging scenario data (not cached)...")
     scenarios = [
-        get_scenario_data(scenario_id) for scenario_id in scenario_ids
+        get_scenario_data(scenario_id, table) for scenario_id in scenario_ids
+    ]
+    merged = scenario.merge_scenario_data(scenarios)
+    app.logger.info("Merged scenario data")
+    return merged
+
+
+@cache.memoize()
+def get_multiple_scenario_filters(*scenario_ids):
+    app.logger.info("Merging scenario data (not cached)...")
+    scenarios = [
+        scenario.get_scenario_filters(scenario_id) for scenario_id in scenario_ids
     ]
     merged = scenario.merge_scenario_data(scenarios)
     app.logger.info("Merged scenario data")
@@ -71,14 +82,13 @@ def get_multiple_scenario_data(*scenario_ids):
 )
 def reload_scenarios(_):
     scenarios = scenario.get_scenarios()
-    options = [
+    return [
         {
             "label": f"{sc['id']}, {sc['scenario']}, {sc['source']}",
             "value": sc["id"],
         }
         for sc in scenarios
     ]
-    return options
 
 
 @app.callback(
@@ -160,9 +170,9 @@ def load_scenario(scenarios):
     if scenarios is None:
         raise PreventUpdate
     scenarios = scenarios if isinstance(scenarios, list) else [scenarios]
-    data = get_multiple_scenario_data(*scenarios)
+    filters = get_multiple_scenario_filters(*scenarios)
     app.logger.info("Data successfully loaded")
-    return preprocessing.get_filter_options(data)
+    return preprocessing.get_filter_options(filters)
 
 
 @app.callback(
@@ -230,12 +240,12 @@ def toggle_timeseries_graph_options(plot_type, name):
 def scalar_graph(_, agg_group_by, units_div, graph_scalars_options, show_data, filter_div, scenarios):
     if scenarios is None:
         raise PreventUpdate
-    data = get_multiple_scenario_data(*scenarios)
+    data = get_multiple_scenario_data(*scenarios, table="oed_scalars")
     filters = preprocessing.extract_filters("scalars", filter_div)
     units = preprocessing.extract_unit_options(units_div)
     graph_options = preprocessing.extract_graph_options(graph_scalars_options)
     try:
-        preprocessed_data = preprocessing.prepare_scalars(data["oed_scalars"], agg_group_by, units, filters)
+        preprocessed_data = preprocessing.prepare_scalars(data, agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     if preprocessed_data.empty:
@@ -276,14 +286,14 @@ def scalar_graph(_, agg_group_by, units_div, graph_scalars_options, show_data, f
 def timeseries_graph(_, agg_group_by, units_div, graph_timeseries_options, show_data, filter_div, scenarios):
     if scenarios is None or SKIP_TS:
         raise PreventUpdate
-    data = get_multiple_scenario_data(*scenarios)
+    data = get_multiple_scenario_data(*scenarios, table="oed_timeseries")
     filters = preprocessing.extract_filters(
         "timeseries", filter_div
     )
     units = preprocessing.extract_unit_options(units_div)
     graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
     try:
-        preprocessed_data = preprocessing.prepare_timeseries(data["oed_timeseries"], agg_group_by, units, filters)
+        preprocessed_data = preprocessing.prepare_timeseries(data, agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
     if preprocessed_data.empty:

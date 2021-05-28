@@ -81,10 +81,19 @@ class PreprocessingError(Exception):
 def get_filter_options(scenario_data):
     filters = {}
     for filter_, filter_format in SC_FILTERS.items():
-        jmespath_str = f"[oed_scalars, od_timeseries][].{filter_}"
+        jmespath_str = f"[].{filter_}"
         if filter_format["type"] == "list":
             jmespath_str += "[]"
-        filters[filter_] = set(jmespath.search(jmespath_str, scenario_data))
+        try:
+            filters[filter_] = set(jmespath.search(jmespath_str, scenario_data))
+        except TypeError:
+            filters[filter_] = {
+                ','.join(items)
+                for items in jmespath.search(
+                    jmespath_str, scenario_data
+                )
+            }
+
     output = (
         [
             {"label": filter_option, "value": filter_option}
@@ -96,10 +105,7 @@ def get_filter_options(scenario_data):
 
 
 def extract_filters(type_, filter_div):
-    if type_ == "timeseries":
-        filters = TS_FILTERS
-    else:
-        filters = SC_FILTERS
+    filters = TS_FILTERS if type_ == "timeseries" else SC_FILTERS
     filter_kwargs = {}
     for item in filter_div:
         if item["type"] != "Dropdown":
