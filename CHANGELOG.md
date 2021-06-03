@@ -12,6 +12,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - aggregation is not triggered on change (but on chart refresh)
 
 ### Fixed 
+- TS not loading 
 - missing unit column in group-by during aggregation
 - filter export
 - dummy data loading (dev)

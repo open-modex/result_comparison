@@ -282,8 +282,8 @@ def scalar_graph(_, units_div, graph_scalars_options, show_data, filter_div, agg
         Input(component_id=f"filters", component_property='children')
     ],
     [
-        State(component_id="dd_scenario", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
+        State(component_id="dd_scenario", component_property="value"),
     ],
     prevent_initial_call=True
 )
