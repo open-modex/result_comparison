@@ -6,6 +6,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ## [Unreleased]
 ### Fixed 
+- dummy data loading (dev)
 - filter loading (depending on scenarios)
 
 ## [0.4.0] - 2021-05-19

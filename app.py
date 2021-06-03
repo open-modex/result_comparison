@@ -50,7 +50,7 @@ if not MANAGE_DB:
 def get_scenario_data(scenario_id, table):
     app.logger.info(f"Loading scenario data #{scenario_id} (not cached)...")
     if USE_DUMMY_DATA:
-        return dev.get_dummy_data(scenario_id)
+        return dev.get_dummy_data(scenario_id, table)
     return scenario.get_scenario_data(scenario_id, table)
 
 
