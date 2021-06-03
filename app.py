@@ -101,15 +101,15 @@ def reload_scenarios(_):
         State(component_id="save_filters_name", component_property="value"),
         State(component_id=f"graph_scalars_options", component_property='children'),
         State(component_id=f"graph_timeseries_options", component_property='children'),
-        State(component_id="aggregation_group_by", component_property="value")
-    ] +
-    [State(component_id=f"filter-{filter_}", component_property='value') for filter_ in SC_FILTERS]
+        State(component_id="aggregation_group_by", component_property="value"),
+        State(component_id=f"filters", component_property='children')
+    ]
 )
-def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_group_by, *filter_args):
+def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_group_by, filter_div):
     if not name:
         raise PreventUpdate
 
-    filters = preprocessing.extract_filters("scalars", filter_args)
+    filters = preprocessing.extract_filters("scalars", filter_div)
     filters["agg_group_by"] = agg_group_by
     scalar_graph_options = preprocessing.extract_graph_options(graph_scalars_options)
     ts_graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
