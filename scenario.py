@@ -68,7 +68,7 @@ def get_scenario_filters(scenario_id):
                     "table": "s",
                     "column": "id"
                 },
-                31
+                scenario_id
             ],
             "operator": "=",
             "type": "operator"
