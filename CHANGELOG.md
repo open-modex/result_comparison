@@ -9,6 +9,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - error message if TS have different lengths during aggregation
 
 ### Fixed 
+- missing unit column in group-by during aggregation
 - filter export
 - dummy data loading (dev)
 - filter loading (depending on scenarios)

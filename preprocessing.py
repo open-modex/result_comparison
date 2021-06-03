@@ -166,7 +166,7 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
         data = data.apply(convert_units, axis=1, convert_to=unit_)
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
-        if len(lengths := data["series"].apply(len).unique()) > 1:
+        if "series" in data and len(lengths := data["series"].apply(len).unique()) > 1:
             flash(f"Timeseries of different lengths {lengths} can not be aggregated.", category="error")
             raise PreprocessingError("Different ts lengths at aggregation found.")
         data = data.groupby(group_by).aggregate(aggregation_func).reset_index()
@@ -176,6 +176,9 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
 def prepare_scalars(data, group_by, units, filters):
     df = pandas.DataFrame(data)
     df = df.loc[:, [column for column in SC_COLUMNS]]
+    if group_by:
+        group_by = group_by if isinstance(group_by, list) else [group_by]
+        group_by.append("unit")
     df = prepare_data(df, group_by, "sum", units, filters)
     return df
 
@@ -190,6 +193,7 @@ def prepare_timeseries(data, group_by, units, filters):
             "timeindex_start",
             "timeindex_stop",
             "timeindex_resolution",
+            "unit"
         ] + group_by
     ts_series_grouped = prepare_data(df, group_by, sum_series, units, filters)
     timeseries, fixed_timeseries = concat_timeseries(ts_series_grouped)
