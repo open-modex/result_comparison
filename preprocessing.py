@@ -166,6 +166,9 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
         data = data.apply(convert_units, axis=1, convert_to=unit_)
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
+        if len(lengths := data["series"].apply(len).unique()) > 1:
+            flash(f"Timeseries of different lengths {lengths} can not be aggregated.", category="error")
+            raise PreprocessingError("Different ts lengths at aggregation found.")
         data = data.groupby(group_by).aggregate(aggregation_func).reset_index()
     return data
 
