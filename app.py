@@ -228,16 +228,18 @@ def toggle_timeseries_graph_options(plot_type, name):
     ],
     [
         Input(component_id="refresh_scalars", component_property="n_clicks"),
-        Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="units", component_property='children'),
         Input(component_id=f"graph_scalars_options", component_property='children'),
         Input(component_id="show_scalars_data", component_property='value'),
         Input(component_id=f"filters", component_property='children')
     ],
-    State(component_id="dd_scenario", component_property="value"),
+    [
+        State(component_id="aggregation_group_by", component_property="value"),
+        State(component_id="dd_scenario", component_property="value"),
+    ],
     prevent_initial_call=True
 )
-def scalar_graph(_, agg_group_by, units_div, graph_scalars_options, show_data, filter_div, scenarios):
+def scalar_graph(_, units_div, graph_scalars_options, show_data, filter_div, agg_group_by, scenarios):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios, table="oed_scalars")
@@ -274,16 +276,18 @@ def scalar_graph(_, agg_group_by, units_div, graph_scalars_options, show_data, f
     ],
     [
         Input(component_id="refresh_timeseries", component_property="n_clicks"),
-        Input(component_id="aggregation_group_by", component_property="value"),
         Input(component_id="units", component_property='children'),
         Input(component_id="graph_timeseries_options", component_property='children'),
         Input(component_id="show_timeseries_data", component_property='value'),
         Input(component_id=f"filters", component_property='children')
     ],
-    State(component_id="dd_scenario", component_property="value"),
+    [
+        State(component_id="dd_scenario", component_property="value"),
+        State(component_id="aggregation_group_by", component_property="value"),
+    ],
     prevent_initial_call=True
 )
-def timeseries_graph(_, agg_group_by, units_div, graph_timeseries_options, show_data, filter_div, scenarios):
+def timeseries_graph(_, units_div, graph_timeseries_options, show_data, filter_div, agg_group_by, scenarios):
     if scenarios is None or SKIP_TS:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios, table="oed_timeseries")

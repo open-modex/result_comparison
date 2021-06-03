@@ -8,6 +8,9 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Added
 - error message if TS have different lengths during aggregation
 
+### Changed
+- aggregation is not triggered on change (but on chart refresh)
+
 ### Fixed 
 - missing unit column in group-by during aggregation
 - filter export
