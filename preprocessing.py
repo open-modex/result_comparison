@@ -170,6 +170,8 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
             flash(f"Timeseries of different lengths {lengths} can not be aggregated.", category="error")
             raise PreprocessingError("Different ts lengths at aggregation found.")
         data = data.groupby(group_by).aggregate(aggregation_func).reset_index()
+        keep_columns = group_by + ["value", "series"]
+        data = data[data.columns.intersection(keep_columns)]
     return data
 
 
