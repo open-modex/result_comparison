@@ -13,7 +13,8 @@ from flask_caching import Cache
 from data import dev
 import preprocessing
 from layout import get_layout, get_graph_options, get_error_and_warnings_div
-from settings import SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, SC_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG
+from settings import (
+    SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, SC_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG, MAX_WARNINGS, MAX_INFOS)
 import scenario
 import graphs
 from models import db, Filter
@@ -321,7 +322,13 @@ def timeseries_graph(_, units_div, graph_timeseries_options, show_data, filter_d
 def show_errors_and_warnings():
     errors = get_flashed_messages(category_filter=["error"])
     warnings = get_flashed_messages(category_filter=["warning"])
+    if len(warnings) > MAX_WARNINGS:
+        warnings = warnings[:MAX_WARNINGS]
+        warnings.append(f"Too many warnings (>{MAX_WARNINGS}) - Skipping further warnings...")
     infos = get_flashed_messages(category_filter=["info"])
+    if len(infos) > MAX_INFOS:
+        infos = infos[:MAX_INFOS]
+        infos.append(f"Too many infos (>{MAX_INFOS}) - Skipping further infos...")
     return get_error_and_warnings_div(errors, warnings, infos)
 
 

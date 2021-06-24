@@ -8,6 +8,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ## [Unreleased]
 ### Added
 - warning information addressing "nan not in list" error
+- limitation for warnings and infos
 
 ### Fixed
 - year filter initialization

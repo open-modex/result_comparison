@@ -239,3 +239,8 @@ UNITS = {
         "default": "Gt/a"
     }
 }
+
+
+# ERRORS AND WARNINGS
+MAX_WARNINGS = 10
+MAX_INFOS = 10
