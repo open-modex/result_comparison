@@ -77,7 +77,7 @@ def get_graph_options(data_type, graph_type, preset_options=None):
                 id=f"{data_type}-{option}",
                 options=options,
                 value=value,
-                clearable=False
+                clearable=GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].clearable
             )
         ]
     return div

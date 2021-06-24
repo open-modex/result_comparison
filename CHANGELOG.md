@@ -11,6 +11,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ### Fixed
 - year filter initialization
+- plot options can be set "clearable"
 
 ## [0.5.1] - 2021-06-23
 ### Fixed
