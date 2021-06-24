@@ -59,7 +59,14 @@ def bar_plot(data, options):
             **fig_options
         )
     except ValueError as ve:
-        flash(f"Scalar plot error: {ve}", category="error")
+        if str(ve) == "nan is not in list":
+            flash(
+                f"Scalar plot error: {ve} " +
+                f"(This might occur due to 'nan' values in data. Please check data via 'Show data')",
+                category="error"
+            )
+        else:
+            flash(f"Scalar plot error: {ve}", category="error")
         raise PlottingError(f"Scalar plot error: {ve}")
 
     unit_axis = "x" if fig_options["orientation"] == "h" else "y"
