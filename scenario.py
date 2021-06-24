@@ -47,10 +47,27 @@ def get_scenario_filters(scenario_id):
                 "alias": "s",
             },
             "right": {
-                "type": "table",
-                "table": "oed_data_output",
-                "schema": "model_draft",
-                "alias": "d",
+                "type": "join",
+                "left": {
+                    "type": "table",
+                    "table": "oed_data_output",
+                    "schema": "model_draft",
+                    "alias": "d",
+                },
+                "right": {
+                    "type": "table",
+                    "table": "oed_scalar_output",
+                    "schema": "model_draft",
+                    "alias": "sc",
+                },
+                "on": {
+                    "operands": [
+                        {"type": "column", "column": "id", "table": "d"},
+                        {"type": "column", "column": "id", "table": "sc"}
+                    ],
+                    "operator": "=",
+                    "type": "operator"
+                },
             },
             "on": {
                 "operands": [
