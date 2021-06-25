@@ -71,14 +71,23 @@ def get_graph_options(data_type, graph_type, preset_options=None):
             options = dd_options
         else:
             options = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].default
-        div += [
-            html.Label(GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].label),
-            dcc.Dropdown(
+        if GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].type == "dropdown":
+            component = dcc.Dropdown(
                 id=f"{data_type}-{option}",
                 options=options,
                 value=value,
                 clearable=GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].clearable
             )
+        elif GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].type == "input":
+            component = dcc.Input(
+                id=f"{data_type}-{option}",
+                value=value,
+            )
+        else:
+            raise ValueError("Unknown dcc component")
+        div += [
+            html.Label(GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].label),
+            component
         ]
     return div
 

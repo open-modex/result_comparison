@@ -65,6 +65,7 @@ GRAPHS_MAX_TS_PER_PLOT = 20
 class GraphOption:
     label: str
     default: Union[str, List[Dict[str, str]]]
+    type: str = "dropdown"
     from_filter: bool = True
     clearable: bool = False
     plotly_option: bool = True
@@ -102,7 +103,9 @@ GRAPHS_DEFAULT_OPTIONS = {
                 default=[{"label": mode, "value": mode} for mode in ('relative', 'group', 'overlay')],
                 from_filter=False,
             ),
-            facet_col=GraphOption("Subplots", "", clearable=True)
+            facet_col=GraphOption("Subplots", "", clearable=True),
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
+            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
         ),
         "radar": GraphOptions(
             r=GraphOption("Radius", "value"),
