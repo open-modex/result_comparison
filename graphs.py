@@ -94,6 +94,7 @@ def bar_plot(data, options):
 
 
 def radar_plot(data, options):
+    axis_title = options.pop("axis_title") or add_unit_to_label(options["r"], data)
     categories = data[options["theta"]].unique()
 
     fig = go.Figure()
@@ -110,7 +111,7 @@ def radar_plot(data, options):
     fig.update_layout(
         polar={
             "radialaxis": {
-                "title": add_unit_to_label(options["r"], data),
+                "title": axis_title,
                 "visible": True,
                 "range": [data[options["r"]].min(), data[options["r"]].max()]
             }
@@ -153,18 +154,19 @@ def get_timeseries_plot(data, options):
 
 
 def line_plot(data, options):
+    xaxis_title = options.pop("xaxis_title") or "Timeindex"
+    yaxis_title = options.pop("yaxis_title") or add_unit_to_label("", data)
     fig_options = ChainMap(
         options,
-        GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults()
+        GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults(exclude_non_plotly_options=True)
     )
     data = trim_timeseries(data)
-    yaxis_title = add_unit_to_label("", data)
     data.columns = [COLUMN_JOINER.join(map(str, column)) for column in data.columns]
     fig_options["y"] = [column for column in data.columns]
     try:
         fig = px.line(
             data.reset_index(),
-            x="index",
+            x=xaxis_title,
             color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
             **fig_options
         )
@@ -192,6 +194,7 @@ def line_plot(data, options):
 
 
 def box_plot(data, options):
+    yaxis_title = options.pop("yaxis_title")
     sample = options.pop("sample")
     fig_options = ChainMap(
         options,
@@ -216,7 +219,7 @@ def box_plot(data, options):
         flash(f"Timeseries plot error: {ve}", category="error")
         raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_layout(
-        yaxis_title=add_unit_to_label(fig_options["y"], ts_flattened),
+        yaxis_title=yaxis_title or add_unit_to_label(fig_options["y"], ts_flattened),
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
@@ -224,6 +227,7 @@ def box_plot(data, options):
 
 
 def heat_map(data, options):
+    label = options.pop("label") or add_unit_to_label("Value", data)
     x = options.pop("x")
     y = options.pop("y")
     fig_options = ChainMap(
@@ -247,7 +251,7 @@ def heat_map(data, options):
             labels={
                 "x": x,
                 "y": y,
-                "color": add_unit_to_label("Value", data)
+                "color": label
             },
             **fig_options
         )
