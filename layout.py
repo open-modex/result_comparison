@@ -186,6 +186,7 @@ def get_graph_column():
                             ),
                             dash_table.DataTable(
                                 id=f"table_{graph}",
+                                export_format="csv",
                                 style_header={'backgroundColor': 'rgb(30, 30, 30)'},
                                 style_cell={
                                     'backgroundColor': 'rgb(50, 50, 50)',
