@@ -90,7 +90,7 @@ GRAPHS_DEFAULT_OPTIONS = {
         "bar": GraphOptions(
             x=GraphOption("X-Axis", "value"),
             y=GraphOption("Y-Axis", "source"),
-            text=GraphOption("Text", "parameter_name"),
+            text=GraphOption("Text", "parameter_name", clearable=True),
             color=GraphOption("Color", "parameter_name"),
             hover_name=GraphOption("Hover", "region"),
             orientation=GraphOption(
