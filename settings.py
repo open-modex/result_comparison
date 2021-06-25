@@ -177,24 +177,19 @@ GRAPHS_DEFAULT_COLOR_MAP = {
     "renewable generation": "#00549F",
 }
 
+GRAPHS_DEFAULT_TEMPLATE = "plotly_white"
 GRAPHS_DEFAULT_LAYOUT = {
-    "paper_bgcolor": "#1f2630",
-    "plot_bgcolor": "#1f2630",
-    "font": {"color": "#ffffff"},
-    "legend_bgcolor": "#1f2630",
-    "title": {"font": {"color": "#3391CF"}},
     "xaxis": {
-        "gridcolor": "#5b5b5b",
-        "tickfont": {"color": "#ffffff"}},
-    "yaxis": {
-        "gridcolor": "#5b5b5b",
-        "tickfont": {"color": "#ffffff"}
+        "linecolor": 'black',
+        "linewidth": 2,
+        "mirror": True,
+        "showline": True,
     },
-    "margin": {
-        "t": 50,
-        "r": 50,
-        "b": 50,
-        "l": 50,
+    "yaxis": {
+        "linecolor": 'black',
+        "linewidth": 2,
+        "mirror": True,
+        "showline": True,
     }
 }
 

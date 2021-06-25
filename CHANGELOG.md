@@ -8,6 +8,10 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ## [Unreleased]
 ### Added
 - download data table as csv
+- border around plots
+
+### Changed
+- plotly template to "plotly_white"
 
 ## [0.6.0] - 2021-06-24
 ### Added

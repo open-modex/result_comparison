@@ -6,8 +6,10 @@ from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
 
-from settings import COLUMN_JOINER, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_OPTIONS, \
+from settings import (
+    COLUMN_JOINER, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_TEMPLATE, GRAPHS_DEFAULT_OPTIONS,
     GRAPHS_MAX_TS_PER_PLOT
+)
 
 
 class PlottingError(Exception):
@@ -16,7 +18,10 @@ class PlottingError(Exception):
 
 def get_empty_fig():
     empty_fig = px.bar()
-    empty_fig.update_layout(GRAPHS_DEFAULT_LAYOUT)
+    empty_fig.update_layout(
+        template=GRAPHS_DEFAULT_TEMPLATE,
+        **GRAPHS_DEFAULT_LAYOUT
+    )
     return empty_fig
 
 
@@ -72,6 +77,7 @@ def bar_plot(data, options):
     unit_axis = "x" if fig_options["orientation"] == "h" else "y"
     axis_title = {f"{unit_axis}axis_title": add_unit_to_label(fig_options[unit_axis], data)}
     fig.update_layout(
+        template=GRAPHS_DEFAULT_TEMPLATE,
         **axis_title,
         **GRAPHS_DEFAULT_LAYOUT
     )
@@ -101,6 +107,7 @@ def radar_plot(data, options):
             }
         },
         showlegend=False,
+        template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
     return fig
@@ -121,6 +128,7 @@ def dot_plot(data, options):
     fig.update_traces(mode='markers', marker=dict(line_width=1, symbol='circle', size=16))
     fig.update_layout(
         xaxis_title=add_unit_to_label(options["x"], data),
+        template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
     return fig
@@ -168,6 +176,7 @@ def line_plot(data, options):
     )
     fig.update_layout(
         yaxis_title=yaxis_title,
+        template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
     return fig
@@ -199,6 +208,7 @@ def box_plot(data, options):
         raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_layout(
         yaxis_title=add_unit_to_label(fig_options["y"], ts_flattened),
+        template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
     return fig
@@ -237,6 +247,7 @@ def heat_map(data, options):
         raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_xaxes(side="top")
     fig.update_layout(
+        template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
     return fig
