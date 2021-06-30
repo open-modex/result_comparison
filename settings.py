@@ -173,22 +173,6 @@ GRAPHS_DEFAULT_OPTIONS = {
 }
 
 GRAPHS_DEFAULT_COLOR_MAP = {
-    "BB": "#5E5D5F",
-    "BE": "#5E5D5F",
-    "BW": "#5E5D5F",
-    "BY": "#5E5D5F",
-    "HB": "#5E5D5F",
-    "HE": "#5E5D5F",
-    "HH": "#5E5D5F",
-    "MV": "#5E5D5F",
-    "NI": "#00549F",
-    "NW": "#5E5D5F",
-    "RP": "#5E5D5F",
-    "SH": "#5E5D5F",
-    "SL": "#5E5D5F",
-    "SN": "#5E5D5F",
-    "ST": "#5E5D5F",
-    "TH": "#5E5D5F",
     "variable cost": "#407FB7",
     "fixed cost": "#00549F",
     "renewable generation": "#00549F",

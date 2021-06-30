@@ -65,8 +65,6 @@ def bar_plot(data, options):
     try:
         fig = px.bar(
             data,
-            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
-            labels={"source": "Simulation Framework"},
             **fig_options
         )
     except ValueError as ve:

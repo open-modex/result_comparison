@@ -229,24 +229,27 @@ def toggle_timeseries_graph_options(plot_type, name):
     ],
     [
         Input(component_id="refresh_scalars", component_property="n_clicks"),
-        Input(component_id="units", component_property='children'),
-        Input(component_id=f"graph_scalars_options", component_property='children'),
         Input(component_id="show_scalars_data", component_property='value'),
-        Input(component_id=f"filters", component_property='children')
     ],
     [
+        State(component_id="units", component_property='children'),
+        State(component_id=f"graph_scalars_options", component_property='children'),
+        State(component_id=f"filters", component_property='children'),
+        State(component_id="colors", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
         State(component_id="dd_scenario", component_property="value"),
     ],
     prevent_initial_call=True
 )
-def scalar_graph(_, units_div, graph_scalars_options, show_data, filter_div, agg_group_by, scenarios):
+def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, colors, agg_group_by, scenarios):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios, table="oed_scalars")
     filters = preprocessing.extract_filters("scalars", filter_div)
     units = preprocessing.extract_unit_options(units_div)
     graph_options = preprocessing.extract_graph_options(graph_scalars_options)
+    colors = preprocessing.extract_colors(colors)
+    graph_options["options"]["color_discrete_map"] = colors
     try:
         preprocessed_data = preprocessing.prepare_scalars(data, agg_group_by, units, filters)
     except preprocessing.PreprocessingError:

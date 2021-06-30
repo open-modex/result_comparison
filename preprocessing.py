@@ -1,7 +1,9 @@
 import jmespath
 from functools import reduce
 import pandas
+import json
 import numpy as np
+from collections import ChainMap
 from flask import flash
 from units import unit, scaled_unit, NamedComposedUnit
 from units.predefined import define_units
@@ -13,7 +15,8 @@ from settings import (
     TS_COLUMNS,
     SC_FILTERS,
     TS_FILTERS,
-    COLUMN_JOINER
+    COLUMN_JOINER,
+    GRAPHS_DEFAULT_COLOR_MAP
 )
 
 
@@ -134,6 +137,15 @@ def extract_unit_options(units_div):
         for unit_div in units_div
         if unit_div["type"] == "Dropdown"
     ]
+
+
+def extract_colors(str_colors):
+    try:
+        colors = json.loads(str_colors)
+    except json.JSONDecodeError as je:
+        colors = {}
+        flash(f"Could not read color mapping. Input must be valid JSON. (Error: {je})", "warning")
+    return ChainMap(colors, GRAPHS_DEFAULT_COLOR_MAP)
 
 
 def sum_series(series):

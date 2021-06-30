@@ -1,4 +1,5 @@
 import uuid
+import json
 from collections import ChainMap
 
 import dash_core_components as dcc
@@ -6,7 +7,7 @@ import dash_html_components as html
 import dash_table
 
 from graphs import get_empty_fig
-from settings import VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS
+from settings import VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_DEFAULT_COLOR_MAP
 from models import Filter
 
 
@@ -167,6 +168,15 @@ def get_filter_column():
     )
 
 
+def get_color_column():
+    return html.Div(
+        children=[
+            html.Label(f"Color Map"),
+            dcc.Textarea(id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP))
+        ]
+    )
+
+
 def get_graph_column():
     return html.Div(
         style={"width": "68%", "display": "inline-block"},
@@ -246,7 +256,8 @@ def get_layout(app, scenarios):
                                     get_filter_column(),
                                     get_aggregation_column(),
                                     get_save_load_column(app),
-                                    get_units_column()
+                                    get_units_column(),
+                                    get_color_column()
                                 ]
                             ),
                             get_graph_column()
