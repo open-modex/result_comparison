@@ -106,6 +106,7 @@ GRAPHS_DEFAULT_OPTIONS = {
             facet_col=GraphOption("Subplots", "", clearable=True),
             xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
             yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
         ),
         "radar": GraphOptions(
             r=GraphOption("Radius", "value"),
@@ -117,12 +118,15 @@ GRAPHS_DEFAULT_OPTIONS = {
             x=GraphOption("X-Axis", "value"),
             y=GraphOption("Y-Axis", "technology"),
             color=GraphOption("Color", "source"),
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
         ),
     },
     "timeseries": {
         "line": GraphOptions(
             xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
             yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
         ),
         "box": GraphOptions(
             color=GraphOption("Color", "source"),
@@ -137,7 +141,9 @@ GRAPHS_DEFAULT_OPTIONS = {
                 plotly_option=False
             ),
             facet_col=GraphOption("Subplots", "", clearable=True),
-            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False)
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
+            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
         ),
         "heat_map": GraphOptions(
             x=GraphOption(
@@ -159,7 +165,9 @@ GRAPHS_DEFAULT_OPTIONS = {
                 from_filter=False,
                 plotly_option=False
             ),
-            label=GraphOption("Color Label", "", type="input", plotly_option=False)
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
+            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
         ),
     }
 }

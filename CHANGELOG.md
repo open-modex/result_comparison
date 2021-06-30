@@ -8,6 +8,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ## [Unreleased]
 ### Added
 - optional ability to set axis labels
+- option to set legend title
 - download data table as csv
 - border around plots
 

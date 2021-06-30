@@ -57,6 +57,7 @@ def get_scalar_plot(data, options):
 def bar_plot(data, options):
     xaxis_title = options.pop("xaxis_title")
     yaxis_title = options.pop("yaxis_title")
+    legend_title = options.pop("legend_title")
     fig_options = ChainMap(
         options,
         GRAPHS_DEFAULT_OPTIONS["scalars"]["bar"].get_defaults(exclude_non_plotly_options=True)
@@ -85,6 +86,8 @@ def bar_plot(data, options):
         axis_titles["xaxis_title"] = xaxis_title
     if yaxis_title:
         axis_titles["yaxis_title"] = yaxis_title
+    if legend_title:
+        axis_titles["legend_title"] = legend_title
     fig.update_layout(
         template=GRAPHS_DEFAULT_TEMPLATE,
         **axis_titles,
@@ -125,6 +128,8 @@ def radar_plot(data, options):
 
 def dot_plot(data, options):
     y = data[options["y"]].unique()
+    xaxis_title = options.pop("xaxis_title") or add_unit_to_label(options["x"], data)
+    legend_title = options.pop("legend_title")
 
     fig = go.Figure()
 
@@ -137,7 +142,8 @@ def dot_plot(data, options):
         ))
     fig.update_traces(mode='markers', marker=dict(line_width=1, symbol='circle', size=16))
     fig.update_layout(
-        xaxis_title=add_unit_to_label(options["x"], data),
+        xaxis_title=xaxis_title,
+        legend_title=legend_title,
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
@@ -156,6 +162,7 @@ def get_timeseries_plot(data, options):
 def line_plot(data, options):
     xaxis_title = options.pop("xaxis_title") or "Timeindex"
     yaxis_title = options.pop("yaxis_title") or add_unit_to_label("", data)
+    legend_title = options.pop("legend_title")
     fig_options = ChainMap(
         options,
         GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults(exclude_non_plotly_options=True)
@@ -166,7 +173,7 @@ def line_plot(data, options):
     try:
         fig = px.line(
             data.reset_index(),
-            x=xaxis_title,
+            x="index",
             color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
             **fig_options
         )
@@ -187,6 +194,8 @@ def line_plot(data, options):
     )
     fig.update_layout(
         yaxis_title=yaxis_title,
+        xaxis_title=xaxis_title,
+        legend_title=legend_title,
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
@@ -194,7 +203,9 @@ def line_plot(data, options):
 
 
 def box_plot(data, options):
+    xaxis_title = options.pop("xaxis_title") or "Time"
     yaxis_title = options.pop("yaxis_title")
+    legend_title = options.pop("legend_title")
     sample = options.pop("sample")
     fig_options = ChainMap(
         options,
@@ -219,7 +230,9 @@ def box_plot(data, options):
         flash(f"Timeseries plot error: {ve}", category="error")
         raise PlottingError(f"Timeseries plot error: {ve}")
     fig.update_layout(
+        xaxis_title=xaxis_title,
         yaxis_title=yaxis_title or add_unit_to_label(fig_options["y"], ts_flattened),
+        legend_title=legend_title,
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
@@ -227,9 +240,12 @@ def box_plot(data, options):
 
 
 def heat_map(data, options):
-    label = options.pop("label") or add_unit_to_label("Value", data)
     x = options.pop("x")
     y = options.pop("y")
+    xaxis_title = options.pop("xaxis_title") or x
+    yaxis_title = options.pop("yaxis_title") or y
+    legend_title = options.pop("legend_title") or add_unit_to_label("Value", data)
+
     fig_options = ChainMap(
         options,
         GRAPHS_DEFAULT_OPTIONS["timeseries"]["heat_map"].get_defaults(exclude_non_plotly_options=True)
@@ -249,9 +265,9 @@ def heat_map(data, options):
         fig = px.imshow(
             ts_pivot,
             labels={
-                "x": x,
-                "y": y,
-                "color": label
+                "x": xaxis_title,
+                "y": yaxis_title,
+                "color": legend_title
             },
             **fig_options
         )
