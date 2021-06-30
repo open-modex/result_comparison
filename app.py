@@ -1,3 +1,4 @@
+import json
 import pathlib
 
 import urllib3
@@ -12,12 +13,11 @@ from flask_caching import Cache
 
 from data import dev
 import preprocessing
-from layout import get_layout, get_graph_options, get_error_and_warnings_div
 from settings import (
     SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, SC_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG, MAX_WARNINGS, MAX_INFOS)
 import scenario
 import graphs
-from models import db, Filter
+from models import db, get_model_options, Filter, Colors
 
 urllib3.disable_warnings()
 
@@ -44,6 +44,7 @@ cache.init_app(server, config=CACHE_CONFIG)
 
 # Layout
 if not MANAGE_DB:
+    from layout import get_layout, get_graph_options, get_error_and_warnings_div
     app.layout = partial(get_layout, app, scenarios=scenario.get_scenarios())
 
 
@@ -124,9 +125,39 @@ def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_g
     db.session.add(db_filter)
     db.session.commit()
 
-    saved_filters = Filter.query.all()
-    saved_filters_options = [{"label": filter_.name, "value": filter_.name} for filter_ in saved_filters]
-    return saved_filters_options, ""
+    return get_model_options(Filter), ""
+
+
+@app.callback(
+    [
+        Output(component_id="load_colors", component_property="options"),
+        Output(component_id="save_colors_name", component_property="value"),
+        Output(component_id="colors_error", component_property="children"),
+    ],
+    Input('save_colors', 'n_clicks'),
+    [
+        State(component_id="save_colors_name", component_property="value"),
+        State(component_id="colors", component_property='value')
+    ]
+)
+def save_colors(_, name, str_colors):
+    if not name:
+        raise PreventUpdate
+
+    try:
+        colors = json.loads(str_colors)
+    except json.JSONDecodeError as je:
+        flash(f"Could not read color mapping. Input must be valid JSON. (Error: {je})", "error")
+        return get_model_options(Colors), "", show_logs()
+
+    db_colors = Colors(
+        name=name,
+        colors=colors,
+    )
+    db.session.add(db_colors)
+    db.session.commit()
+
+    return get_model_options(Colors), "", show_logs()
 
 
 @app.callback(
@@ -145,22 +176,37 @@ def load_filters(name, scenarios):
     if not name:
         raise PreventUpdate
     if not scenarios:
+        flash("No scenario selected - cannot load filters without scenario", "error")
         return (
             no_update,
             no_update,
             no_update,
             *([no_update] * len(SC_FILTERS)),
-            get_error_and_warnings_div(["No scenario selected - cannot load filters without scenario"]),
+            show_logs(),
         )
     db_filter = Filter.query.filter_by(name=name).first()
     filters = [db_filter.filters.get(filter_, None) for filter_ in SC_FILTERS]
+    flash("Successfully loaded filters", "info")
     return (
         db_filter.scalar_graph_options["type"],
         db_filter.ts_graph_options["type"],
         db_filter.filters["agg_group_by"],
         *filters,
-        get_error_and_warnings_div(infos=["Successfully loaded filters"]),
+        show_logs(),
     )
+
+
+@app.callback(
+    Output(component_id="colors", component_property="value"),
+    Input('load_colors', "value"),
+    prevent_initial_call=True
+)
+def load_colors(name):
+    if not name:
+        raise PreventUpdate
+
+    db_colors = Colors.query.filter_by(name=name).first()
+    return json.dumps(db_colors.colors)
 
 
 @app.callback(
@@ -253,14 +299,14 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     try:
         preprocessed_data = preprocessing.prepare_scalars(data, agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_logs()
     if preprocessed_data.empty:
         flash("No data for current filter settings", "warning")
-        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_logs()
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
-        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_logs()
 
     if show_data and "True" in show_data:
         columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
@@ -268,7 +314,7 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     else:
         columns = []
         data_table = []
-    return fig, data_table, columns, show_errors_and_warnings()
+    return fig, data_table, columns, show_logs()
 
 
 @app.callback(
@@ -303,14 +349,14 @@ def timeseries_graph(_, units_div, graph_timeseries_options, show_data, filter_d
     try:
         preprocessed_data = preprocessing.prepare_timeseries(data, agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_logs()
     if preprocessed_data.empty:
         flash("No data for current filter settings", "warning")
-        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_logs()
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
-        return graphs.get_empty_fig(), [], [], show_errors_and_warnings()
+        return graphs.get_empty_fig(), [], [], show_logs()
 
     if show_data and "True" in show_data:
         columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
@@ -319,10 +365,10 @@ def timeseries_graph(_, units_div, graph_timeseries_options, show_data, filter_d
         columns = []
         data_table = []
 
-    return fig, data_table, columns, show_errors_and_warnings()
+    return fig, data_table, columns, show_logs()
 
 
-def show_errors_and_warnings():
+def show_logs():
     errors = get_flashed_messages(category_filter=["error"])
     warnings = get_flashed_messages(category_filter=["warning"])
     if len(warnings) > MAX_WARNINGS:

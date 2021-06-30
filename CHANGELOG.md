@@ -7,6 +7,8 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ## [Unreleased]
 ### Added
+- discrete color map can be edited
+- color map can be saved/loaded  
 - optional ability to set axis labels
 - option to set legend title
 - download data table as csv

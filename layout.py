@@ -8,7 +8,7 @@ import dash_table
 
 from graphs import get_empty_fig
 from settings import VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_DEFAULT_COLOR_MAP
-from models import Filter
+from models import get_model_options, Filter, Colors
 
 
 def get_header(app):
@@ -95,8 +95,7 @@ def get_graph_options(data_type, graph_type, preset_options=None):
 
 def get_save_load_column(app):
     with app.server.app_context():
-        saved_filters = Filter.query.all()
-    options = [{"label": filter_.name, "value": filter_.name} for filter_ in saved_filters]
+        options = get_model_options(Filter)
     return html.P(
         children=[
             html.P(id=f"save_load_errors", children=""),
@@ -154,25 +153,38 @@ def get_units_column():
 def get_filter_column():
     return html.Div(
         id="filters",
-        # sum concatenates lists:
         children=sum(
-            [
+            (
                 [
                     html.Label(f"Filter {filter_.capitalize()}"),
-                    dcc.Dropdown(id=f"filter-{filter_}", multi=True, clearable=True)
+                    dcc.Dropdown(
+                        id=f"filter-{filter_}", multi=True, clearable=True
+                    ),
                 ]
                 for filter_ in SC_FILTERS
-            ],
-            []
-        )
+            ),
+            [],
+        ),
     )
 
 
-def get_color_column():
+def get_color_column(app):
+    with app.server.app_context():
+        options = get_model_options(Colors)
     return html.Div(
         children=[
             html.Label(f"Color Map"),
-            dcc.Textarea(id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP))
+            dcc.Textarea(id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP)),
+            html.Label("Save colors as:"),
+            dcc.Input(id="save_colors_name", type="text"),
+            html.Button("Save", id="save_colors"),
+            html.Label("Load colors"),
+            dcc.Dropdown(
+                id="load_colors",
+                options=options,
+                clearable=True
+            ),
+            html.P(id="colors_error", children="")
         ]
     )
 
@@ -257,7 +269,7 @@ def get_layout(app, scenarios):
                                     get_aggregation_column(),
                                     get_save_load_column(app),
                                     get_units_column(),
-                                    get_color_column()
+                                    get_color_column(app)
                                 ]
                             ),
                             get_graph_column()
