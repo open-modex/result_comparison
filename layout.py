@@ -174,7 +174,9 @@ def get_color_column(app):
     return html.Div(
         children=[
             html.Label(f"Color Map"),
-            dcc.Textarea(id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP)),
+            dcc.Textarea(
+                id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP), style={"width": "100%", "height": "50px"}
+            ),
             html.Label("Save colors as:"),
             dcc.Input(id="save_colors_name", type="text"),
             html.Button("Save", id="save_colors"),
