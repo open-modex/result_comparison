@@ -178,20 +178,27 @@ GRAPHS_DEFAULT_COLOR_MAP = {
     "renewable generation": "#00549F",
 }
 
+GRID_COLOR = "lightgray"
+
 GRAPHS_DEFAULT_TEMPLATE = "plotly_white"
 GRAPHS_DEFAULT_LAYOUT = {
     "xaxis": {
-        "linecolor": 'black',
+        "linecolor": GRID_COLOR,
         "linewidth": 2,
         "mirror": True,
         "showline": True,
+        "ticks": "outside",
+        "tickcolor": GRID_COLOR,
     },
     "yaxis": {
-        "linecolor": 'black',
+        "gridcolor": GRID_COLOR,
+        "linecolor": GRID_COLOR,
         "linewidth": 2,
         "mirror": True,
         "showline": True,
-    }
+        "ticks": "outside",
+        "tickcolor": GRID_COLOR,
+    },
 }
 
 # MAP
