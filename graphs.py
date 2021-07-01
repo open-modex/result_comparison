@@ -57,7 +57,11 @@ def get_scalar_plot(data, options):
 def bar_plot(data, options):
     xaxis_title = options.pop("xaxis_title")
     yaxis_title = options.pop("yaxis_title")
-    legend_title = options.pop("legend_title")
+    layout = {
+        "legend_title": options.pop("legend_title"),
+        "bargap": options.pop("bargap")
+    }
+
     fig_options = ChainMap(
         options,
         GRAPHS_DEFAULT_OPTIONS["scalars"]["bar"].get_defaults(exclude_non_plotly_options=True)
@@ -77,23 +81,28 @@ def bar_plot(data, options):
         else:
             flash(f"Scalar plot error: {ve}", category="error")
         raise PlottingError(f"Scalar plot error: {ve}")
+
+    # Remove padding between stacked bars:
     fig.update_traces(
         marker={"line": {"width": 0}}
     )
 
     unit_axis = "x" if fig_options["orientation"] == "h" else "y"
-    axis_titles = {f"{unit_axis}axis_title": add_unit_to_label(fig_options[unit_axis], data)}
+    layout[f"{unit_axis}axis_title"] = add_unit_to_label(fig_options[unit_axis], data)
     if xaxis_title:
-        axis_titles["xaxis_title"] = xaxis_title
+        layout["xaxis_title"] = xaxis_title
     if yaxis_title:
-        axis_titles["yaxis_title"] = yaxis_title
-    if legend_title:
-        axis_titles["legend_title"] = legend_title
-    fig.update_layout(
-        template=GRAPHS_DEFAULT_TEMPLATE,
-        **axis_titles,
-        **GRAPHS_DEFAULT_LAYOUT
-    )
+        layout["yaxis_title"] = yaxis_title
+
+    try:
+        fig.update_layout(
+            template=GRAPHS_DEFAULT_TEMPLATE,
+            **layout,
+            **GRAPHS_DEFAULT_LAYOUT
+        )
+    except ValueError as ve:
+        flash(f"Scalar layout error: {ve}", category="error")
+        raise PlottingError(f"Scalar layout error: {ve}")
     return fig
 
 
