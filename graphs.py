@@ -77,6 +77,9 @@ def bar_plot(data, options):
         else:
             flash(f"Scalar plot error: {ve}", category="error")
         raise PlottingError(f"Scalar plot error: {ve}")
+    fig.update_traces(
+        marker={"line": {"width": 0}}
+    )
 
     unit_axis = "x" if fig_options["orientation"] == "h" else "y"
     axis_titles = {f"{unit_axis}axis_title": add_unit_to_label(fig_options[unit_axis], data)}
