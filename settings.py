@@ -183,6 +183,7 @@ GRID_COLOR = "lightgray"
 GRAPHS_DEFAULT_TEMPLATE = "plotly_white"
 GRAPHS_DEFAULT_LAYOUT = {
     "xaxis": {
+        "gridcolor": GRID_COLOR,
         "linecolor": GRID_COLOR,
         "linewidth": 2,
         "mirror": True,
