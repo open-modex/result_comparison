@@ -17,7 +17,7 @@ from settings import (
     SECRET_KEY, DB_URL, DEBUG, MANAGE_DB, SKIP_TS, SC_FILTERS, USE_DUMMY_DATA, CACHE_CONFIG, MAX_WARNINGS, MAX_INFOS)
 import scenario
 import graphs
-from models import db, get_model_options, Filter, Colors
+from models import db, get_model_options, Filter, Colors, Labels
 
 urllib3.disable_warnings()
 
@@ -162,6 +162,38 @@ def save_colors(_, name, str_colors):
 
 @app.callback(
     [
+        Output(component_id="load_labels", component_property="options"),
+        Output(component_id="save_labels_name", component_property="value"),
+        Output(component_id="labels_error", component_property="children"),
+    ],
+    Input('save_labels', 'n_clicks'),
+    [
+        State(component_id="save_labels_name", component_property="value"),
+        State(component_id="labels", component_property='value')
+    ]
+)
+def save_labels(_, name, str_labels):
+    if not name:
+        raise PreventUpdate
+
+    try:
+        labels = json.loads(str_labels)
+    except json.JSONDecodeError as je:
+        flash(f"Could not read labels. Input must be valid JSON. (Error: {je})", "error")
+        return get_model_options(Labels), "", show_logs()
+
+    db_labels = Labels(
+        name=name,
+        labels=labels,
+    )
+    db.session.add(db_labels)
+    db.session.commit()
+
+    return get_model_options(Labels), "", show_logs()
+
+
+@app.callback(
+    [
         Output(component_id="graph_scalars_plot_switch", component_property="value"),
         Output(component_id="graph_timeseries_plot_switch", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value")
@@ -207,6 +239,19 @@ def load_colors(name):
 
     db_colors = Colors.query.filter_by(name=name).first()
     return json.dumps(db_colors.colors)
+
+
+@app.callback(
+    Output(component_id="labels", component_property="value"),
+    Input('load_labels', "value"),
+    prevent_initial_call=True
+)
+def load_labels(name):
+    if not name:
+        raise PreventUpdate
+
+    db_labels = Labels.query.filter_by(name=name).first()
+    return json.dumps(db_labels.labels)
 
 
 @app.callback(
@@ -282,12 +327,13 @@ def toggle_timeseries_graph_options(plot_type, name):
         State(component_id=f"graph_scalars_options", component_property='children'),
         State(component_id=f"filters", component_property='children'),
         State(component_id="colors", component_property="value"),
+        State(component_id="labels", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
         State(component_id="dd_scenario", component_property="value"),
     ],
     prevent_initial_call=True
 )
-def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, colors, agg_group_by, scenarios):
+def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, colors, labels, agg_group_by, scenarios):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios, table="oed_scalars")
@@ -296,6 +342,8 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     graph_options = preprocessing.extract_graph_options(graph_scalars_options)
     colors = preprocessing.extract_colors(colors)
     graph_options["options"]["color_discrete_map"] = colors
+    labels = preprocessing.extract_labels(labels)
+    graph_options["options"]["labels"] = labels
     try:
         preprocessed_data = preprocessing.prepare_scalars(data, agg_group_by, units, filters)
     except preprocessing.PreprocessingError:
@@ -326,18 +374,22 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     ],
     [
         Input(component_id="refresh_timeseries", component_property="n_clicks"),
-        Input(component_id="units", component_property='children'),
-        Input(component_id="graph_timeseries_options", component_property='children'),
         Input(component_id="show_timeseries_data", component_property='value'),
-        Input(component_id=f"filters", component_property='children')
     ],
     [
+        State(component_id="units", component_property='children'),
+        State(component_id="graph_timeseries_options", component_property='children'),
+        State(component_id=f"filters", component_property='children'),
+        State(component_id="colors", component_property="value"),
+        State(component_id="labels", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
         State(component_id="dd_scenario", component_property="value"),
     ],
     prevent_initial_call=True
 )
-def timeseries_graph(_, units_div, graph_timeseries_options, show_data, filter_div, agg_group_by, scenarios):
+def timeseries_graph(
+        _, show_data, units_div, graph_timeseries_options, filter_div, colors, labels, agg_group_by, scenarios
+):
     if scenarios is None or SKIP_TS:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios, table="oed_timeseries")
@@ -346,6 +398,10 @@ def timeseries_graph(_, units_div, graph_timeseries_options, show_data, filter_d
     )
     units = preprocessing.extract_unit_options(units_div)
     graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
+    colors = preprocessing.extract_colors(colors)
+    graph_options["options"]["color_discrete_map"] = colors
+    labels = preprocessing.extract_labels(labels)
+    graph_options["options"]["labels"] = labels
     try:
         preprocessed_data = preprocessing.prepare_timeseries(data, agg_group_by, units, filters)
     except preprocessing.PreprocessingError:

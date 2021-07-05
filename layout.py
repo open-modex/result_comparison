@@ -7,8 +7,10 @@ import dash_html_components as html
 import dash_table
 
 from graphs import get_empty_fig
-from settings import VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_DEFAULT_COLOR_MAP
-from models import get_model_options, Filter, Colors
+from settings import (
+    VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LABELS
+)
+from models import get_model_options, Filter, Colors, Labels
 
 
 def get_header(app):
@@ -193,6 +195,29 @@ def get_color_column(app):
     )
 
 
+def get_label_column(app):
+    with app.server.app_context():
+        options = get_model_options(Labels)
+    return html.Div(
+        children=[
+            html.Label(f"Labels"),
+            dcc.Textarea(
+                id="labels", value=json.dumps(GRAPHS_DEFAULT_LABELS), style={"width": "100%", "height": "50px"}
+            ),
+            html.Label("Save labels as:"),
+            dcc.Input(id="save_labels_name", type="text"),
+            html.Button("Save", id="save_labels"),
+            html.Label("Load labels"),
+            dcc.Dropdown(
+                id="load_labels",
+                options=options,
+                clearable=True
+            ),
+            html.P(id="labels_error", children="")
+        ]
+    )
+
+
 def get_graph_column():
     return html.Div(
         style={"width": "68%", "display": "inline-block"},
@@ -273,7 +298,8 @@ def get_layout(app, scenarios):
                                     get_aggregation_column(),
                                     get_save_load_column(app),
                                     get_units_column(),
-                                    get_color_column(app)
+                                    get_color_column(app),
+                                    get_label_column(app)
                                 ]
                             ),
                             get_graph_column()

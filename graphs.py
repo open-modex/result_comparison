@@ -61,6 +61,7 @@ def bar_plot(data, options):
         "legend_title": options.pop("legend_title"),
         "bargap": options.pop("bargap")
     }
+    labels = options.pop("labels")
 
     fig_options = ChainMap(
         options,
@@ -81,6 +82,11 @@ def bar_plot(data, options):
         else:
             flash(f"Scalar plot error: {ve}", category="error")
         raise PlottingError(f"Scalar plot error: {ve}")
+
+    # Override labels:
+    if labels:
+        for trace in fig.data:
+            trace.name = labels.get(trace.name, trace.name)
 
     # Remove padding between stacked bars:
     fig.update_traces(
@@ -108,6 +114,8 @@ def bar_plot(data, options):
 
 def radar_plot(data, options):
     axis_title = options.pop("axis_title") or add_unit_to_label(options["r"], data)
+    labels = options.pop("labels")
+
     categories = data[options["theta"]].unique()
 
     fig = go.Figure()
@@ -120,6 +128,11 @@ def radar_plot(data, options):
                 name=ellipse
             )
         )
+
+    # Override labels:
+    if labels:
+        for trace in fig.data:
+            trace.name = labels.get(trace.name, trace.name)
 
     fig.update_layout(
         polar={
@@ -140,6 +153,7 @@ def dot_plot(data, options):
     y = data[options["y"]].unique()
     xaxis_title = options.pop("xaxis_title") or add_unit_to_label(options["x"], data)
     legend_title = options.pop("legend_title")
+    labels = options.pop("labels")
 
     fig = go.Figure()
 
@@ -150,6 +164,12 @@ def dot_plot(data, options):
             y=y,
             name=category,
         ))
+
+    # Override labels:
+    if labels:
+        for trace in fig.data:
+            trace.name = labels.get(trace.name, trace.name)
+
     fig.update_traces(mode='markers', marker=dict(line_width=1, symbol='circle', size=16))
     fig.update_layout(
         xaxis_title=xaxis_title,
@@ -173,6 +193,7 @@ def line_plot(data, options):
     xaxis_title = options.pop("xaxis_title") or "Timeindex"
     yaxis_title = options.pop("yaxis_title") or add_unit_to_label("", data)
     legend_title = options.pop("legend_title")
+    labels = options.pop("labels")
     fig_options = ChainMap(
         options,
         GRAPHS_DEFAULT_OPTIONS["timeseries"]["line"].get_defaults(exclude_non_plotly_options=True)
@@ -184,7 +205,6 @@ def line_plot(data, options):
         fig = px.line(
             data.reset_index(),
             x="index",
-            color_discrete_map=GRAPHS_DEFAULT_COLOR_MAP,
             **fig_options
         )
     except ValueError as ve:
@@ -202,6 +222,12 @@ def line_plot(data, options):
             ]
         }
     )
+
+    # Override labels:
+    if labels:
+        for trace in fig.data:
+            trace.name = labels.get(trace.name, trace.name)
+
     fig.update_layout(
         yaxis_title=yaxis_title,
         xaxis_title=xaxis_title,
@@ -216,6 +242,7 @@ def box_plot(data, options):
     xaxis_title = options.pop("xaxis_title") or "Time"
     yaxis_title = options.pop("yaxis_title")
     legend_title = options.pop("legend_title")
+    labels = options.pop("labels")
     sample = options.pop("sample")
     fig_options = ChainMap(
         options,
@@ -239,6 +266,12 @@ def box_plot(data, options):
     except ValueError as ve:
         flash(f"Timeseries plot error: {ve}", category="error")
         raise PlottingError(f"Timeseries plot error: {ve}")
+
+    # Override labels:
+    if labels:
+        for trace in fig.data:
+            trace.name = labels.get(trace.name, trace.name)
+
     fig.update_layout(
         xaxis_title=xaxis_title,
         yaxis_title=yaxis_title or add_unit_to_label(fig_options["y"], ts_flattened),
@@ -255,6 +288,7 @@ def heat_map(data, options):
     xaxis_title = options.pop("xaxis_title") or x
     yaxis_title = options.pop("yaxis_title") or y
     legend_title = options.pop("legend_title") or add_unit_to_label("Value", data)
+    labels = options.pop("labels")
 
     fig_options = ChainMap(
         options,
@@ -284,6 +318,12 @@ def heat_map(data, options):
     except ValueError as ve:
         flash(f"Timeseries plot error: {ve}", category="error")
         raise PlottingError(f"Timeseries plot error: {ve}")
+
+    # Override labels:
+    if labels:
+        for trace in fig.data:
+            trace.name = labels.get(trace.name, trace.name)
+
     fig.update_xaxes(side="top")
     fig.update_layout(
         template=GRAPHS_DEFAULT_TEMPLATE,

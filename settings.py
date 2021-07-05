@@ -179,6 +179,8 @@ GRAPHS_DEFAULT_COLOR_MAP = {
     "renewable generation": "#00549F",
 }
 
+GRAPHS_DEFAULT_LABELS = {}
+
 GRID_COLOR = "lightgray"
 
 GRAPHS_DEFAULT_TEMPLATE = "plotly_white"

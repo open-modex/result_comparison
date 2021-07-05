@@ -7,6 +7,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ## [Unreleased]
 ### Added 
 - option to customize bargap for bar chart
+- option to rename data labels
 
 ### Changed
 - font sizes

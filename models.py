@@ -26,3 +26,11 @@ class Colors(db.Model):
 
     def __repr__(self):
         return '<Color %r>' % self.name
+
+
+class Labels(db.Model):
+    name = db.Column(db.String, primary_key=True)
+    labels = db.Column(db.JSON(), nullable=True)
+
+    def __repr__(self):
+        return '<Label %r>' % self.name

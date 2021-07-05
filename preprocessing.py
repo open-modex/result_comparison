@@ -16,7 +16,8 @@ from settings import (
     SC_FILTERS,
     TS_FILTERS,
     COLUMN_JOINER,
-    GRAPHS_DEFAULT_COLOR_MAP
+    GRAPHS_DEFAULT_COLOR_MAP,
+    GRAPHS_DEFAULT_LABELS
 )
 
 
@@ -146,6 +147,15 @@ def extract_colors(str_colors):
         colors = {}
         flash(f"Could not read color mapping. Input must be valid JSON. (Error: {je})", "warning")
     return ChainMap(colors, GRAPHS_DEFAULT_COLOR_MAP)
+
+
+def extract_labels(str_labels):
+    try:
+        labels = json.loads(str_labels)
+    except json.JSONDecodeError as je:
+        labels = {}
+        flash(f"Could not read color mapping. Input must be valid JSON. (Error: {je})", "warning")
+    return ChainMap(labels, GRAPHS_DEFAULT_LABELS)
 
 
 def sum_series(series):
