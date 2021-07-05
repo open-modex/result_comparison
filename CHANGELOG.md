@@ -9,6 +9,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - option to customize bargap for bar chart
 
 ### Changed
+- font sizes
 - no padding between bars
 
 ## [0.7.0] - 2021-06-30

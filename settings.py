@@ -184,6 +184,7 @@ GRID_COLOR = "lightgray"
 GRAPHS_DEFAULT_TEMPLATE = "plotly_white"
 GRAPHS_DEFAULT_LAYOUT = {
     "xaxis": {
+        "title": {"font": {"size": 18}},
         "gridcolor": GRID_COLOR,
         "linecolor": GRID_COLOR,
         "linewidth": 2,
@@ -191,8 +192,10 @@ GRAPHS_DEFAULT_LAYOUT = {
         "showline": True,
         "ticks": "outside",
         "tickcolor": GRID_COLOR,
+        "tickfont": {"size": 14},
     },
     "yaxis": {
+        "title": {"font": {"size": 18}},
         "gridcolor": GRID_COLOR,
         "linecolor": GRID_COLOR,
         "linewidth": 2,
@@ -200,7 +203,11 @@ GRAPHS_DEFAULT_LAYOUT = {
         "showline": True,
         "ticks": "outside",
         "tickcolor": GRID_COLOR,
+        "tickfont": {"size": 14},
     },
+    "legend": {
+        "font": {"size": 14},
+    }
 }
 
 # MAP
