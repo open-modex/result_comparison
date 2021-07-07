@@ -692,6 +692,14 @@ div, svg {
 /* Graph
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
+#graph_scalars svg {
+  shape-rendering: crispEdges;
+}
+
+#graph_timeseries svg {
+  shape-rendering: crispEdges;
+}
+
 #app-container {
     display: flex;
     flex-direction: row;
