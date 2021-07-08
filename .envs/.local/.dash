@@ -1,0 +1,9 @@
+
+SECRET_KEY=Py.ju&mo87.
+
+DEBUG=True
+USE_DUMMY_DATA=True
+SKIP_TS=False
+
+REDIS_URL=redis://redis:6379/0
+DB_URL=postgresql://modex_user:BrhhuuXP5qm2Jkbty5nY1Hw4sZiirRtOuN7v1PTgevZGar06emxyt7F4KIRaAe1g@postgres:5432/modex

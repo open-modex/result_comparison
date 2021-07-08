@@ -1,5 +1,5 @@
 .idea/*
-.envs/*
+.envs/.production/*
 
 __pycache__/
 *.py[cod]
