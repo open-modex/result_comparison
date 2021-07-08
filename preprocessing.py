@@ -42,10 +42,10 @@ def define_energy_model_units():
     NamedComposedUnit("GWh", unit("GW") * unit("h"))
     NamedComposedUnit("TWh", unit("TW") * unit("h"))
 
-    NamedComposedUnit("kWh/a", unit("kWh") / unit("a"))
-    NamedComposedUnit("MWh/a", unit("MWh") / unit("a"))
-    NamedComposedUnit("GWh/a", unit("GWh") / unit("a"))
-    NamedComposedUnit("TWh/a", unit("TWh") / unit("a"))
+    NamedComposedUnit("kWh/a", unit("kW"))
+    NamedComposedUnit("MWh/a", unit("MW"))
+    NamedComposedUnit("GWh/a", unit("GW"))
+    NamedComposedUnit("TWh/a", unit("TW"))
 
     NamedComposedUnit("kW/h", unit("kW") / unit("h"))
     NamedComposedUnit("MW/h", unit("MW") / unit("h"))
