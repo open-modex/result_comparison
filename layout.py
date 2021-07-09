@@ -3,6 +3,7 @@ import json
 from collections import ChainMap
 
 import dash_core_components as dcc
+import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_table
 
@@ -41,6 +42,7 @@ def get_scenario_column(scenarios):
             html.Label("Select scenario:"),
             dcc.Dropdown(
                 id="dd_scenario",
+                className="dropdown-bryan",  # This is a dash component with additonal class name
                 multi=True,
                 options=[
                     {
@@ -50,7 +52,7 @@ def get_scenario_column(scenarios):
                     for scenario in scenarios
                 ],
             ),
-            html.Button("Reload", id="scenario_reload")
+            dbc.Button("Reload", id="scenario_reload", className="test-bryan")  # This is bootstrap component with additional class
         ],
     )
 
