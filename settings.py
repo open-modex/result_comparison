@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Union, List, Dict
 import pandas as pd
 
-VERSION = "0.8.0"
+VERSION = "0.9.0"
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
@@ -236,9 +236,9 @@ UNITS = {
         "units": ["kWh", "MWh", "GWh", "TWh"],
         "default": "GWh"
     },
-    "Energy per Year": {
-        "units": ["kWh/a", "MWh/a", "GWh/a", "TWh/a"],
-        "default": "GWh/a"
+    "Power": {
+        "units": ["kW", "MW", "GW", "TW"],
+        "default": "GW"
     },
     "Power per Hour": {
         "units": ["kW/h", "MW/h", "GW/h", "TW/h"],

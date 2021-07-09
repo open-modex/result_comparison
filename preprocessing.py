@@ -33,19 +33,10 @@ def define_energy_model_units():
     scaled_unit("Mt", "kt", 1e3)
     scaled_unit("Gt", "Mt", 1e3)
 
-    NamedComposedUnit("kt/a", unit("kt") / unit("a"))
-    NamedComposedUnit("Mt/a", unit("Mt") / unit("a"))
-    NamedComposedUnit("Gt/a", unit("Gt") / unit("a"))
-
     NamedComposedUnit("kWh", unit("kW") * unit("h"))
     NamedComposedUnit("MWh", unit("MW") * unit("h"))
     NamedComposedUnit("GWh", unit("GW") * unit("h"))
     NamedComposedUnit("TWh", unit("TW") * unit("h"))
-
-    NamedComposedUnit("kWh/a", unit("kW"))
-    NamedComposedUnit("MWh/a", unit("MW"))
-    NamedComposedUnit("GWh/a", unit("GW"))
-    NamedComposedUnit("TWh/a", unit("TW"))
 
     NamedComposedUnit("kW/h", unit("kW") / unit("h"))
     NamedComposedUnit("MW/h", unit("MW") / unit("h"))
