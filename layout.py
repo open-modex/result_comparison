@@ -6,6 +6,7 @@ import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_table
+import dash_bootstrap_components as dbc
 
 from graphs import get_empty_fig
 from settings import (
@@ -19,31 +20,45 @@ def get_header(app):
         className="header",
         children=[
             html.Div(
-                className="header__logo",
+                className="header__content",
                 children=[
-                    html.Img(
-                        src=app.get_asset_url("open_Modex-logo.png")
-                    )
-                ],
-            ),
-            html.Div(
-                className="header__heading",
-                children=[
-                    html.P(
-                        children=f"Version v{VERSION}",
-                        className="version"
-                        ),
-                    html.H1(
-                        children="Energy Frameworks to Germany",
-                        className="title"
-                        ),
-                    html.P(
-                        children="How to efficiently sustain Germany's energy "
-                        "\n usage with efficient parameters based on regions.",
-                        className="subtitle"
+                    html.Div(
+                        className="header__logo",
+                        children=[
+                            html.Img(
+                                src=app.get_asset_url("open_Modex-logo.png")
+                            )
+                        ],
                     ),
-                ],
+                    html.Div(
+                        className="header__heading",
+                        children=[
+                            html.P(
+                                children=f"Version v{VERSION}",
+                                className="version"
+                                ),
+                            html.H1(
+                                children="Energy Frameworks to Germany",
+                                className="title"
+                                ),
+                            html.P(
+                                children="How to efficiently sustain Germany's energy "
+                                "\n usage with efficient parameters based on regions.",
+                                className="subtitle"
+                            ),
+                        ],
+                    ),
+                ]
             ),
+            dbc.NavbarSimple(
+                className="header__nav",
+                children=[
+                    dbc.NavItem(dbc.NavLink("About", href="#")),
+                    dbc.NavItem(dbc.NavLink("Contact", href="#"))
+                ],
+                dark=False,
+                expand="xl"
+            )
         ],
     )
 
