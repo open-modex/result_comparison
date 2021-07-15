@@ -1,4 +1,20 @@
+// Colors
 $primary-color-1: #1F567D;
 $primary-color-2: #000000;
 
 $text-color: $primary-color-2;
+
+// Text
+$font-size-large: 2.25rem; // 36px
+$font-size-medium: 1.25rem; // 20px
+$font-size-normal: 1rem; // 16px
+$font-size-small: 0.875rem; // 14rem
+
+// Media-queries
+$screen-width-small: 600px;
+$screen-width-medium: 1024px;
+$screen-width-large: 1400px;
+$screen-width-xlarge: 1600px;
+
+// Layout
+$margin-main: 1rem;
