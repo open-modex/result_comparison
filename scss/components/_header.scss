@@ -1,6 +1,10 @@
 .header {
-  @include flex-row-justify-start;
+  @include flex-row-justify-space-between;
   padding: $margin-main;
+
+  &__content {
+    @include flex-row;
+  }
 
   &__logo {
     img {
@@ -27,5 +31,9 @@
       font-size: $font-size-normal;
       margin-bottom: 0;
     }
+  }
+
+  &__nav.navbar {
+    background-color: $color-white !important;
   }
 }

@@ -47,7 +47,7 @@ html {
 
 body {
   font-family: Lato, Roboto, Helvetica, sans-serif;
-  color: #000000;
+  color: #000;
 }
 
 p, ul, ol {
@@ -128,10 +128,20 @@ input[type="button"].button-primary:focus {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   padding: 1rem;
+}
+
+.header__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
 }
 
 .header__logo img {
@@ -166,5 +176,9 @@ input[type="button"].button-primary:focus {
 .header__heading .subtitle {
   font-size: 1rem;
   margin-bottom: 0;
+}
+
+.header__nav.navbar {
+  background-color: #fff !important;
 }
 /*# sourceMappingURL=styling.css.map */
