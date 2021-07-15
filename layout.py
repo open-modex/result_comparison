@@ -16,18 +16,31 @@ from models import get_model_options, Filter, Colors, Labels
 
 def get_header(app):
     return html.Div(
+        className="header",
         children=[
             html.Div(
+                className="header__logo",
                 children=[
                     html.Img(
-                        src=app.get_asset_url("open_Modex-logo.png"),
-                        style={"height": "100px", "width": "auto"},
-                    ),
-                    html.P(children=f"Version v{VERSION}"),
-                    html.H4(children="Energy Frameworks to Germany"),
+                        src=app.get_asset_url("open_Modex-logo.png")
+                    )
+                ],
+            ),
+            html.Div(
+                className="header__heading",
+                children=[
+                    html.P(
+                        children=f"Version v{VERSION}",
+                        className="version"
+                        ),
+                    html.H1(
+                        children="Energy Frameworks to Germany",
+                        className="title"
+                        ),
                     html.P(
                         children="How to efficiently sustain Germany's energy "
                         "\n usage with efficient parameters based on regions.",
+                        className="subtitle"
                     ),
                 ],
             ),
