@@ -35,5 +35,13 @@
 
   &__nav.navbar {
     background-color: $color-white !important;
+
+    .navbar-nav .nav-item {
+      @each $pseudo-class in $pseudo-classes {
+        a.nav-link:#{$pseudo-class} {
+          color: $primary-color-1;
+        }
+      }
+    }
   }
 }
