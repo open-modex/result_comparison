@@ -3,6 +3,8 @@ $primary-color-1: #1F567D;
 $primary-color-2: #000;
 
 $color-white: #fff;
+$color-gray-1: #F6F8FA; // for backgrounds
+$color-gray-2: #C6CDD4; // for input borders
 
 $text-color: $primary-color-2;
 
@@ -20,6 +22,7 @@ $screen-width-xlarge: 1600px;
 
 // Layout
 $margin-main: 1rem;
+$border-radius: 3px;
 
 // Pseudo classes
 $pseudo-classes: 'link', 'hover', 'focus', 'visited', 'focus';

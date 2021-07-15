@@ -48,9 +48,10 @@ html {
 body {
   font-family: Lato, Roboto, Helvetica, sans-serif;
   color: #000;
+  letter-spacing: 0.02rem;
 }
 
-p, ul, ol {
+div, p, ul, ol, label, span {
   font-size: 1rem;
   letter-spacing: 0.02rem;
 }
@@ -225,5 +226,61 @@ input[type="button"].button-primary:focus {
 
 .header__nav.navbar .navbar-nav .nav-item a.nav-link:focus {
   color: #1F567D;
+}
+
+.dashboard {
+  padding: 1rem;
+  background-color: #F6F8FA;
+}
+
+.scenarios {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.scenarios label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.scenarios .dash-dropdown {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.scenarios .dash-dropdown .Select-control {
+  height: 39px;
+}
+
+.scenarios__btn {
+  margin-left: 0.5rem;
+}
+
+.scenarios__views {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.scenarios__views .view {
+  height: 39px;
+  width: 39px;
+  background-color: #1F567D;
+  margin-left: 0.5rem;
+  border-radius: 3px;
 }
 /*# sourceMappingURL=styling.css.map */
