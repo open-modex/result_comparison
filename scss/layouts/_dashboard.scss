@@ -1,0 +1,42 @@
+$scenarios-dropdown-height: 39px;
+
+.dashboard {
+	padding: $margin-main;
+	background-color: $color-gray-1;
+}
+
+.scenarios {
+	@include flex-row;
+	flex-wrap: wrap;
+
+	label {
+		font-size: $font-size-small;
+		font-weight: 700;
+		text-transform: uppercase;
+		width: 100%;
+	}
+
+	.dash-dropdown {
+		flex: 1;
+
+		.Select-control {
+			height: $scenarios-dropdown-height;
+		}
+	}
+
+	&__btn {
+		margin-left: 0.5rem;
+	}
+
+	&__views {
+		@include flex-row;
+	}
+
+	&__views .view {
+		height: $scenarios-dropdown-height;
+		width: $scenarios-dropdown-height;
+		background-color: $primary-color-1;
+		margin-left: 0.5rem;
+		border-radius: $border-radius;
+	}
+}

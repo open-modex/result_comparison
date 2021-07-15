@@ -65,12 +65,13 @@ def get_header(app):
 
 def get_scenario_column(scenarios):
     return html.Div(
+        className="scenarios",
         style={"padding-bottom": "50px"},
         children=[
-            html.Label("Select scenario:"),
+            html.Label("Scenario"),
             dcc.Dropdown(
                 id="dd_scenario",
-                className="dropdown-bryan",  # This is a dash component with additonal class name
+                className="scenarios__dropdown",  # This is a dash component with additonal class name
                 multi=True,
                 options=[
                     {
@@ -80,7 +81,25 @@ def get_scenario_column(scenarios):
                     for scenario in scenarios
                 ],
             ),
-            dbc.Button("Reload", id="scenario_reload", className="test-bryan")  # This is bootstrap component with additional class
+            dbc.Button(
+                "Reload", 
+                id="scenario_reload", 
+                className="scenarios__btn"
+            ), # This is bootstrap component with additional class
+            html.Div(
+                className="scenarios__views",
+                children=[
+                    html.Div(
+                        className="view view--dashboard"
+                    ),
+                    html.Div(
+                        className="view view--data"
+                    ),
+                    html.Div(
+                        className="view view--dashboard-data"
+                    )
+                ]
+            )
         ],
     )
 
@@ -329,7 +348,8 @@ def get_layout(app, scenarios):
         children=[
             html.Div(session_id, id="session-id", style={"display": "none"}),
             get_header(app),
-            html.Div(
+            html.Main(
+                className="dashboard",
                 children=[
                     get_scenario_column(scenarios),
                     html.Div(

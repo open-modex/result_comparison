@@ -5,9 +5,10 @@ html {
 body {
   font-family: Lato, Roboto, Helvetica, sans-serif;
   color: $text-color;
+  letter-spacing: 0.02rem;
 }
 
-p, ul, ol {
+div, p, ul, ol, label, span {
   font-size: 1rem;
   letter-spacing: 0.02rem;
 }
