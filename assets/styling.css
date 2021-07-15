@@ -52,6 +52,7 @@ body {
 
 p, ul, ol {
   font-size: 1rem;
+  letter-spacing: 0.02rem;
 }
 
 .button,
@@ -117,5 +118,53 @@ input[type="button"].button-primary:focus {
   color: #FFF;
   background-color: #1EAEDB;
   border-color: #1EAEDB;
+}
+
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 1rem;
+}
+
+.header__logo img {
+  width: 7.75rem;
+}
+
+.header__heading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0.5rem 0 0.5rem 2rem;
+}
+
+.header__heading .version {
+  font-size: 0.875rem;
+  font-weight: 300;
+  margin-bottom: 0;
+}
+
+.header__heading .title {
+  font-size: 2.25rem;
+  margin-bottom: 0;
+}
+
+.header__heading .subtitle {
+  font-size: 1rem;
+  margin-bottom: 0;
 }
 /*# sourceMappingURL=styling.css.map */
