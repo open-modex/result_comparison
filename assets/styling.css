@@ -55,6 +55,31 @@ p, ul, ol {
   letter-spacing: 0.02rem;
 }
 
+a {
+  color: #1F567D;
+  font-weight: 700;
+}
+
+a:link {
+  color: #1F567D;
+}
+
+a:hover {
+  color: #1F567D;
+}
+
+a:focus {
+  color: #1F567D;
+}
+
+a:visited {
+  color: #1F567D;
+}
+
+a:focus {
+  color: #1F567D;
+}
+
 .button,
 button,
 input[type="submit"],
@@ -180,5 +205,25 @@ input[type="button"].button-primary:focus {
 
 .header__nav.navbar {
   background-color: #fff !important;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a.nav-link:link {
+  color: #1F567D;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a.nav-link:hover {
+  color: #1F567D;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a.nav-link:focus {
+  color: #1F567D;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a.nav-link:visited {
+  color: #1F567D;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a.nav-link:focus {
+  color: #1F567D;
 }
 /*# sourceMappingURL=styling.css.map */

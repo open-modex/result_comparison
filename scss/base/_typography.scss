@@ -11,3 +11,14 @@ p, ul, ol {
   font-size: 1rem;
   letter-spacing: 0.02rem;
 }
+
+a {
+  color: $primary-color-1;
+  font-weight: 700;
+}
+
+@each $pseudo-class in $pseudo-classes {
+  a:#{$pseudo-class} {
+    color: $primary-color-1;
+  }
+}
