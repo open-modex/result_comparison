@@ -16,7 +16,7 @@ from models import get_model_options, Filter, Colors, Labels
 
 
 def get_header(app):
-    return html.Div(
+    return html.Section(
         className="header",
         children=[
             html.Div(
