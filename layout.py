@@ -342,7 +342,7 @@ def get_layout(app, scenarios):
                     html.Div(
                         children=[
                             html.Div(
-                                style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
+                                className="filter-panel",
                                 children=[
                                     get_filter_column(),
                                     get_aggregation_column(),

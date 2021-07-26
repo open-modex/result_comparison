@@ -289,4 +289,13 @@ input[type="button"].button-primary:focus {
   margin-left: 0.5rem;
   border-radius: 3px;
 }
+
+@media only screen and (min-width: 1200px) {
+  .filter-panel {
+    width: 30%;
+    display: inline-block;
+    vertical-align: top;
+    min-width: 20rem;
+  }
+}
 /*# sourceMappingURL=styling.css.map */
