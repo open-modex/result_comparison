@@ -146,6 +146,12 @@ input[type="button"].button-primary:focus {
   border-color: #1EAEDB;
 }
 
+.Select--multi .Select-multi-value-wrapper .Select-value {
+  background-color: #F6F8FA;
+  border-color: #839FB4;
+  color: #1F567D;
+}
+
 .header {
   display: -webkit-box;
   display: -ms-flexbox;
