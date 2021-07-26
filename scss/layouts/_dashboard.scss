@@ -40,3 +40,12 @@ $scenarios-dropdown-height: 39px;
 		border-radius: $border-radius;
 	}
 }
+
+.filter-panel {
+	@media only screen and (min-width: $screen-width-regular) {
+		width: 30%;
+		display: inline-block;
+		vertical-align: top;
+		min-width: 20rem;
+	}
+}
