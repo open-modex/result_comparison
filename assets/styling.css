@@ -394,6 +394,12 @@ button.btn.btn--refresh:focus {
           box-shadow: 0px 4px 16px rgba(31, 86, 125, 0.15);
 }
 
+.filter-panel #filters label,
+.filter-panel #options label {
+  margin-bottom: 0;
+  margin-top: 0.75rem;
+}
+
 @media only screen and (min-width: 1200px) {
   .filter-panel {
     width: 20rem;
