@@ -61,3 +61,16 @@ input[type="button"].button-primary:focus {
     background-color: #1EAEDB;
     border-color: #1EAEDB;
 }
+
+button.btn.btn--refresh,
+button.btn-secondary:not(:disabled):not(.disabled).active, 
+button.btn-secondary:not(:disabled):not(.disabled):active, 
+.show>button.btn-secondary.dropdown-toggle {
+    @include refresh-btn-style;
+}
+
+@each $pseudo-class in $pseudo-classes {
+    button.btn.btn--refresh:#{$pseudo-class} {
+        @include refresh-btn-style;
+    }
+}
