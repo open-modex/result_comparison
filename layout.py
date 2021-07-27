@@ -282,12 +282,13 @@ def get_label_column(app):
 
 def get_graph_column():
     return html.Div(
-        style={"width": "68%", "display": "inline-block"},
+        className="charts",
         children=[
             html.Div(
+                className="charts__item",
                 children=[
                     html.Div(
-                        style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
+                        className="graph",
                         children=[
                             html.Button(f"Refresh {graph}", id=f"refresh_{graph}"),
                             dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
@@ -318,7 +319,7 @@ def get_graph_column():
                         ]
                     ),
                     html.Div(
-                        style={"width": "15%", "display": "inline-block"},
+                        className="options",
                         children=[
                             dcc.RadioItems(
                                 id=f"graph_{graph}_plot_switch",
@@ -353,6 +354,7 @@ def get_layout(app, scenarios):
                 children=[
                     get_scenario_column(scenarios),
                     html.Div(
+                        className="content",
                         children=[
                             html.Div(
                                 className="filter-panel",

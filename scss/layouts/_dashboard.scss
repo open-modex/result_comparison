@@ -41,11 +41,19 @@ $scenarios-dropdown-height: 39px;
 	}
 }
 
+.content {
+	@include flex-row;
+}
+
 .filter-panel {
+	@include box-style;
+
 	@media only screen and (min-width: $screen-width-regular) {
-		width: 30%;
-		display: inline-block;
-		vertical-align: top;
+		width: 20rem;
 		min-width: 20rem;
+	}
+
+	#filters {
+		padding: 1rem;
 	}
 }
