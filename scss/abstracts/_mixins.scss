@@ -57,3 +57,8 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+@mixin box-style {
+  background-color: $color-white;
+	box-shadow: 0px 4px 16px rgba(31, 86, 125, 0.15);
+}
