@@ -1,0 +1,32 @@
+.charts {
+	&__item {
+		margin-bottom: 2rem;
+	}
+
+	@media only screen and (min-width: $screen-width-regular) {
+		flex: 1;
+	}
+
+	&__item {
+		@include box-style;
+        @include flex-row;
+		margin-left: 3rem;
+		margin-bottom: 3rem;
+	}
+}
+
+.graph {
+	padding: 1rem;
+
+    @media only screen and (min-width: $screen-width-regular) {
+		flex: 1;
+	}
+}
+
+.options {
+	padding: 1rem;
+
+    @media only screen and (min-width: $screen-width-regular) {
+		width: 14rem;
+	}
+}
