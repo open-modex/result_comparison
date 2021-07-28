@@ -3,3 +3,11 @@
   border-color: $color-blue;
   color: $primary-color-1;
 }
+
+.filter-panel,
+.options {
+  label {
+    margin-bottom: 0;
+		margin-top: 0.75rem;
+  }
+}
