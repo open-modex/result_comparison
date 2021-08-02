@@ -292,13 +292,16 @@ button.btn.btn--refresh:disabled:focus {
 
 #graph_scalars_options,
 #graph_timeseries_options {
-  padding: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 1rem 0;
 }
 
 @media only screen and (min-width: 1200px) {
   #graph_scalars_options,
   #graph_timeseries_options {
     width: 14rem;
+    border-left: 1px solid #E4E4E4;
   }
 }
 
