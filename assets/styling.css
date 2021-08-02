@@ -261,6 +261,16 @@ button.btn.btn--refresh:focus {
   }
 }
 
+#graph_scalars_plot_switch label,
+#graph_timeseries_plot_switch label {
+  padding: 0 0.5rem;
+}
+
+#graph_scalars_plot_switch input,
+#graph_timeseries_plot_switch input {
+  padding-right: 0.25rem;
+}
+
 .header {
   display: -webkit-box;
   display: -ms-flexbox;
