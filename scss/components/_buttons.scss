@@ -66,11 +66,21 @@ button.btn.btn--refresh,
 button.btn-secondary:not(:disabled):not(.disabled).active, 
 button.btn-secondary:not(:disabled):not(.disabled):active, 
 .show>button.btn-secondary.dropdown-toggle {
-    @include refresh-btn-style;
+    @include refresh-btn-style-active;
 }
 
 @each $pseudo-class in $pseudo-classes {
     button.btn.btn--refresh:#{$pseudo-class} {
-        @include refresh-btn-style;
+        @include refresh-btn-style-active;
+    }
+}
+
+button.btn.btn--refresh:disabled {
+    @include refresh-btn-style-disabled;
+}
+
+@each $pseudo-class in $pseudo-classes {
+    button.btn.btn--refresh:disabled:#{$pseudo-class} {
+        @include refresh-btn-style-disabled;
     }
 }
