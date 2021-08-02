@@ -63,7 +63,14 @@
 	box-shadow: 0px 4px 16px rgba(31, 86, 125, 0.15);
 }
 
-@mixin refresh-btn-style {
+@mixin refresh-btn-style-disabled {
+  background-color: $color-gray-1;
+  color: $color-gray-3;
+  border: 1px solid $color-gray-1;
+  cursor: default;
+}
+
+@mixin refresh-btn-style-active {
   background-color: $secondary-color-1;
   color: $color-white;
   border: 1px solid $secondary-color-1;
