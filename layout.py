@@ -284,8 +284,21 @@ def get_graph_column():
                     html.Div(
                         className="graph",
                         children=[
-                            html.Button(f"Refresh", id=f"refresh_{graph}", className="btn btn--refresh"),
-                            dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
+                            html.Div(
+                                className="graph__view",
+                                children=[
+                                    dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
+                                    dcc.RadioItems(
+                                        id=f"graph_{graph}_plot_switch",
+                                        options=[
+                                            {"label": graph_type.capitalize(), "value": graph_type}
+                                            for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
+                                        ],
+                                        value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
+                                    ),
+                                    html.Button(f"Refresh", id=f"refresh_{graph}", className="btn btn--refresh")
+                                ]
+                            ),
                             dcc.Loading(
                                 style={"padding-bottom": "30px"},
                                 type="default",
@@ -313,22 +326,9 @@ def get_graph_column():
                         ]
                     ),
                     html.Div(
-                        className="options",
-                        children=[
-                            dcc.RadioItems(
-                                id=f"graph_{graph}_plot_switch",
-                                options=[
-                                    {"label": graph_type.capitalize(), "value": graph_type}
-                                    for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
-                                ],
-                                value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
-                            ),
-                            html.Div(
-                                id=f"graph_{graph}_options",
-                                children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
-                            )
-                        ]
-                    ),
+                        id=f"graph_{graph}_options",
+                        children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
+                    )
                 ]
             )
             for graph in ("scalars", "timeseries")
