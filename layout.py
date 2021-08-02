@@ -332,8 +332,19 @@ def get_graph_column():
                         ]
                     ),
                     html.Div(
-                        id=f"graph_{graph}_options",
-                        children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
+                        className="chart-settings",
+                        children=[
+                            html.Div(
+                                className="chart-settings__title",
+                                children="Chart settings"
+                            ),
+                            html.Div(
+                                className="chart-settings__form",
+                                id=f"graph_{graph}_options",
+                                children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
+                            )
+                        ]
+                        
                     )
                 ]
             )
