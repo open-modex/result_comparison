@@ -236,12 +236,27 @@ button.btn.btn--refresh:focus {
   }
 }
 
-.options {
+.graph__view {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#graph_scalars_options,
+#graph_timeseries_options {
   padding: 1rem;
 }
 
 @media only screen and (min-width: 1200px) {
-  .options {
+  #graph_scalars_options,
+  #graph_timeseries_options {
     width: 14rem;
   }
 }
