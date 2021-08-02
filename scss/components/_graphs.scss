@@ -31,10 +31,13 @@ $chart-options-width: 14rem;
 
 #graph_scalars_options,
 #graph_timeseries_options {
-	padding: 1rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin: 1rem 0;
 	
 	@media only screen and (min-width: $screen-width-regular) {
 		width: $chart-options-width;
+		border-left: $border-style;
 	}
 }
 

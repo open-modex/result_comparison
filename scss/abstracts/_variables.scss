@@ -7,6 +7,7 @@ $color-white: #fff;
 $color-gray-1: #F6F8FA; // for backgrounds
 $color-gray-2: #C6CDD4; // for input borders
 $color-gray-3: #676C73;
+$color-gray-4: #E4E4E4; // for borders
 $color-blue: #839FB4;
 
 $text-color: $primary-color-2;
@@ -27,6 +28,9 @@ $screen-width-xlarge: 1600px;
 // Layout
 $margin-main: 1rem;
 $border-radius: 3px;
+
+// Styling
+$border-style: 1px solid $color-gray-4;
 
 // Pseudo classes
 $pseudo-classes: 'link', 'hover', 'focus', 'visited', 'focus';
