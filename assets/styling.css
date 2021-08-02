@@ -290,19 +290,23 @@ button.btn.btn--refresh:disabled:focus {
           justify-content: space-between;
 }
 
-#graph_scalars_options,
-#graph_timeseries_options {
+.chart-settings {
   padding-left: 1rem;
   padding-right: 1rem;
   margin: 1rem 0;
 }
 
 @media only screen and (min-width: 1200px) {
-  #graph_scalars_options,
-  #graph_timeseries_options {
+  .chart-settings {
     width: 14rem;
     border-left: 1px solid #E4E4E4;
   }
+}
+
+.chart-settings__title {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 300;
 }
 
 #graph_scalars_plot_switch label,
