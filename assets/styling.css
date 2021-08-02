@@ -191,8 +191,7 @@ button.btn.btn--refresh:focus {
   color: #1F567D;
 }
 
-.filter-panel label,
-.options label {
+.dashboard .content label {
   margin-bottom: 0;
   margin-top: 0.75rem;
 }
@@ -268,7 +267,7 @@ button.btn.btn--refresh:focus {
 
 #graph_scalars_plot_switch input,
 #graph_timeseries_plot_switch input {
-  padding-right: 0.25rem;
+  margin-right: 0.25rem;
 }
 
 .header {
