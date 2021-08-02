@@ -37,3 +37,14 @@ $chart-options-width: 14rem;
 		width: $chart-options-width;
 	}
 }
+
+#graph_scalars_plot_switch,
+#graph_timeseries_plot_switch {
+	label {
+		padding: 0 0.5rem;
+	}
+
+	input {
+		padding-right: 0.25rem;
+	}
+}
