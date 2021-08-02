@@ -1,3 +1,5 @@
+$chart-options-width: 14rem;
+
 .charts {
 	&__item {
 		margin-bottom: 2rem;
@@ -21,12 +23,17 @@
     @media only screen and (min-width: $screen-width-regular) {
 		flex: 1;
 	}
+
+	&__view {
+		@include flex-row-justify-space-between;
+	}
 }
 
-.options {
+#graph_scalars_options,
+#graph_timeseries_options {
 	padding: 1rem;
-
-    @media only screen and (min-width: $screen-width-regular) {
-		width: 14rem;
+	
+	@media only screen and (min-width: $screen-width-regular) {
+		width: $chart-options-width;
 	}
 }
