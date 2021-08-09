@@ -1,6 +1,6 @@
 import uuid
 import json
-from collections import ChainMap
+from collections import ChainMap, defaultdict
 
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
@@ -115,8 +115,7 @@ def get_graph_options(data_type, graph_type, preset_options=None):
             {"label": filter_, "value": filter_} for filter_ in TS_FILTERS
         ]
 
-    # sum concatenates lists:
-    div = [dcc.Input(type="hidden", name="graph_type", value=graph_type)]
+    tabs = defaultdict(list)
     for option, value in chosen_options.items():
         if GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].from_filter:
             options = dd_options
@@ -138,11 +137,14 @@ def get_graph_options(data_type, graph_type, preset_options=None):
             )
         else:
             raise ValueError("Unknown dcc component")
-        div += [
+        tabs[GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].category] += [
             html.Label(GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].label),
             component
         ]
-    return div
+    tabs[next(iter(tabs.keys()))].insert(0, dcc.Input(type="hidden", name="graph_type", value=graph_type))
+    return dbc.Tabs(
+        [dbc.Tab(tab, label=label) for label, tab in tabs.items()]
+    )
 
 
 def get_save_load_column(app):
@@ -349,25 +351,6 @@ def get_graph_column():
 def get_layout(app, scenarios):
     session_id = str(uuid.uuid4())
 
-    tab_filters = dbc.Card(
-        dbc.CardBody(
-            [
-                get_filter_column(),
-                get_aggregation_order_column(),
-                get_save_load_column(app),
-                get_units_column(),
-            ]
-        ),
-    )
-    tab_presentation = dbc.Card(
-        dbc.CardBody(
-            [
-                get_color_column(app),
-                get_label_column(app),
-            ]
-        ),
-    )
-
     return html.Div(
         children=[
             html.Div(session_id, id="session-id", style={"display": "none"}),
@@ -380,8 +363,22 @@ def get_layout(app, scenarios):
                         children=[
                             dbc.Tabs(
                                 [
-                                    dbc.Tab(tab_filters, label="Filters"),
-                                    dbc.Tab(tab_presentation, label="Presentation")
+                                    dbc.Tab(
+                                        [
+                                            get_filter_column(),
+                                            get_aggregation_order_column(),
+                                            get_save_load_column(app),
+                                            get_units_column(),
+                                        ],
+                                        label="Filters"
+                                    ),
+                                    dbc.Tab(
+                                        [
+                                            get_color_column(app),
+                                            get_label_column(app),
+                                        ],
+                                        label="Presentation"
+                                    )
                                 ],
                             ),
                             get_graph_column()
