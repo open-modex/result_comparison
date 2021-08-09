@@ -6,6 +6,7 @@ import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_table
+import dash_bootstrap_components as dbc
 
 from graphs import get_empty_fig
 from settings import (
@@ -15,34 +16,62 @@ from models import get_model_options, Filter, Colors, Labels
 
 
 def get_header(app):
-    return html.Div(
+    return html.Section(
+        className="header",
         children=[
             html.Div(
+                className="header__content",
                 children=[
-                    html.Img(
-                        src=app.get_asset_url("open_Modex-logo.png"),
-                        style={"height": "100px", "width": "auto"},
+                    html.Div(
+                        className="header__logo",
+                        children=[
+                            html.Img(
+                                src=app.get_asset_url("open_Modex-logo.png")
+                            )
+                        ],
                     ),
-                    html.P(children=f"Version v{VERSION}"),
-                    html.H4(children="Energy Frameworks to Germany"),
-                    html.P(
-                        children="How to efficiently sustain Germany's energy "
-                        "\n usage with efficient parameters based on regions.",
+                    html.Div(
+                        className="header__heading",
+                        children=[
+                            html.P(
+                                children=f"Version v{VERSION}",
+                                className="version"
+                                ),
+                            html.H1(
+                                children="Energy Frameworks to Germany",
+                                className="title"
+                                ),
+                            html.P(
+                                children="How to efficiently sustain Germany's energy "
+                                "\n usage with efficient parameters based on regions.",
+                                className="subtitle"
+                            ),
+                        ],
                     ),
-                ],
+                ]
             ),
+            dbc.NavbarSimple(
+                className="header__nav",
+                children=[
+                    dbc.NavItem(dbc.NavLink("About", href="#")),
+                    dbc.NavItem(dbc.NavLink("Contact", href="#"))
+                ],
+                dark=False,
+                expand="xl"
+            )
         ],
     )
 
 
 def get_scenario_column(scenarios):
     return html.Div(
+        className="scenarios",
         style={"padding-bottom": "50px"},
         children=[
-            html.Label("Select scenario:"),
+            html.Label("Scenario"),
             dcc.Dropdown(
                 id="dd_scenario",
-                className="dropdown-bryan",  # This is a dash component with additonal class name
+                className="scenarios__dropdown",  # This is a dash component with additonal class name
                 multi=True,
                 options=[
                     {
@@ -52,7 +81,25 @@ def get_scenario_column(scenarios):
                     for scenario in scenarios
                 ],
             ),
-            dbc.Button("Reload", id="scenario_reload", className="test-bryan")  # This is bootstrap component with additional class
+            dbc.Button(
+                "Reload", 
+                id="scenario_reload", 
+                className="scenarios__btn btn btn--refresh"
+            ), # This is bootstrap component with additional class
+            html.Div(
+                className="scenarios__views",
+                children=[
+                    html.Div(
+                        className="view view--dashboard"
+                    ),
+                    html.Div(
+                        className="view view--data"
+                    ),
+                    html.Div(
+                        className="view view--dashboard-data"
+                    )
+                ]
+            )
         ],
     )
 
@@ -222,15 +269,29 @@ def get_label_column(app):
 
 def get_graph_column():
     return html.Div(
-        style={"width": "68%", "display": "inline-block"},
+        className="charts",
         children=[
             html.Div(
+                className="charts__item",
                 children=[
                     html.Div(
-                        style={"width": "85%", "display": "inline-block", "vertical-align": "top"},
+                        className="graph",
                         children=[
-                            html.Button(f"Refresh {graph}", id=f"refresh_{graph}"),
-                            dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
+                            html.Div(
+                                className="graph__view",
+                                children=[
+                                    dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
+                                    dcc.RadioItems(
+                                        id=f"graph_{graph}_plot_switch",
+                                        options=[
+                                            {"label": graph_type.capitalize(), "value": graph_type}
+                                            for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
+                                        ],
+                                        value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
+                                    ),
+                                    html.Button(f"Refresh", id=f"refresh_{graph}", className="btn btn--refresh")
+                                ]
+                            ),
                             dcc.Loading(
                                 style={"padding-bottom": "30px"},
                                 type="default",
@@ -258,22 +319,20 @@ def get_graph_column():
                         ]
                     ),
                     html.Div(
-                        style={"width": "15%", "display": "inline-block"},
+                        className="chart-settings",
                         children=[
-                            dcc.RadioItems(
-                                id=f"graph_{graph}_plot_switch",
-                                options=[
-                                    {"label": graph_type.capitalize(), "value": graph_type}
-                                    for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
-                                ],
-                                value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
+                            html.Div(
+                                className="chart-settings__title",
+                                children="Chart settings"
                             ),
                             html.Div(
+                                className="chart-settings__form",
                                 id=f"graph_{graph}_options",
                                 children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
                             )
                         ]
-                    ),
+                        
+                    )
                 ]
             )
             for graph in ("scalars", "timeseries")
@@ -288,13 +347,15 @@ def get_layout(app, scenarios):
         children=[
             html.Div(session_id, id="session-id", style={"display": "none"}),
             get_header(app),
-            html.Div(
+            html.Main(
+                className="dashboard",
                 children=[
                     get_scenario_column(scenarios),
                     html.Div(
+                        className="content",
                         children=[
                             html.Div(
-                                style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
+                                className="filter-panel",
                                 children=[
                                     get_filter_column(),
                                     get_aggregation_column(),

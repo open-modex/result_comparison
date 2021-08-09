@@ -1,0 +1,58 @@
+$chart-options-width: 14rem;
+
+.charts {
+	&__item {
+		margin-bottom: 2rem;
+	}
+
+	@media only screen and (min-width: $screen-width-regular) {
+		flex: 1;
+	}
+
+	&__item {
+		@include box-style;
+        @include flex-row;
+		margin-left: 3rem;
+		margin-bottom: 3rem;
+	}
+}
+
+.graph {
+	padding: 1rem;
+
+    @media only screen and (min-width: $screen-width-regular) {
+		flex: 1;
+	}
+
+	&__view {
+		@include flex-row-justify-space-between;
+	}
+}
+
+.chart-settings {
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin: 1rem 0;
+	
+	@media only screen and (min-width: $screen-width-regular) {
+		width: $chart-options-width;
+		border-left: $border-style;
+	}
+
+	&__title {
+		text-transform: uppercase;
+		text-align: center;
+		font-weight: 300;
+	}
+}
+
+#graph_scalars_plot_switch,
+#graph_timeseries_plot_switch {
+	label {
+		padding: 0 0.5rem;
+	}
+
+	input {
+		margin-right: 0.25rem;
+	}
+}
