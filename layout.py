@@ -235,17 +235,21 @@ def get_graph_column():
                             dcc.Loading(
                                 style={"padding-bottom": "30px"},
                                 type="default",
-                                children=html.P(id=f"graph_{graph}_error", children="")
-                            ),
-                            dcc.Graph(
-                                id=f"graph_{graph}",
-                                figure=get_empty_fig(),
-                                style={},
-                                config={
-                                    'toImageButtonOptions': {
-                                        'format': 'svg',
-                                    }
-                                }
+                                children=dbc.Tabs(
+                                    [
+                                        dcc.Graph(
+                                            id=f"graph_{graph}",
+                                            figure=get_empty_fig(),
+                                            style={},
+                                            config={
+                                                'toImageButtonOptions': {
+                                                    'format': 'svg',
+                                                }
+                                            }
+                                        ),
+                                        html.P(id=f"graph_{graph}_error", children=""),
+                                    ]
+                                )
                             ),
                             dash_table.DataTable(
                                 id=f"table_{graph}",
