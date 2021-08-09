@@ -8,6 +8,7 @@ import dash
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from dash.dash import no_update
+import dash_bootstrap_components as dbc
 from flask import flash, get_flashed_messages
 from flask_caching import Cache
 
@@ -29,6 +30,7 @@ app = dash.Dash(
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=4.0"},
     ],
+    external_stylesheets=[dbc.themes.BOOTSTRAP]
 )
 server = app.server
 server.secret_key = SECRET_KEY

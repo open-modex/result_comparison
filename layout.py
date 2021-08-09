@@ -3,6 +3,7 @@ import json
 from collections import ChainMap
 
 import dash_core_components as dcc
+import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_table
 
@@ -282,6 +283,25 @@ def get_graph_column():
 def get_layout(app, scenarios):
     session_id = str(uuid.uuid4())
 
+    tab_filters = dbc.Card(
+        dbc.CardBody(
+            [
+                get_filter_column(),
+                get_aggregation_column(),
+                get_save_load_column(app),
+                get_units_column(),
+            ]
+        ),
+    )
+    tab_presentation = dbc.Card(
+        dbc.CardBody(
+            [
+                get_color_column(app),
+                get_label_column(app),
+            ]
+        ),
+    )
+
     return html.Div(
         children=[
             html.Div(session_id, id="session-id", style={"display": "none"}),
@@ -291,16 +311,11 @@ def get_layout(app, scenarios):
                     get_scenario_column(scenarios),
                     html.Div(
                         children=[
-                            html.Div(
-                                style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
-                                children=[
-                                    get_filter_column(),
-                                    get_aggregation_column(),
-                                    get_save_load_column(app),
-                                    get_units_column(),
-                                    get_color_column(app),
-                                    get_label_column(app)
-                                ]
+                            dbc.Tabs(
+                                [
+                                    dbc.Tab(tab_filters, label="Filters"),
+                                    dbc.Tab(tab_presentation, label="Presentation")
+                                ],
                             ),
                             get_graph_column()
                         ]
