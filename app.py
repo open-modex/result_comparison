@@ -9,6 +9,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from dash.dash import no_update
+import dash_bootstrap_components as dbc
 from flask import flash, get_flashed_messages
 from flask_caching import Cache
 
