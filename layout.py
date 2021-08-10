@@ -352,10 +352,12 @@ def get_layout(app, scenarios):
         children=[
             html.Div(session_id, id="session-id", style={"display": "none"}),
             get_header(app),
-            html.Div(
+            html.Main(
+                className="dashboard",
                 children=[
                     get_scenario_column(scenarios),
                     html.Div(
+                        className="content",
                         children=[
                             dbc.Tabs(
                                 [
