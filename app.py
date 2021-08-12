@@ -31,7 +31,7 @@ app = dash.Dash(
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=4.0"},
     ],
-    external_stylesheets=[dbc.themes.BOOTSTRAP]
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
 )
 server = app.server
 server.secret_key = SECRET_KEY
@@ -445,4 +445,4 @@ def show_logs():
 
 
 if __name__ == "__main__":
-    app.run_server(debug=DEBUG)
+    app.run_server(debug=DEBUG, use_debugger=False, use_reloader=False, passthrough_errors=True)

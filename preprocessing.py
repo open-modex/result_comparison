@@ -112,13 +112,12 @@ def extract_filters(type_, filter_div):
 
 
 def extract_graph_options(graph_div):
+    graph_type = jmespath.search("props.children[0].props.children[0].props.value", graph_div)
+    raw_options = jmespath.search(
+        "props.children[].props.children[] | [1:] | [?(type == 'Dropdown' || type == 'Input' || type == 'Checklist')]", graph_div)
     options = {
-        "type": graph_div[0]["props"]["value"],
-        "options": {
-            item["props"]["id"].split("-")[1]: None if (value := item["props"]["value"]) == "" else value
-            for item in graph_div
-            if item["type"] in ("Dropdown", "Input", "Checklist") and "id" in item["props"]
-        },
+        "type": graph_type,  # FIXME: Remove scalar upfront
+        "options": {item["props"]["id"].split("-")[1]: None if (value := item["props"]["value"]) == "" else value for item in raw_options}
     }
     return options
 
