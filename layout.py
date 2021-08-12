@@ -305,17 +305,20 @@ def get_graph_column():
                                 type="default",
                                 children=dbc.Tabs(
                                     [
-                                        dcc.Graph(
-                                            id=f"graph_{graph}",
-                                            figure=get_empty_fig(),
-                                            style={},
-                                            config={
-                                                'toImageButtonOptions': {
-                                                    'format': 'svg',
+                                        dbc.Tab(
+                                            dcc.Graph(
+                                                id=f"graph_{graph}",
+                                                figure=get_empty_fig(),
+                                                style={},
+                                                config={
+                                                    'toImageButtonOptions': {
+                                                        'format': 'svg',
+                                                    }
                                                 }
-                                            }
+                                            ),
+                                            label="Chart"
                                         ),
-                                        html.P(id=f"graph_{graph}_error", children=""),
+                                        dbc.Tab(html.P(id=f"graph_{graph}_error", children=""), label="Errors"),
                                     ]
                                 )
                             ),
