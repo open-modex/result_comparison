@@ -283,6 +283,7 @@ def box_plot(data, options):
 
 
 def heat_map(data, options):
+    del options["color_discrete_map"]  # Not available in heat maps
     x = options.pop("x")
     y = options.pop("y")
     xaxis_title = options.pop("xaxis_title") or x
