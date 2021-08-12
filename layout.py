@@ -311,7 +311,11 @@ def get_graph_column():
                                             ),
                                             label="Chart"
                                         ),
-                                        dbc.Tab(html.P(id=f"graph_{graph}_error", children=""), label="Errors"),
+                                        dbc.Tab(
+                                            html.P(id=f"graph_{graph}_error", children=""),
+                                            id=f"tab_{graph}_error",
+                                            label="Errors",
+                                        ),
                                     ]
                                 )
                             ),
