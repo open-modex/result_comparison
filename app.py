@@ -324,6 +324,7 @@ def toggle_timeseries_graph_options(plot_type, name):
         Output(component_id='table_scalars', component_property='data'),
         Output(component_id='table_scalars', component_property='columns'),
         Output(component_id='graph_scalars_error', component_property='children'),
+        Output(component_id='tab_scalars_error', component_property='labelClassName'),
     ],
     [
         Input(component_id="refresh_scalars", component_property="n_clicks"),
@@ -354,14 +355,17 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     try:
         preprocessed_data = preprocessing.prepare_scalars(data, order_by, agg_group_by, units, filters, labels)
     except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), [], [], show_logs()
+        log_div, log_level = show_logs()
+        return graphs.get_empty_fig(), [], [], log_div, log_level
     if preprocessed_data.empty:
         flash("No data for current filter settings", "warning")
-        return graphs.get_empty_fig(), [], [], show_logs()
+        log_div, log_level = show_logs()
+        return graphs.get_empty_fig(), [], [], log_div, log_level
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
-        return graphs.get_empty_fig(), [], [], show_logs()
+        log_div, log_level = show_logs()
+        return graphs.get_empty_fig(), [], [], log_div, log_level
 
     if show_data and "True" in show_data:
         columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
@@ -369,7 +373,9 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     else:
         columns = []
         data_table = []
-    return fig, data_table, columns, show_logs()
+
+    log_div, log_level = show_logs()
+    return fig, data_table, columns, log_div, log_level
 
 
 @app.callback(
@@ -378,6 +384,7 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
         Output(component_id='table_timeseries', component_property='data'),
         Output(component_id='table_timeseries', component_property='columns'),
         Output(component_id='graph_timeseries_error', component_property='children'),
+        Output(component_id='tab_timeseries_error', component_property='labelClassName'),
     ],
     [
         Input(component_id="refresh_timeseries", component_property="n_clicks"),
@@ -412,14 +419,17 @@ def timeseries_graph(
     try:
         preprocessed_data = preprocessing.prepare_timeseries(data, order_by, agg_group_by, units, filters, labels)
     except preprocessing.PreprocessingError:
-        return graphs.get_empty_fig(), [], [], show_logs()
+        log_div, log_level = show_logs()
+        return graphs.get_empty_fig(), [], [], log_div, log_level
     if preprocessed_data.empty:
         flash("No data for current filter settings", "warning")
-        return graphs.get_empty_fig(), [], [], show_logs()
+        log_div, log_level = show_logs()
+        return graphs.get_empty_fig(), [], [], log_div, log_level
     try:
         fig = graphs.get_timeseries_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:
-        return graphs.get_empty_fig(), [], [], show_logs()
+        log_div, log_level = show_logs()
+        return graphs.get_empty_fig(), [], [], log_div, log_level
 
     if show_data and "True" in show_data:
         columns = [{"name": i, "id": i} for i in preprocessed_data.columns]
@@ -428,7 +438,8 @@ def timeseries_graph(
         columns = []
         data_table = []
 
-    return fig, data_table, columns, show_logs()
+    log_div, log_level = show_logs()
+    return fig, data_table, columns, log_div, log_level
 
 
 def show_logs():
@@ -441,7 +452,12 @@ def show_logs():
     if len(infos) > MAX_INFOS:
         infos = infos[:MAX_INFOS]
         infos.append(f"Too many infos (>{MAX_INFOS}) - Skipping further infos...")
-    return get_error_and_warnings_div(errors, warnings, infos)
+    level = "info"
+    if errors:
+        level = "errors"
+    elif warnings:
+        level = "warning"
+    return get_error_and_warnings_div(errors, warnings, infos), level
 
 
 if __name__ == "__main__":
