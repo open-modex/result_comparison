@@ -105,7 +105,7 @@ def extract_filters(type_, filter_div):
     for item in filter_div:
         if item["type"] != "Dropdown":
             continue
-        name = item["props"]["id"].split("-")[1]
+        name = item["props"]["id"]["name"]
         if name in filters and "value" in item["props"] and item["props"]["value"]:
             filter_kwargs[name] = item["props"]["value"]
     return filter_kwargs
