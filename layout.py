@@ -124,14 +124,14 @@ def get_graph_options(data_type, graph_type, preset_options=None):
         component_type = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].type
         if component_type == "dropdown":
             component = dcc.Dropdown(
-                id=f"{data_type}-{option}",
+                id={"name": option, "type": f"graph_{data_type}_option"},
                 options=options,
                 value=value,
                 clearable=GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].clearable
             )
         elif component_type in ("input", "number"):
             component = dcc.Input(
-                id=f"{data_type}-{option}",
+                id={"name": option, "type": f"graph_{data_type}_option"},
                 value=value,
                 type="text" if component_type == "input" else "number"
             )

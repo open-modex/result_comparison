@@ -5,8 +5,7 @@ import urllib3
 from functools import partial
 
 import dash
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output, State, ALL, ClientsideFunction
 from dash.exceptions import PreventUpdate
 from dash.dash import no_update
 import dash_bootstrap_components as dbc
@@ -94,6 +93,20 @@ def reload_scenarios(_):
         }
         for sc in scenarios
     ]
+
+
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_refresh_elements'
+    ),
+    Output(component_id="refresh_scalars", component_property="className"),
+    [
+        Input("dd_scenario", "value"),
+        Input({"name": ALL, "type": "graph_scalars_option"}, "value"),
+    ],
+    prevent_initial_call=True
+)
 
 
 @app.callback(
