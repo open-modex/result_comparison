@@ -189,6 +189,7 @@ def get_units_column():
                 [
                     html.Label(unit_name),
                     dcc.Dropdown(
+                        id={"name": unit_name, "type": "unit-dropdown"},
                         options=[
                             {"label": unit, "value": unit}
                             for unit in unit_data["units"]
@@ -212,7 +213,7 @@ def get_filter_column():
                 [
                     html.Label(f"Filter {filter_.capitalize()}"),
                     dcc.Dropdown(
-                        id=f"filter-{filter_}", multi=True, clearable=True
+                        id={"name": filter_, "type": "filter-dropdown"}, multi=True, clearable=True
                     ),
                 ]
                 for filter_ in SC_FILTERS
