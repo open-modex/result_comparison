@@ -490,6 +490,7 @@ button.btn.btn--refresh:disabled:focus {
 }
 
 .content > div:first-child .nav-tabs .nav-link {
+  padding: 0.75rem 1rem;
   text-align: center;
   text-transform: uppercase;
   color: #000;
@@ -506,6 +507,31 @@ button.btn.btn--refresh:disabled:focus {
   color: #1F567D;
   background-color: #F6F8FA;
   cursor: pointer;
+}
+
+.content > div:first-child .filter-section {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #E4E4E4;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.content > div:first-child .filter-section:first-of-type {
+  padding-top: 0;
+}
+
+.content > div:first-child .filter-section:last-of-type {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.content > div:first-child .filter-section > p {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  color: #676C73;
 }
 
 .filter-panel {

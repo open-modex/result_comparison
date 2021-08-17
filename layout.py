@@ -168,6 +168,7 @@ def get_save_load_column(app):
 
 def get_aggregation_column():
     return html.Div(
+        className="filter-section",
         children=[
             html.P("Aggregation"),
             html.Label("Group-By:"),
@@ -184,6 +185,7 @@ def get_aggregation_column():
 def get_units_column():
     return html.Div(
         id="units",
+        className="filter-section",
         children=sum(
             (
                 [
@@ -207,6 +209,7 @@ def get_units_column():
 def get_filter_column():
     return html.Div(
         id="filters",
+        className="filter-section",
         children=sum(
             (
                 [
@@ -217,7 +220,7 @@ def get_filter_column():
                 ]
                 for filter_ in SC_FILTERS
             ),
-            [],
+            [html.P("General")],
         ),
     )
 
