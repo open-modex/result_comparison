@@ -44,6 +44,7 @@ $scenarios-dropdown-height: 39px;
 .content {
 	@include flex-row;
 
+	// Filters
 	&> div:first-child {
 		width: 20rem;
 		min-width: 20rem;
@@ -62,6 +63,7 @@ $scenarios-dropdown-height: 39px;
 		}
 
 		.nav-tabs .nav-link {
+			padding: 0.75rem 1rem;
 			text-align: center;
 			text-transform: uppercase;
 			color: $primary-color-2;
@@ -75,6 +77,28 @@ $scenarios-dropdown-height: 39px;
 			color: $primary-color-1;
 			background-color: $color-gray-1;
 			cursor: pointer;
+		}
+
+		.filter-section {
+			padding-top: 1.5rem;
+			padding-bottom: 2rem;
+			border-bottom: $border-style;
+			user-select: none;
+		}
+
+		.filter-section:first-of-type {
+			padding-top: 0;
+		}
+
+		.filter-section:last-of-type {
+			padding-bottom: 0;
+			border-bottom: none;
+		}
+	
+		.filter-section > p {
+			margin-bottom: 0;
+			font-size: $font-size-small;
+			color: $color-gray-3;
 		}
 	}
 }
