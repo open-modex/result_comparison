@@ -290,6 +290,32 @@ button.btn.btn--refresh:disabled:focus {
           justify-content: space-between;
 }
 
+.graph .nav-link {
+  font-size: 0.875rem;
+  color: #000;
+}
+
+.graph .nav-link:not(.active) {
+  color: #1F567D;
+  background-color: #F6F8FA;
+  cursor: pointer;
+}
+
+.graph .error .nav-link {
+  color: #DB2B39;
+  background-color: #FBEAEB;
+}
+
+.graph .warning .nav-link {
+  color: #875D45;
+  background-color: #FBF6EA;
+}
+
+.graph .error .nav-link.active,
+.graph .warning .nav-link.active {
+  background-color: #fff;
+}
+
 .chart-settings {
   padding-left: 1rem;
   padding-right: 1rem;
