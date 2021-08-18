@@ -27,6 +27,32 @@ $chart-options-width: 14rem;
 	&__view {
 		@include flex-row-justify-space-between;
 	}
+
+	.nav-link {
+		font-size: $font-size-small;
+		color: $primary-color-2;
+	}
+
+	.nav-link:not(.active) {
+		color: $primary-color-1;
+		background-color: $color-gray-1;
+		cursor: pointer;
+	}
+
+	.error .nav-link {
+		color: $error-color;
+		background-color: $error-bg-color;
+	}
+
+	.warning .nav-link {
+		color: $warning-color;
+		background-color: $warning-bg-color;
+	}
+	
+	.error .nav-link.active,
+	.warning .nav-link.active {
+		background-color: $color-white;
+	}
 }
 
 .chart-settings {
