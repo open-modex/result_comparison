@@ -2,7 +2,7 @@ import os
 import json
 
 from scenario import get_scenario_data
-from settings import DATA_PATH, DATA_SCENARIO_PATH
+from settings import DATA_PATH, DATA_SCENARIO_PATH, SKIP_TS
 
 
 def get_dummy_data(scenario_id, table):
@@ -12,7 +12,8 @@ def get_dummy_data(scenario_id, table):
 
 
 def create_dummy_data(scenario_id):
-    for table in ("oed_scalars", "oed_timeseries"):
+    tables = ["oed_scalars"] if SKIP_TS else ["oed_scalars", "oed_timeseries"]
+    for table in tables:
         data = get_scenario_data(scenario_id, table)
         with open(f"{DATA_PATH}/{DATA_SCENARIO_PATH}/{scenario_id}_{table}.json", "w") as dummy_file:
             json.dump(data, dummy_file)
