@@ -89,7 +89,7 @@ def get_scenario_column(scenarios):
                 className="scenarios__views",
                 children=[
                     html.Div(
-                        className="view view--dashboard"
+                        className="view view--dashboard active"
                     ),
                     html.Div(
                         className="view view--data"
