@@ -9,4 +9,10 @@
     margin-bottom: 0;
 		margin-top: 0.75rem;
   }
+
+  textarea,
+  input {
+    border-width: 1px;
+    border-color: $color-gray-2;
+  }
 }
