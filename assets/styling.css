@@ -522,9 +522,41 @@ button.btn.btn--refresh:disabled:focus {
 .scenarios__views .view {
   height: 39px;
   width: 39px;
-  background-color: #1F567D;
+  background-color: #fff;
   margin-left: 0.5rem;
   border-radius: 3px;
+  background-size: 80%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: 1px solid #1F567D;
+}
+
+.scenarios__views .view.active {
+  background-color: #1F567D;
+}
+
+.scenarios .view.view--dashboard {
+  background-image: url("../assets/icons/i_graph_view_b.svg");
+}
+
+.scenarios .view.view--dashboard.active {
+  background-image: url("../assets/icons/i_graph_view_w.svg");
+}
+
+.scenarios .view.view--data {
+  background-image: url("../assets/icons/i_data_view_b.svg");
+}
+
+.scenarios .view.view--data.active {
+  background-image: url("../assets/icons/i_data_view_w.svg");
+}
+
+.scenarios .view.view--dashboard-data {
+  background-image: url("../assets/icons/i_all_views_b.svg");
+}
+
+.scenarios .view.view--dashboard-data.active {
+  background-image: url("../assets/icons/i_all_views_w.svg");
 }
 
 .content {
