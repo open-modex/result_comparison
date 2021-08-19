@@ -108,6 +108,10 @@ GRAPHS_DEFAULT_OPTIONS = {
             yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
             legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
             bargap=GraphOption("Bar Gap", "", type="number", plotly_option=False),
+            margin_l=GraphOption("Margin Left", "", type="number", plotly_option=False),
+            margin_r=GraphOption("Margin Right", "", type="number", plotly_option=False),
+            margin_t=GraphOption("Margin Top", "", type="number", plotly_option=False),
+            margin_b=GraphOption("Margin Bottom", "", type="number", plotly_option=False),
         ),
         "radar": GraphOptions(
             r=GraphOption("Radius", "value"),
