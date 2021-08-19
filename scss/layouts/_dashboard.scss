@@ -95,7 +95,8 @@ $scenarios-dropdown-height: 39px;
 		}
 
 		.nav-tabs .nav-link {
-			padding: 0.75rem 1rem;
+			position: relative;
+			padding: 0.75rem 1rem 0.75rem 2rem;
 			text-align: center;
 			text-transform: uppercase;
 			color: $primary-color-2;
@@ -109,6 +110,33 @@ $scenarios-dropdown-height: 39px;
 			color: $primary-color-1;
 			background-color: $color-gray-1;
 			cursor: pointer;
+		}
+
+		.nav-tabs > li .nav-link::before {
+			content: '';
+			position: absolute;
+			width: 1.15rem;
+			height: 1.15rem;
+		}
+
+		.nav-tabs > li:first-of-type .nav-link::before {
+			background-image: url('../assets/icons/i_filter_blue.svg');
+			top: 13px;
+			left: 2.4rem;
+		}
+
+		.nav-tabs > li:first-of-type .active.nav-link::before {
+			background-image: url('../assets/icons/i_filter_black.svg');
+		}
+
+		.nav-tabs > li:last-of-type .nav-link::before {
+			background-image: url('../assets/icons/i_presentation_blue.svg');
+			top: 12px;
+			left: .75rem;
+		}
+
+		.nav-tabs > li:last-of-type .active.nav-link::before {
+			background-image: url('../assets/icons/i_presentation_black.svg');
 		}
 
 		.filter-section {
