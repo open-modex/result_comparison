@@ -161,6 +161,34 @@ $scenarios-dropdown-height: 39px;
 			color: $color-gray-3;
 		}
 	}
+	
+	.filter__colors {
+		padding-bottom: 1.5rem;
+		border-bottom: $border-style;
+	}
+
+	.filter__labels {
+		padding-top: 1rem;
+	}
+
+	.filter__colors,
+	.filter__labels {
+		
+		label {
+			width: 100%;
+		}
+
+		.save {
+			@include flex-row;
+
+			button {
+				flex: 1;
+				margin-left: 0.5rem;
+				border-color: $primary-color-1;
+				color: $primary-color-1;
+			}
+		}
+	}
 }
 
 .filter-panel {
