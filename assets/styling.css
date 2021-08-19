@@ -238,6 +238,12 @@ button.btn.btn--refresh:disabled:focus {
   margin-top: 0.75rem;
 }
 
+.dashboard .content textarea,
+.dashboard .content input {
+  border-width: 1px;
+  border-color: #C6CDD4;
+}
+
 .charts__item {
   margin-bottom: 2rem;
 }
@@ -662,6 +668,41 @@ button.btn.btn--refresh:disabled:focus {
   margin-bottom: 0;
   font-size: 0.875rem;
   color: #676C73;
+}
+
+.content .filter__colors {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #E4E4E4;
+}
+
+.content .filter__labels {
+  padding-top: 1rem;
+}
+
+.content .filter__colors label,
+.content .filter__labels label {
+  width: 100%;
+}
+
+.content .filter__colors .save,
+.content .filter__labels .save {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.content .filter__colors .save button,
+.content .filter__labels .save button {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-left: 0.5rem;
+  border-color: #1F567D;
+  color: #1F567D;
 }
 
 .filter-panel {

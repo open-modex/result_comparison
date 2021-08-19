@@ -242,14 +242,20 @@ def get_color_column(app):
     with app.server.app_context():
         options = get_model_options(Colors)
     return html.Div(
+        className="filter__colors",
         children=[
             html.Label(f"Color Map"),
             dcc.Textarea(
                 id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP), style={"width": "100%", "height": "50px"}
             ),
             html.Label("Save colors as:"),
-            dcc.Input(id="save_colors_name", type="text"),
-            html.Button("Save", id="save_colors"),
+            html.Div(
+                className="save",
+                children=[
+                    dcc.Input(id="save_colors_name", type="text"),
+                    html.Button("Save", id="save_colors"),
+                ]
+            ),
             html.Label("Load colors"),
             dcc.Dropdown(
                 id="load_colors",
@@ -265,14 +271,20 @@ def get_label_column(app):
     with app.server.app_context():
         options = get_model_options(Labels)
     return html.Div(
+        className="filter__labels",
         children=[
             html.Label(f"Labels"),
             dcc.Textarea(
                 id="labels", value=json.dumps(GRAPHS_DEFAULT_LABELS), style={"width": "100%", "height": "50px"}
             ),
             html.Label("Save labels as:"),
-            dcc.Input(id="save_labels_name", type="text"),
-            html.Button("Save", id="save_labels"),
+            html.Div(
+                className="save",
+                children=[
+                    dcc.Input(id="save_labels_name", type="text"),
+                    html.Button("Save", id="save_labels"),
+                ]
+            ),
             html.Label("Load labels"),
             dcc.Dropdown(
                 id="load_labels",
