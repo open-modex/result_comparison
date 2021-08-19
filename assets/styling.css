@@ -592,7 +592,8 @@ button.btn.btn--refresh:disabled:focus {
 }
 
 .content > div:first-child .nav-tabs .nav-link {
-  padding: 0.75rem 1rem;
+  position: relative;
+  padding: 0.75rem 1rem 0.75rem 2rem;
   text-align: center;
   text-transform: uppercase;
   color: #000;
@@ -609,6 +610,33 @@ button.btn.btn--refresh:disabled:focus {
   color: #1F567D;
   background-color: #F6F8FA;
   cursor: pointer;
+}
+
+.content > div:first-child .nav-tabs > li .nav-link::before {
+  content: '';
+  position: absolute;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.content > div:first-child .nav-tabs > li:first-of-type .nav-link::before {
+  background-image: url("../assets/icons/i_filter_blue.svg");
+  top: 13px;
+  left: 2.4rem;
+}
+
+.content > div:first-child .nav-tabs > li:first-of-type .active.nav-link::before {
+  background-image: url("../assets/icons/i_filter_black.svg");
+}
+
+.content > div:first-child .nav-tabs > li:last-of-type .nav-link::before {
+  background-image: url("../assets/icons/i_presentation_blue.svg");
+  top: 12px;
+  left: .75rem;
+}
+
+.content > div:first-child .nav-tabs > li:last-of-type .active.nav-link::before {
+  background-image: url("../assets/icons/i_presentation_black.svg");
 }
 
 .content > div:first-child .filter-section {

@@ -391,6 +391,7 @@ def get_layout(app, scenarios):
                                             get_save_load_column(app),
                                             get_units_column(),
                                         ],
+                                        className="test",
                                         label="Filters"
                                     ),
                                     dbc.Tab(
