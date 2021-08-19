@@ -7,8 +7,8 @@ from plotly import express as px
 from plotly import graph_objects as go
 
 from settings import (
-    COLUMN_JOINER, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_TEMPLATE, GRAPHS_DEFAULT_OPTIONS,
-    GRAPHS_MAX_TS_PER_PLOT
+    COLUMN_JOINER, GRAPHS_DEFAULT_LAYOUT, GRAPHS_DEFAULT_XAXES_LAYOUT, GRAPHS_DEFAULT_YAXES_LAYOUT,
+    GRAPHS_DEFAULT_TEMPLATE, GRAPHS_DEFAULT_OPTIONS, GRAPHS_MAX_TS_PER_PLOT
 )
 
 
@@ -94,11 +94,14 @@ def bar_plot(data, options):
     )
 
     unit_axis = "x" if fig_options["orientation"] == "h" else "y"
-    layout[f"{unit_axis}axis_title"] = add_unit_to_label(fig_options[unit_axis], data)
+    if unit_axis == "x" and not xaxis_title:
+        layout["xaxis_title"] = add_unit_to_label(fig_options["x"], data)
+    if unit_axis == "y" and not yaxis_title:
+        layout["yaxis_title"] = add_unit_to_label(fig_options["y"], data)
     if xaxis_title:
-        layout["xaxis_title"] = xaxis_title
+        fig.update_xaxes(title=xaxis_title)
     if yaxis_title:
-        layout["yaxis_title"] = yaxis_title
+        fig.update_yaxes(title=yaxis_title)
 
     try:
         fig.update_layout(
@@ -109,6 +112,8 @@ def bar_plot(data, options):
     except ValueError as ve:
         flash(f"Scalar layout error: {ve}", category="error")
         raise PlottingError(f"Scalar layout error: {ve}")
+    fig.update_xaxes(GRAPHS_DEFAULT_XAXES_LAYOUT)
+    fig.update_yaxes(GRAPHS_DEFAULT_YAXES_LAYOUT)
     return fig
 
 
@@ -146,6 +151,8 @@ def radar_plot(data, options):
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
+    fig.update_xaxes(GRAPHS_DEFAULT_XAXES_LAYOUT)
+    fig.update_yaxes(GRAPHS_DEFAULT_YAXES_LAYOUT)
     return fig
 
 
@@ -177,6 +184,8 @@ def dot_plot(data, options):
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
+    fig.update_xaxes(GRAPHS_DEFAULT_XAXES_LAYOUT)
+    fig.update_yaxes(GRAPHS_DEFAULT_YAXES_LAYOUT)
     return fig
 
 
@@ -235,6 +244,8 @@ def line_plot(data, options):
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
+    fig.update_xaxes(GRAPHS_DEFAULT_XAXES_LAYOUT)
+    fig.update_yaxes(GRAPHS_DEFAULT_YAXES_LAYOUT)
     return fig
 
 
@@ -279,6 +290,8 @@ def box_plot(data, options):
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
+    fig.update_xaxes(GRAPHS_DEFAULT_XAXES_LAYOUT)
+    fig.update_yaxes(GRAPHS_DEFAULT_YAXES_LAYOUT)
     return fig
 
 
@@ -329,4 +342,6 @@ def heat_map(data, options):
         template=GRAPHS_DEFAULT_TEMPLATE,
         **GRAPHS_DEFAULT_LAYOUT
     )
+    fig.update_xaxes(GRAPHS_DEFAULT_XAXES_LAYOUT)
+    fig.update_yaxes(GRAPHS_DEFAULT_YAXES_LAYOUT)
     return fig
