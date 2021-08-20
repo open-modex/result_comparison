@@ -97,11 +97,6 @@ def bar_plot(data, options):
     else:
         fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
-    # Remove padding between stacked bars:
-    fig.update_traces(
-        marker={"line": {"width": 0}}
-    )
-
     unit_axis = "x" if fig_options["orientation"] == "h" else "y"
     if unit_axis == "x" and not xaxis_title:
         layout["xaxis_title"] = add_unit_to_label(fig_options["x"], data)
@@ -111,6 +106,23 @@ def bar_plot(data, options):
         fig.update_xaxes(title=xaxis_title)
     if yaxis_title:
         fig.update_yaxes(row=1, col=1, title=yaxis_title)
+
+    # Move legend above plot in subplots:
+    if fig_options["facet_col"]:
+        fig.update_layout(
+            legend={
+                "orientation": "h",
+                "yanchor": "bottom",
+                "y": 1.06,
+                "xanchor": "right",
+                "x": 1
+            }
+        )
+
+    # Remove padding between stacked bars:
+    fig.update_traces(
+        marker={"line": {"width": 0}}
+    )
 
     try:
         fig.update_layout(

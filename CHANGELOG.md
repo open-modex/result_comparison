@@ -9,6 +9,9 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - margin options for bar chart
 - option to set subplot labels
 
+### Changed
+- legend postion above subplots
+
 ### Fixed
 - axes layouts are adapted on every facet/subplot
 - multiple yaxis labels in subplots
