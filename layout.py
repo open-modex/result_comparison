@@ -379,6 +379,14 @@ def get_graph_column():
         ],
     )
 
+def get_footer():
+    return html.Div(
+        className="footer",
+        children=[
+            html.A("Imprint", href="#", className="nav-link"),
+            html.A("Data Privacy", href="#", className="nav-link")
+        ]
+    )
 
 def get_layout(app, scenarios):
     session_id = str(uuid.uuid4())
@@ -418,6 +426,7 @@ def get_layout(app, scenarios):
                             get_graph_column()
                         ]
                     ),
+                    get_footer()
                 ],
             ),
         ],
