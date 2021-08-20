@@ -7,6 +7,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ## [Unreleased]
 ### Added
 - margin options for bar chart
+- option to set subplot labels
 
 ### Fixed
 - axes layouts are adapted on every facet/subplot

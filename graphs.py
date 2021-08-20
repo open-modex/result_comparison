@@ -66,6 +66,7 @@ def bar_plot(data, options):
         "margin_b": options.pop("margin_b"),
     }
     labels = options.pop("labels")
+    subplot_label = options.pop("subplot_label")
 
     fig_options = ChainMap(
         options,
@@ -91,6 +92,10 @@ def bar_plot(data, options):
     if labels:
         for trace in fig.data:
             trace.name = labels.get(trace.name, trace.name)
+    if subplot_label:
+        fig.for_each_annotation(lambda a: a.update(text=f"{subplot_label} {a.text.split('=')[-1]}"))
+    else:
+        fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
     # Remove padding between stacked bars:
     fig.update_traces(
