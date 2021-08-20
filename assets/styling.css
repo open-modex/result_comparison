@@ -227,6 +227,24 @@ button.btn.btn--refresh:disabled:focus {
   cursor: default;
 }
 
+.footer {
+  padding: 2rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.footer a {
+  padding: 0 1rem;
+}
+
 .Select--multi .Select-multi-value-wrapper .Select-value {
   background-color: #F6F8FA;
   border-color: #839FB4;
