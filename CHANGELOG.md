@@ -11,6 +11,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ### Changed
 - legend postion above subplots
+- labels are applied to all data entries
 
 ### Fixed
 - axes layouts are adapted on every facet/subplot

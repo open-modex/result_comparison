@@ -25,7 +25,7 @@ APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 # Initialize app
 app = dash.Dash(
-    __name__,
+    "__name__",
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=4.0"},
     ],
@@ -343,9 +343,8 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     colors = preprocessing.extract_colors(colors)
     graph_options["options"]["color_discrete_map"] = colors
     labels = preprocessing.extract_labels(labels)
-    graph_options["options"]["labels"] = labels
     try:
-        preprocessed_data = preprocessing.prepare_scalars(data, agg_group_by, units, filters)
+        preprocessed_data = preprocessing.prepare_scalars(data, agg_group_by, units, filters, labels)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_logs()
     if preprocessed_data.empty:
@@ -401,9 +400,8 @@ def timeseries_graph(
     colors = preprocessing.extract_colors(colors)
     graph_options["options"]["color_discrete_map"] = colors
     labels = preprocessing.extract_labels(labels)
-    graph_options["options"]["labels"] = labels
     try:
-        preprocessed_data = preprocessing.prepare_timeseries(data, agg_group_by, units, filters)
+        preprocessed_data = preprocessing.prepare_timeseries(data, agg_group_by, units, filters, labels)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_logs()
     if preprocessed_data.empty:

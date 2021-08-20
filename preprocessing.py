@@ -160,7 +160,7 @@ def sum_series(series):
         return summed_series
 
 
-def prepare_data(data, group_by, aggregation_func, units, filters):
+def prepare_data(data, group_by, aggregation_func, units, filters, labels):
     if filters:
         conditions = []
         for filter_, filter_value in filters.items():
@@ -170,6 +170,7 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
             else:
                 conditions.append(data[filter_].isin(filter_value))
         data = data[reduce(np.logical_and, conditions)]
+
     # Check units:
     all_units = data["unit"].unique()
     for unit_ in all_units:
@@ -177,6 +178,8 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
             flash(f"Unknown unit '{unit_}' found in data.", category="warning")
     for unit_ in units:
         data = data.apply(convert_units, axis=1, convert_to=unit_)
+
+    # Aggregate:
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
         if "series" in data and len(lengths := data["series"].apply(len).unique()) > 1:
@@ -185,20 +188,23 @@ def prepare_data(data, group_by, aggregation_func, units, filters):
         data = data.groupby(group_by).aggregate(aggregation_func).reset_index()
         keep_columns = group_by + ["value", "series"]
         data = data[data.columns.intersection(keep_columns)]
+
+    # Apply labels:
+    data = data.applymap(apply_label, labels=labels)
     return data
 
 
-def prepare_scalars(data, group_by, units, filters):
+def prepare_scalars(data, group_by, units, filters, labels):
     df = pandas.DataFrame(data)
     df = df.loc[:, [column for column in SC_COLUMNS]]
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
         group_by.append("unit")
-    df = prepare_data(df, group_by, "sum", units, filters)
+    df = prepare_data(df, group_by, "sum", units, filters, labels)
     return df
 
 
-def prepare_timeseries(data, group_by, units, filters):
+def prepare_timeseries(data, group_by, units, filters, labels):
     df = pandas.DataFrame.from_dict(data)
     df = df.loc[:, [column for column in TS_COLUMNS]]
     df.series = df.series.apply(lambda x: np.array(x))
@@ -210,7 +216,7 @@ def prepare_timeseries(data, group_by, units, filters):
             "timeindex_resolution",
             "unit"
         ] + group_by
-    ts_series_grouped = prepare_data(df, group_by, sum_series, units, filters)
+    ts_series_grouped = prepare_data(df, group_by, sum_series, units, filters, labels)
     timeseries, fixed_timeseries = concat_timeseries(ts_series_grouped)
     for name, (dates, entries) in fixed_timeseries.items():
         flash(
@@ -243,3 +249,10 @@ def concat_timeseries(ts):
     if timeseries:
         return pandas.concat(timeseries, axis=1), fixed_timeseries
     return pandas.DataFrame(), fixed_timeseries
+
+
+def apply_label(value, labels):
+    try:
+        return labels.get(value, value)
+    except TypeError:
+        return value
