@@ -105,7 +105,7 @@ def bar_plot(data, options):
     if xaxis_title:
         fig.update_xaxes(title=xaxis_title)
     if yaxis_title:
-        fig.update_yaxes(title=yaxis_title)
+        fig.update_yaxes(row=1, col=1, title=yaxis_title)
 
     try:
         fig.update_layout(

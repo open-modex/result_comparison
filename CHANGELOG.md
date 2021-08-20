@@ -10,6 +10,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 
 ### Fixed
 - axes layouts are adapted on every facet/subplot
+- multiple yaxis labels in subplots
 
 ## [0.9.0] - 2021-07-09
 ## Changed
