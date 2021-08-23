@@ -8,6 +8,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Added
 - margin options for bar chart
 - option to set subplot labels
+- data can be ordered
 
 ### Changed
 - legend postion above subplots

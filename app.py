@@ -25,7 +25,7 @@ APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 # Initialize app
 app = dash.Dash(
-    "__name__",
+    __name__,
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=4.0"},
     ],
@@ -103,15 +103,17 @@ def reload_scenarios(_):
         State(component_id="save_filters_name", component_property="value"),
         State(component_id=f"graph_scalars_options", component_property='children'),
         State(component_id=f"graph_timeseries_options", component_property='children'),
+        State(component_id="order_by", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
         State(component_id=f"filters", component_property='children')
     ]
 )
-def save_filters(_, name, graph_scalars_options, graph_timeseries_options, agg_group_by, filter_div):
+def save_filters(_, name, graph_scalars_options, graph_timeseries_options, order_by, agg_group_by, filter_div):
     if not name:
         raise PreventUpdate
 
     filters = preprocessing.extract_filters("scalars", filter_div)
+    filters["order_by"] = order_by
     filters["agg_group_by"] = agg_group_by
     scalar_graph_options = preprocessing.extract_graph_options(graph_scalars_options)
     ts_graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
@@ -196,6 +198,7 @@ def save_labels(_, name, str_labels):
     [
         Output(component_id="graph_scalars_plot_switch", component_property="value"),
         Output(component_id="graph_timeseries_plot_switch", component_property="value"),
+        Output(component_id="order_by", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value")
     ] +
     [Output(component_id=f"filter-{filter_}", component_property='value') for filter_ in SC_FILTERS] +
@@ -222,6 +225,7 @@ def load_filters(name, scenarios):
     return (
         db_filter.scalar_graph_options["type"],
         db_filter.ts_graph_options["type"],
+        db_filter.filters.get("order_by", []),
         db_filter.filters["agg_group_by"],
         *filters,
         show_logs(),
@@ -328,12 +332,13 @@ def toggle_timeseries_graph_options(plot_type, name):
         State(component_id=f"filters", component_property='children'),
         State(component_id="colors", component_property="value"),
         State(component_id="labels", component_property="value"),
+        State(component_id="order_by", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
         State(component_id="dd_scenario", component_property="value"),
     ],
     prevent_initial_call=True
 )
-def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, colors, labels, agg_group_by, scenarios):
+def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, colors, labels, order_by, agg_group_by, scenarios):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios, table="oed_scalars")
@@ -344,7 +349,7 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     graph_options["options"]["color_discrete_map"] = colors
     labels = preprocessing.extract_labels(labels)
     try:
-        preprocessed_data = preprocessing.prepare_scalars(data, agg_group_by, units, filters, labels)
+        preprocessed_data = preprocessing.prepare_scalars(data, order_by, agg_group_by, units, filters, labels)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_logs()
     if preprocessed_data.empty:
@@ -381,13 +386,14 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
         State(component_id=f"filters", component_property='children'),
         State(component_id="colors", component_property="value"),
         State(component_id="labels", component_property="value"),
+        State(component_id="order_by", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
         State(component_id="dd_scenario", component_property="value"),
     ],
     prevent_initial_call=True
 )
 def timeseries_graph(
-        _, show_data, units_div, graph_timeseries_options, filter_div, colors, labels, agg_group_by, scenarios
+        _, show_data, units_div, graph_timeseries_options, filter_div, colors, labels, order_by, agg_group_by, scenarios
 ):
     if scenarios is None or SKIP_TS:
         raise PreventUpdate
@@ -401,7 +407,7 @@ def timeseries_graph(
     graph_options["options"]["color_discrete_map"] = colors
     labels = preprocessing.extract_labels(labels)
     try:
-        preprocessed_data = preprocessing.prepare_timeseries(data, agg_group_by, units, filters, labels)
+        preprocessed_data = preprocessing.prepare_timeseries(data, order_by, agg_group_by, units, filters, labels)
     except preprocessing.PreprocessingError:
         return graphs.get_empty_fig(), [], [], show_logs()
     if preprocessed_data.empty:

@@ -116,10 +116,17 @@ def get_save_load_column(app):
     )
 
 
-def get_aggregation_column():
+def get_aggregation_order_column():
     return html.Div(
         children=[
-            html.P("Aggregation"),
+            html.P("Order/Aggregation"),
+            html.Label("Order-By:"),
+            dcc.Dropdown(
+                id="order_by",
+                multi=True,
+                clearable=True,
+                options=[{"label": filter_, "value": filter_} for filter_ in SC_FILTERS],
+            ),
             html.Label("Group-By:"),
             dcc.Dropdown(
                 id="aggregation_group_by",
@@ -295,7 +302,7 @@ def get_layout(app, scenarios):
                                 style={"width": "30%", "display": "inline-block", "vertical-align": "top"},
                                 children=[
                                     get_filter_column(),
-                                    get_aggregation_column(),
+                                    get_aggregation_order_column(),
                                     get_save_load_column(app),
                                     get_units_column(),
                                     get_color_column(app),

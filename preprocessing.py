@@ -160,7 +160,7 @@ def sum_series(series):
         return summed_series
 
 
-def prepare_data(data, group_by, aggregation_func, units, filters, labels):
+def prepare_data(data, order_by, group_by, aggregation_func, units, filters, labels):
     if filters:
         conditions = []
         for filter_, filter_value in filters.items():
@@ -189,25 +189,33 @@ def prepare_data(data, group_by, aggregation_func, units, filters, labels):
         keep_columns = group_by + ["value", "series"]
         data = data[data.columns.intersection(keep_columns)]
 
+    # Order:
+    if order_by:
+        data = data.sort_values(order_by)
+
     # Apply labels:
     data = data.applymap(apply_label, labels=labels)
     return data
 
 
-def prepare_scalars(data, group_by, units, filters, labels):
+def prepare_scalars(data, order_by, group_by, units, filters, labels):
     df = pandas.DataFrame(data)
     df = df.loc[:, [column for column in SC_COLUMNS]]
+    if order_by:
+        order_by = order_by if isinstance(order_by, list) else [order_by]
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
         group_by.append("unit")
-    df = prepare_data(df, group_by, "sum", units, filters, labels)
+    df = prepare_data(df, order_by, group_by, "sum", units, filters, labels)
     return df
 
 
-def prepare_timeseries(data, group_by, units, filters, labels):
+def prepare_timeseries(data, order_by, group_by, units, filters, labels):
     df = pandas.DataFrame.from_dict(data)
     df = df.loc[:, [column for column in TS_COLUMNS]]
     df.series = df.series.apply(lambda x: np.array(x))
+    if order_by:
+        order_by = order_by if isinstance(order_by, list) else [order_by]
     if group_by:
         group_by = group_by if isinstance(group_by, list) else [group_by]
         group_by = [
@@ -216,7 +224,7 @@ def prepare_timeseries(data, group_by, units, filters, labels):
             "timeindex_resolution",
             "unit"
         ] + group_by
-    ts_series_grouped = prepare_data(df, group_by, sum_series, units, filters, labels)
+    ts_series_grouped = prepare_data(df, order_by, group_by, sum_series, units, filters, labels)
     timeseries, fixed_timeseries = concat_timeseries(ts_series_grouped)
     for name, (dates, entries) in fixed_timeseries.items():
         flash(
