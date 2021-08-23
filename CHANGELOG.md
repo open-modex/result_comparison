@@ -11,6 +11,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - chart/error tabs
 - filter tabs
 - dynamic error tab class 
+- empty pages for imprint and privacy
 
 ## [0.9.0] - 2021-07-09
 ## Changed

@@ -14,6 +14,15 @@ from settings import (
 from models import get_model_options, Filter, Colors, Labels
 
 
+DEFAULT_LAYOUT = html.Div([
+    dcc.Location(id='url', refresh=False),
+    html.Div(id='page-content')
+])
+
+IMPRINT_LAYOUT = html.Label("Imprint")
+PRIVACY_LAYOUT = html.Label("Privacy")
+
+
 def get_header(app):
     return html.Section(
         className="header",
