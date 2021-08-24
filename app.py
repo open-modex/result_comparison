@@ -25,7 +25,7 @@ APP_PATH = str(pathlib.Path(__file__).parent.resolve())
 
 # Initialize app
 app = dash.Dash(
-    __name__,
+    "__name__",
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=4.0"},
     ],

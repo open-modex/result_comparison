@@ -89,7 +89,11 @@ def bar_plot(data, options):
 
     # Plot Labels:
     if subplot_label:
-        fig.for_each_annotation(lambda a: a.update(text=f"{subplot_label} {a.text.split('=')[-1]}"))
+        if "," in subplot_label and len(subplot_label.split(",")) == len(fig.layout.annotations):
+            label_iter = iter(subplot_label.split(","))
+            fig.for_each_annotation(lambda a: a.update(text=next(label_iter)))
+        else:
+            fig.for_each_annotation(lambda a: a.update(text=f"{subplot_label} {a.text.split('=')[-1]}"))
     else:
         fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
