@@ -57,6 +57,7 @@ def get_scalar_plot(data, options):
 def bar_plot(data, options):
     xaxis_title = options.pop("xaxis_title")
     yaxis_title = options.pop("yaxis_title")
+    axis_type = options.pop("axis_type")
     layout = {
         "showlegend": "showlegend" in options.pop("showlegend"),
         "legend_title": options.pop("legend_title"),
@@ -107,6 +108,9 @@ def bar_plot(data, options):
         fig.update_xaxes(title=xaxis_title)
     if yaxis_title:
         fig.update_yaxes(row=1, col=1, title=yaxis_title)
+
+    # Axis Type:
+    layout[f"{unit_axis}axis_type"] = axis_type
 
     # Move legend above plot in subplots:
     if fig_options["facet_col"]:

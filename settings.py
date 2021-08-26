@@ -93,6 +93,12 @@ GRAPHS_DEFAULT_OPTIONS = {
             text=GraphOption("Text", "parameter_name", clearable=True),
             color=GraphOption("Color", "parameter_name"),
             hover_name=GraphOption("Hover", "region"),
+            axis_type=GraphOption(
+                label="Axis Type",
+                default=[{"label": "linear", "value": "linear"}, {"label": "logarithmic", "value": "log"}],
+                from_filter=False,
+                plotly_option=False
+            ),
             orientation=GraphOption(
                 label="Orientation",
                 default=[{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}],
