@@ -58,6 +58,7 @@ def bar_plot(data, options):
     xaxis_title = options.pop("xaxis_title")
     yaxis_title = options.pop("yaxis_title")
     layout = {
+        "showlegend": "showlegend" in options.pop("showlegend"),
         "legend_title": options.pop("legend_title"),
         "bargap": options.pop("bargap"),
         "margin_l": options.pop("margin_l"),

@@ -88,6 +88,12 @@ def get_graph_options(data_type, graph_type, preset_options=None):
                 value=value,
                 type="text" if component_type == "input" else "number"
             )
+        elif component_type == "bool":
+            component = dcc.Checklist(
+                id=f"{data_type}-{option}",
+                options=options,
+                value=[value],
+            )
         else:
             raise ValueError("Unknown dcc component")
         div += [

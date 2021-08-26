@@ -64,7 +64,7 @@ GRAPHS_MAX_TS_PER_PLOT = 20
 @dataclass
 class GraphOption:
     label: str
-    default: Union[str, List[Dict[str, str]]]
+    default: Union[str, List[Dict[str, str]], bool]
     type: str = "dropdown"
     from_filter: bool = True
     clearable: bool = False
@@ -107,6 +107,13 @@ GRAPHS_DEFAULT_OPTIONS = {
             xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
             yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
             subplot_label=GraphOption("Subplot Title", "", type="input", plotly_option=False),
+            showlegend=GraphOption(
+                "Show Legend",
+                default=[{"label": "Show Legend", "value": "showlegend"}],
+                type="bool",
+                from_filter=False,
+                plotly_option=False
+            ),
             legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
             bargap=GraphOption("Bar Gap", "", type="number", plotly_option=False),
             margin_l=GraphOption("Margin Left", "", type="number", plotly_option=False),
