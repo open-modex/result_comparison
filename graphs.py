@@ -2,6 +2,7 @@
 from collections import ChainMap
 
 import pandas
+import math
 from flask import flash
 from plotly import express as px
 from plotly import graph_objects as go
@@ -14,6 +15,10 @@ from settings import (
 
 class PlottingError(Exception):
     """Thrown if plotting goes wrong"""
+
+
+def get_logarithmic_range(max_value):
+    return [0, math.ceil(math.log10(max_value))]
 
 
 def get_empty_fig():
@@ -99,10 +104,10 @@ def bar_plot(data, options):
     else:
         fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
-    unit_axis = "x" if fig_options["orientation"] == "h" else "y"
-    if unit_axis == "x" and not xaxis_title:
+    value_axis = "x" if fig_options["orientation"] == "h" else "y"
+    if value_axis == "x" and not xaxis_title:
         layout["xaxis_title"] = add_unit_to_label(fig_options["x"], data)
-    if unit_axis == "y" and not yaxis_title:
+    if value_axis == "y" and not yaxis_title:
         layout["yaxis_title"] = add_unit_to_label(fig_options["y"], data)
     if xaxis_title:
         fig.update_xaxes(title=xaxis_title)
@@ -110,7 +115,14 @@ def bar_plot(data, options):
         fig.update_yaxes(row=1, col=1, title=yaxis_title)
 
     # Axis Type:
-    layout[f"{unit_axis}axis_type"] = axis_type
+    axis = {"type": axis_type}
+    if axis_type == "log":
+        max_value = max(data["value"])
+        axis["range"] = get_logarithmic_range(max_value)
+    if value_axis == "x":
+        fig.update_xaxes(**axis)
+    else:
+        fig.update_yaxes(**axis)
 
     # Move legend above plot in subplots:
     if fig_options["facet_col"]:

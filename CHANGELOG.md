@@ -9,6 +9,10 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - option to hide legend
 - option for logarithmic y-axis
 
+### Fixed
+- logarithmic axes in all subplots
+- logarithmic axis starts at zero
+
 ## [0.11.0]
 ### Added
 - custom labels for subplots

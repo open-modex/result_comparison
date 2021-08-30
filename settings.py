@@ -208,6 +208,7 @@ GRAPHS_DEFAULT_LAYOUT = {
     }
 }
 GRAPHS_DEFAULT_XAXES_LAYOUT = {
+    "autorange": True,
     "title": {"font": {"size": 18}},
     "gridcolor": GRID_COLOR,
     "linecolor": GRID_COLOR,
@@ -219,6 +220,7 @@ GRAPHS_DEFAULT_XAXES_LAYOUT = {
     "tickfont": {"size": 14},
 }
 GRAPHS_DEFAULT_YAXES_LAYOUT = {
+    "autorange": True,
     "title": {"font": {"size": 18}},
     "gridcolor": GRID_COLOR,
     "linecolor": GRID_COLOR,
