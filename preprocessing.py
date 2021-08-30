@@ -161,6 +161,9 @@ def sum_series(series):
 
 
 def prepare_data(data, order_by, group_by, aggregation_func, units, filters, labels):
+    # Apply labels:
+    data = data.applymap(apply_label, labels=labels)
+
     if filters:
         conditions = []
         for filter_, filter_value in filters.items():
@@ -193,8 +196,6 @@ def prepare_data(data, order_by, group_by, aggregation_func, units, filters, lab
     if order_by:
         data = data.sort_values(order_by)
 
-    # Apply labels:
-    data = data.applymap(apply_label, labels=labels)
     return data
 
 
