@@ -316,6 +316,7 @@ button.btn.btn--refresh:disabled:focus {
 
 .graph .nav-tabs {
   border-bottom: none;
+  height: 2.5rem;
 }
 
 .graph .nav-tabs .nav-item {
@@ -337,7 +338,6 @@ button.btn.btn--refresh:disabled:focus {
 .graph .nav-tabs .nav-item .nav-link:not(.active) {
   color: #1F567D;
   cursor: pointer;
-  border: none;
 }
 
 .graph .nav-tabs .nav-item.error .nav-link {
@@ -352,6 +352,10 @@ button.btn.btn--refresh:disabled:focus {
 
 .graph .nav-tabs .nav-item.error .nav-link:not(.active) {
   border-bottom: none;
+}
+
+.graph .nav-tabs .nav-item .nav-link:not(.active) {
+  border: none;
 }
 
 .chart-settings {
