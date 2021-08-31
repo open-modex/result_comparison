@@ -765,4 +765,23 @@ button.btn.btn--refresh.disabled:focus {
 .filter-panel #filters {
   padding: 1rem;
 }
+
+.legal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.legal > div {
+  width: 100%;
+  max-width: 1024px;
+}
 /*# sourceMappingURL=styling.css.map */

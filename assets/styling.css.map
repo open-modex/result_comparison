@@ -13,7 +13,8 @@
         "../scss/components/_forms.scss",
         "../scss/components/_graphs.scss",
         "../scss/components/_header.scss",
-        "../scss/layouts/_dashboard.scss"
+        "../scss/layouts/_dashboard.scss",
+        "../scss/layouts/_legal.scss"
     ],
     "names": [],
     "file": "styling.css"
