@@ -30,6 +30,7 @@ $chart-options-width: 14rem;
 
 	.nav-tabs {
 		border-bottom: none;
+		height: 2.5rem;
 	}
 
 	.nav-tabs .nav-item {
@@ -48,7 +49,6 @@ $chart-options-width: 14rem;
 	.nav-tabs .nav-item .nav-link:not(.active) {
 		color: $primary-color-1;
 		cursor: pointer;
-		border: none;
 	}
 
 	.nav-tabs .nav-item.error .nav-link {
@@ -63,6 +63,10 @@ $chart-options-width: 14rem;
 
 	.nav-tabs .nav-item.error .nav-link:not(.active) {
 		border-bottom: none;
+	}
+
+	.nav-tabs .nav-item .nav-link:not(.active) {
+		border: none;
 	}
 }
 
