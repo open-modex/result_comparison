@@ -75,12 +75,12 @@ button.btn-secondary:not(:disabled):not(.disabled):active,
     }
 }
 
-button.btn.btn--refresh:disabled {
+button.btn.btn--refresh.disabled {
     @include refresh-btn-style-disabled;
 }
 
 @each $pseudo-class in $pseudo-classes {
-    button.btn.btn--refresh:disabled:#{$pseudo-class} {
+    button.btn.btn--refresh.disabled:#{$pseudo-class} {
         @include refresh-btn-style-disabled;
     }
 }

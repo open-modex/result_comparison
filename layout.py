@@ -83,7 +83,7 @@ def get_scenario_column(scenarios):
             dbc.Button(
                 "Reload",
                 id="scenario_reload",
-                className="scenarios__btn btn btn--refresh"
+                className="scenarios__btn btn btn--refresh disabled"
             ), # This is bootstrap component with additional class
             html.Div(
                 className="scenarios__views",
@@ -305,7 +305,7 @@ def get_graph_column():
                                         ],
                                         value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
                                     ),
-                                    html.Button(f"Refresh", id=f"refresh_{graph}", className="btn btn--refresh")
+                                    html.Button(f"Refresh", id=f"refresh_{graph}", className="btn btn--refresh disabled")
                                 ]
                             ),
                             dcc.Loading(

@@ -185,45 +185,57 @@ button.btn.btn--refresh:focus {
   border: 1px solid #06A77D;
 }
 
-button.btn.btn--refresh:disabled {
+button.btn.btn--refresh.disabled {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
 }
 
-button.btn.btn--refresh:disabled:link {
+button.btn.btn--refresh.disabled:link {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
 }
 
-button.btn.btn--refresh:disabled:hover {
+button.btn.btn--refresh.disabled:hover {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
 }
 
-button.btn.btn--refresh:disabled:focus {
+button.btn.btn--refresh.disabled:focus {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
 }
 
-button.btn.btn--refresh:disabled:visited {
+button.btn.btn--refresh.disabled:visited {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
 }
 
-button.btn.btn--refresh:disabled:focus {
+button.btn.btn--refresh.disabled:focus {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
 }
 
