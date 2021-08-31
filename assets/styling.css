@@ -192,6 +192,7 @@ button.btn.btn--refresh.disabled {
   -webkit-box-shadow: none;
           box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
 button.btn.btn--refresh.disabled:link {
@@ -201,6 +202,7 @@ button.btn.btn--refresh.disabled:link {
   -webkit-box-shadow: none;
           box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
 button.btn.btn--refresh.disabled:hover {
@@ -210,6 +212,7 @@ button.btn.btn--refresh.disabled:hover {
   -webkit-box-shadow: none;
           box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
 button.btn.btn--refresh.disabled:focus {
@@ -219,6 +222,7 @@ button.btn.btn--refresh.disabled:focus {
   -webkit-box-shadow: none;
           box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
 button.btn.btn--refresh.disabled:visited {
@@ -228,6 +232,7 @@ button.btn.btn--refresh.disabled:visited {
   -webkit-box-shadow: none;
           box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
 button.btn.btn--refresh.disabled:focus {
@@ -237,6 +242,7 @@ button.btn.btn--refresh.disabled:focus {
   -webkit-box-shadow: none;
           box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
 .footer {
