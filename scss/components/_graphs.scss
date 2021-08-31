@@ -26,6 +26,10 @@ $chart-options-width: 14rem;
 
 	&__view {
 		@include flex-row-justify-space-between;
+
+		input[type=checkbox] {
+			margin-right: 0.5rem;
+		}
 	}
 
 	.nav-tabs {

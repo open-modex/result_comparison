@@ -314,6 +314,10 @@ button.btn.btn--refresh:disabled:focus {
           justify-content: space-between;
 }
 
+.graph__view input[type=checkbox] {
+  margin-right: 0.5rem;
+}
+
 .graph .nav-tabs {
   border-bottom: none;
   height: 2.5rem;
