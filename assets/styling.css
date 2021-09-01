@@ -185,46 +185,64 @@ button.btn.btn--refresh:focus {
   border: 1px solid #06A77D;
 }
 
-button.btn.btn--refresh:disabled {
+button.btn.btn--refresh.disabled {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
-button.btn.btn--refresh:disabled:link {
+button.btn.btn--refresh.disabled:link {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
-button.btn.btn--refresh:disabled:hover {
+button.btn.btn--refresh.disabled:hover {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
-button.btn.btn--refresh:disabled:focus {
+button.btn.btn--refresh.disabled:focus {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
-button.btn.btn--refresh:disabled:visited {
+button.btn.btn--refresh.disabled:visited {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
-button.btn.btn--refresh:disabled:focus {
+button.btn.btn--refresh.disabled:focus {
   background-color: #F6F8FA;
   color: #676C73;
   border: 1px solid #F6F8FA;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   cursor: default;
+  pointer-events: none;
 }
 
 .footer {
@@ -314,8 +332,13 @@ button.btn.btn--refresh:disabled:focus {
           justify-content: space-between;
 }
 
+.graph__view input[type=checkbox] {
+  margin-right: 0.5rem;
+}
+
 .graph .nav-tabs {
   border-bottom: none;
+  height: 2.5rem;
 }
 
 .graph .nav-tabs .nav-item {
@@ -337,7 +360,6 @@ button.btn.btn--refresh:disabled:focus {
 .graph .nav-tabs .nav-item .nav-link:not(.active) {
   color: #1F567D;
   cursor: pointer;
-  border: none;
 }
 
 .graph .nav-tabs .nav-item.error .nav-link {
@@ -352,6 +374,10 @@ button.btn.btn--refresh:disabled:focus {
 
 .graph .nav-tabs .nav-item.error .nav-link:not(.active) {
   border-bottom: none;
+}
+
+.graph .nav-tabs .nav-item .nav-link:not(.active) {
+  border: none;
 }
 
 .chart-settings {
