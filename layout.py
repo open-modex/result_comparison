@@ -150,7 +150,7 @@ PRIVACY_LAYOUT = html.Section(
                         ),
                         html.H4("III. Allgemeines zur Datenverarbeitung"),
                         html.P(
-                            [   
+                            [
                                 html.H5("1. Umfang der Verarbeitung personenbezogener Daten"),
                                 html.P("Wir verarbeiten personenbezogene Daten unserer Nutzer*innen grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Die Verarbeitung personenbezogener Daten unserer Nutzer*innen erfolgt regelmäßig nur nach deren Einwilligung. Eine Ausnahme gilt in solchen Fällen, in denen eine vorherige Einholung einer Einwilligung aus tatsächlichen Gründen nicht möglich ist und die Verarbeitung der Daten durch gesetzliche Vorschriften gestattet ist."),
                                 html.H5("2. Rechtsgrundlage für die Verarbeitung personenbezogener Daten"),
