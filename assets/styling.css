@@ -374,17 +374,22 @@ button.btn.btn--refresh.update:focus {
   cursor: pointer;
 }
 
-.graph .nav-tabs .nav-item.error .nav-link {
+.graph .nav-tabs .nav-item.infos .nav-link {
+  color: #06A77D;
+  border-bottom: 3px solid #06A77D;
+}
+
+.graph .nav-tabs .nav-item.errors .nav-link {
   color: #DB2B39;
   border-bottom: 3px solid #DB2B39;
 }
 
-.graph .nav-tabs .nav-item.warning .nav-link {
+.graph .nav-tabs .nav-item.warnings .nav-link {
   color: #875D45;
   border-bottom: 3px solid #875D45;
 }
 
-.graph .nav-tabs .nav-item.error .nav-link:not(.active) {
+.graph .nav-tabs .nav-item.errors .nav-link:not(.active) {
   border-bottom: none;
 }
 

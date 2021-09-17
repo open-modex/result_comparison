@@ -55,17 +55,22 @@ $chart-options-width: 14rem;
 		cursor: pointer;
 	}
 
-	.nav-tabs .nav-item.error .nav-link {
+	.nav-tabs .nav-item.infos .nav-link {
+		color: $secondary-color-1;
+		border-bottom: 3px solid $secondary-color-1;
+	}
+
+	.nav-tabs .nav-item.errors .nav-link {
 		color: $error-color;
 		border-bottom: 3px solid $error-color;
 	}
 
-	.nav-tabs .nav-item.warning .nav-link {
+	.nav-tabs .nav-item.warnings .nav-link {
 		color: $warning-color;
 		border-bottom: 3px solid $warning-color;
 	}
 
-	.nav-tabs .nav-item.error .nav-link:not(.active) {
+	.nav-tabs .nav-item.errors .nav-link:not(.active) {
 		border-bottom: none;
 	}
 
