@@ -404,7 +404,7 @@ def get_graph_options(data_type, graph_type, preset_options=None):
             )
         elif component_type == "bool":
             component = dcc.Checklist(
-                id=f"{data_type}-{option}",
+                id={"name": option, "type": f"graph_{data_type}_option"},
                 options=options,
                 value=[value],
             )
