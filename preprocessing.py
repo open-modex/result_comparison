@@ -105,7 +105,7 @@ def extract_filters(type_, filter_div):
     for item in filter_div:
         if item["type"] != "Dropdown":
             continue
-        name = item["props"]["id"].split("-")[1]
+        name = item["props"]["id"]["name"]
         if name in filters and "value" in item["props"] and item["props"]["value"]:
             filter_kwargs[name] = item["props"]["value"]
     return filter_kwargs
@@ -117,7 +117,7 @@ def extract_graph_options(graph_div):
         "props.children[].props.children[] | [1:] | [?(type == 'Dropdown' || type == 'Input')]", graph_div)
     options = {
         "type": graph_type,  # FIXME: Remove scalar upfront
-        "options": {item["props"]["id"].split("-")[1]: None if (value := item["props"]["value"]) == "" else value for item in raw_options}
+        "options": {item["props"]["id"]["name"]: None if (value := item["props"]["value"]) == "" else value for item in raw_options}
     }
     return options
 

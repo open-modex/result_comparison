@@ -5,8 +5,7 @@ import urllib3
 from functools import partial
 
 import dash
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output, State, ALL, ClientsideFunction
 from dash.exceptions import PreventUpdate
 from dash.dash import no_update
 import dash_bootstrap_components as dbc
@@ -94,6 +93,25 @@ def reload_scenarios(_):
         }
         for sc in scenarios
     ]
+
+
+app.clientside_callback(
+    ClientsideFunction(
+        namespace='clientside',
+        function_name='update_refresh_elements'
+    ),
+    Output(component_id="refresh_scalars", component_property="className"),
+    [
+        Input("dd_scenario", "value"),
+        Input(component_id="aggregation_group_by", component_property="value"),
+        Input({"name": ALL, "type": "unit-dropdown"}, "value"),
+        Input({"name": ALL, "type": "graph_scalars_option"}, "value"),
+        Input('load_filters', "value"),
+        Input('load_colors', "value"),
+        Input('load_labels', "value"),
+    ],
+    prevent_initial_call=True
+)
 
 
 @app.callback(
@@ -204,7 +222,7 @@ def save_labels(_, name, str_labels):
         Output(component_id="order_by", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value")
     ] +
-    [Output(component_id=f"filter-{filter_}", component_property='value') for filter_ in SC_FILTERS] +
+    [Output(component_id={"name": filter_, "type": "filter-dropdown"}, component_property='value') for filter_ in SC_FILTERS] +
     [Output(component_id="save_load_errors", component_property="children")],
     Input('load_filters', "value"),
     State(component_id="dd_scenario", component_property="value"),
@@ -262,7 +280,7 @@ def load_labels(name):
 
 
 @app.callback(
-    [Output(component_id=f"filter-{filter_}", component_property="options") for filter_ in SC_FILTERS],
+    [Output(component_id={"name": filter_, "type": "filter-dropdown"}, component_property="options") for filter_ in SC_FILTERS],
     [Input(component_id="dd_scenario", component_property="value")],
 )
 def load_scenario(scenarios):
