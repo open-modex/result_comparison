@@ -55,7 +55,8 @@ $chart-options-width: 14rem;
 		cursor: pointer;
 	}
 
-	.nav-tabs .nav-item.infos .nav-link {
+	// errors, warnings and infos classes on .nav-item
+	/* .nav-tabs .nav-item.infos .nav-link {
 		color: $secondary-color-1;
 		border-bottom: 3px solid $secondary-color-1;
 	}
@@ -72,7 +73,29 @@ $chart-options-width: 14rem;
 
 	.nav-tabs .nav-item.errors .nav-link:not(.active) {
 		border-bottom: none;
+	} */
+
+	// errors, warnings and infos classes on .nav-link
+	// start
+	.nav-tabs .nav-item .nav-link.infos {
+		color: $secondary-color-1;
+		border-bottom: 3px solid $secondary-color-1;
 	}
+
+	.nav-tabs .nav-item .nav-link.errors {
+		color: $error-color;
+		border-bottom: 3px solid $error-color;
+	}
+
+	.nav-tabs .nav-item .nav-link.warnings {
+		color: $warning-color;
+		border-bottom: 3px solid $warning-color;
+	}
+
+	.nav-tabs .nav-item .nav-link:not(.active).errors {
+		border-bottom: none;
+	}
+	// end
 
 	.nav-tabs .nav-item .nav-link:not(.active) {
 		border: none;

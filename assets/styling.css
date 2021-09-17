@@ -353,6 +353,24 @@ button.btn.btn--small {
 
 .graph {
   padding: 1rem;
+  /* .nav-tabs .nav-item.infos .nav-link {
+		color: $secondary-color-1;
+		border-bottom: 3px solid $secondary-color-1;
+	}
+
+	.nav-tabs .nav-item.errors .nav-link {
+		color: $error-color;
+		border-bottom: 3px solid $error-color;
+	}
+
+	.nav-tabs .nav-item.warnings .nav-link {
+		color: $warning-color;
+		border-bottom: 3px solid $warning-color;
+	}
+
+	.nav-tabs .nav-item.errors .nav-link:not(.active) {
+		border-bottom: none;
+	} */
 }
 
 @media only screen and (min-width: 1200px) {
@@ -406,22 +424,22 @@ button.btn.btn--small {
   cursor: pointer;
 }
 
-.graph .nav-tabs .nav-item.infos .nav-link {
+.graph .nav-tabs .nav-item .nav-link.infos {
   color: #06A77D;
   border-bottom: 3px solid #06A77D;
 }
 
-.graph .nav-tabs .nav-item.errors .nav-link {
+.graph .nav-tabs .nav-item .nav-link.errors {
   color: #DB2B39;
   border-bottom: 3px solid #DB2B39;
 }
 
-.graph .nav-tabs .nav-item.warnings .nav-link {
+.graph .nav-tabs .nav-item .nav-link.warnings {
   color: #875D45;
   border-bottom: 3px solid #875D45;
 }
 
-.graph .nav-tabs .nav-item.errors .nav-link:not(.active) {
+.graph .nav-tabs .nav-item .nav-link:not(.active).errors {
   border-bottom: none;
 }
 
