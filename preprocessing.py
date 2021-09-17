@@ -114,7 +114,7 @@ def extract_filters(type_, filter_div):
 def extract_graph_options(graph_div):
     graph_type = jmespath.search("props.children[0].props.children[0].props.value", graph_div)
     raw_options = jmespath.search(
-        "props.children[].props.children[] | [1:] | [?(type == 'Dropdown' || type == 'Input')]", graph_div)
+        "props.children[].props.children[] | [1:] | [?(type == 'Dropdown' || type == 'Input' || type == 'Checklist')]", graph_div)
     options = {
         "type": graph_type,  # FIXME: Remove scalar upfront
         "options": {item["props"]["id"]["name"]: None if (value := item["props"]["value"]) == "" else value for item in raw_options}
@@ -160,6 +160,9 @@ def sum_series(series):
 
 
 def prepare_data(data, order_by, group_by, aggregation_func, units, filters, labels):
+    # Apply labels:
+    data = data.applymap(apply_label, labels=labels)
+
     if filters:
         conditions = []
         for filter_, filter_value in filters.items():
@@ -192,8 +195,6 @@ def prepare_data(data, order_by, group_by, aggregation_func, units, filters, lab
     if order_by:
         data = data.sort_values(order_by)
 
-    # Apply labels:
-    data = data.applymap(apply_label, labels=labels)
     return data
 
 

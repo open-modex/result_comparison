@@ -2,12 +2,12 @@ import json
 import pathlib
 
 import urllib3
-from functools import partial
 
 import dash
 from dash.dependencies import Input, Output, State, ALL, ClientsideFunction
 from dash.exceptions import PreventUpdate
 from dash.dash import no_update
+import dash_html_components as html
 import dash_bootstrap_components as dbc
 from flask import flash, get_flashed_messages
 from flask_caching import Cache
@@ -46,8 +46,29 @@ cache.init_app(server, config=CACHE_CONFIG)
 
 # Layout
 if not MANAGE_DB:
-    from layout import get_layout, get_graph_options, get_error_and_warnings_div
-    app.layout = partial(get_layout, app, scenarios=scenario.get_scenarios())
+    from layout import (
+        DEFAULT_LAYOUT, IMPRINT_LAYOUT, PRIVACY_LAYOUT, get_layout, get_graph_options,
+        get_error_and_warnings_div
+    )
+    app.layout = DEFAULT_LAYOUT
+    app.validation_layout = html.Div([
+        DEFAULT_LAYOUT,
+        get_layout(app, scenarios=scenario.get_scenarios()),
+        IMPRINT_LAYOUT,
+        PRIVACY_LAYOUT
+    ])
+
+
+# Multiple pages
+@app.callback(dash.dependencies.Output('page-content', 'children'),
+              [dash.dependencies.Input('url', 'pathname')])
+def display_page(pathname):
+    if pathname == '/imprint':
+        return IMPRINT_LAYOUT
+    elif pathname == '/privacy':
+        return PRIVACY_LAYOUT
+    else:
+        return get_layout(app, scenarios=scenario.get_scenarios())
 
 
 @cache.memoize()

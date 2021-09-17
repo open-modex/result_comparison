@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Union, List, Dict
 import pandas as pd
 
-VERSION = "0.10.0"
+VERSION = "0.13.0"
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
@@ -64,7 +64,7 @@ GRAPHS_MAX_TS_PER_PLOT = 20
 @dataclass
 class GraphOption:
     label: str
-    default: Union[str, List[Dict[str, str]]]
+    default: Union[str, List[Dict[str, str]], bool]
     type: str = "dropdown"
     from_filter: bool = True
     clearable: bool = False
@@ -94,6 +94,12 @@ GRAPHS_DEFAULT_OPTIONS = {
             text=GraphOption("Text", "parameter_name", clearable=True),
             color=GraphOption("Color", "parameter_name"),
             hover_name=GraphOption("Hover", "region"),
+            axis_type=GraphOption(
+                label="Axis Type",
+                default=[{"label": "linear", "value": "linear"}, {"label": "logarithmic", "value": "log"}],
+                from_filter=False,
+                plotly_option=False
+            ),
             orientation=GraphOption(
                 label="Orientation",
                 default=[{"label": "horizontal", "value": "h"}, {"label": "vertical", "value": "v"}],
@@ -108,6 +114,14 @@ GRAPHS_DEFAULT_OPTIONS = {
             xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False, category="Display"),
             yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False, category="Display"),
             subplot_label=GraphOption("Subplot Title", "", type="input", plotly_option=False, category="Display"),
+            showlegend=GraphOption(
+                "Show Legend",
+                default=[{"label": "Show Legend", "value": "showlegend"}],
+                type="bool",
+                from_filter=False,
+                plotly_option=False,
+                category="Display"
+            ),
             legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
             bargap=GraphOption("Bar Gap", "", type="number", plotly_option=False, category="Display"),
             margin_l=GraphOption("Margin Left", "", type="number", plotly_option=False, category="Display"),
@@ -196,6 +210,7 @@ GRAPHS_DEFAULT_LAYOUT = {
     }
 }
 GRAPHS_DEFAULT_XAXES_LAYOUT = {
+    "autorange": True,
     "title": {"font": {"size": 18}},
     "gridcolor": GRID_COLOR,
     "linecolor": GRID_COLOR,
@@ -207,6 +222,7 @@ GRAPHS_DEFAULT_XAXES_LAYOUT = {
     "tickfont": {"size": 14},
 }
 GRAPHS_DEFAULT_YAXES_LAYOUT = {
+    "autorange": True,
     "title": {"font": {"size": 18}},
     "gridcolor": GRID_COLOR,
     "linecolor": GRID_COLOR,

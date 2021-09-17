@@ -11,6 +11,24 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - chart/error tabs
 - filter tabs
 - dynamic error tab class 
+- empty pages for imprint and privacy
+
+## [0.13.0] - 2021-08-30
+### Changed
+- labels are applied before grouping
+
+## [0.12.0] - 2021-08-30
+### Added
+- option to hide legend
+- option for logarithmic y-axis
+
+### Fixed
+- logarithmic axes in all subplots
+- logarithmic axis starts at zero
+
+## [0.11.0] - 2021-08-27
+### Added
+- custom labels for subplots
 
 ## [0.10.0] - 2021-08-23
 ### Added
