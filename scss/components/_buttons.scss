@@ -84,3 +84,11 @@ button.btn-secondary:not(:disabled):not(.disabled):active,
         @include refresh-btn-style-active;
     }
 }
+
+button.btn.btn--small {
+    height: 2rem;
+    line-height: 1rem;
+    color: $color-white;
+    background-color: $primary-color-1;
+    border: 1px solid $primary-color-1;
+}

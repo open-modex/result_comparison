@@ -257,6 +257,14 @@ button.btn.btn--refresh.update:focus {
   pointer-events: initial;
 }
 
+button.btn.btn--small {
+  height: 2rem;
+  line-height: 1rem;
+  color: #fff;
+  background-color: #1F567D;
+  border: 1px solid #1F567D;
+}
+
 .footer {
   padding: 2rem 0;
   display: -webkit-box;
@@ -290,6 +298,30 @@ button.btn.btn--refresh.update:focus {
 .dashboard .content input {
   border-width: 1px;
   border-color: #C6CDD4;
+}
+
+.dashboard .content .tab-content label {
+  width: 100%;
+}
+
+.dashboard .content .save-filters {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.dashboard .content .save-filters input {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.dashboard .content .save-filters button {
+  margin-left: 0.5rem;
 }
 
 .charts__item {

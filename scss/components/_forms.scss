@@ -15,4 +15,20 @@
     border-width: 1px;
     border-color: $color-gray-2;
   }
+
+  .tab-content label {
+    width: 100%;
+  }
+
+  .save-filters {
+    @include flex-row;
+
+    input {
+      flex: 1;
+    }
+
+    button {
+      margin-left: 0.5rem;
+    }
+  }
 }

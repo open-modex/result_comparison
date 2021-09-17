@@ -423,12 +423,17 @@ def get_graph_options(data_type, graph_type, preset_options=None):
 def get_save_load_column(app):
     with app.server.app_context():
         options = get_model_options(Filter)
-    return html.P(
+    return html.Div(
         children=[
             html.P(id=f"save_load_errors", children=""),
             html.Label("Save filters as:"),
-            dcc.Input(id="save_filters_name", type="text"),
-            html.Button("Save", id="save_filters"),
+            html.Div(
+                className="save-filters",
+                children=[
+                    dcc.Input(id="save_filters_name", type="text"),
+                    html.Button("Save", className="btn btn--small", id="save_filters")
+                ]
+            ),
             html.Label("Load filters"),
             dcc.Dropdown(
                 id="load_filters",
