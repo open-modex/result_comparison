@@ -213,36 +213,48 @@ button.btn-secondary:not(:disabled):not(.disabled):active,
   background-color: #06A77D;
   color: #fff;
   border: 1px solid #06A77D;
+  cursor: pointer;
+  pointer-events: initial;
 }
 
 button.btn.btn--refresh.update:link {
   background-color: #06A77D;
   color: #fff;
   border: 1px solid #06A77D;
+  cursor: pointer;
+  pointer-events: initial;
 }
 
 button.btn.btn--refresh.update:hover {
   background-color: #06A77D;
   color: #fff;
   border: 1px solid #06A77D;
+  cursor: pointer;
+  pointer-events: initial;
 }
 
 button.btn.btn--refresh.update:focus {
   background-color: #06A77D;
   color: #fff;
   border: 1px solid #06A77D;
+  cursor: pointer;
+  pointer-events: initial;
 }
 
 button.btn.btn--refresh.update:visited {
   background-color: #06A77D;
   color: #fff;
   border: 1px solid #06A77D;
+  cursor: pointer;
+  pointer-events: initial;
 }
 
 button.btn.btn--refresh.update:focus {
   background-color: #06A77D;
   color: #fff;
   border: 1px solid #06A77D;
+  cursor: pointer;
+  pointer-events: initial;
 }
 
 .footer {

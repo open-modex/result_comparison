@@ -76,4 +76,6 @@
   background-color: $secondary-color-1;
   color: $color-white;
   border: 1px solid $secondary-color-1;
+  cursor: pointer;
+  pointer-events: initial;
 }
