@@ -62,7 +62,17 @@ input[type="button"].button-primary:focus {
     border-color: #1EAEDB;
 }
 
-button.btn.btn--refresh,
+button.btn.btn--refresh {
+    @include refresh-btn-style-disabled;
+}
+
+@each $pseudo-class in $pseudo-classes {
+    button.btn.btn--refresh:#{$pseudo-class} {
+        @include refresh-btn-style-disabled;
+    }
+}
+
+button.btn.btn--refresh.update,
 button.btn-secondary:not(:disabled):not(.disabled).active, 
 button.btn-secondary:not(:disabled):not(.disabled):active, 
 .show>button.btn-secondary.dropdown-toggle {
@@ -70,17 +80,7 @@ button.btn-secondary:not(:disabled):not(.disabled):active,
 }
 
 @each $pseudo-class in $pseudo-classes {
-    button.btn.btn--refresh:#{$pseudo-class} {
+    button.btn.btn--refresh.update:#{$pseudo-class} {
         @include refresh-btn-style-active;
-    }
-}
-
-button.btn.btn--refresh.disabled {
-    @include refresh-btn-style-disabled;
-}
-
-@each $pseudo-class in $pseudo-classes {
-    button.btn.btn--refresh.disabled:#{$pseudo-class} {
-        @include refresh-btn-style-disabled;
     }
 }
