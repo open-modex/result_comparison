@@ -124,7 +124,9 @@ app.clientside_callback(
     Output(component_id="refresh_scalars", component_property="className"),
     [
         Input("dd_scenario", "value"),
+        Input(component_id="order_by", component_property="value"),
         Input(component_id="aggregation_group_by", component_property="value"),
+        Input({"name": ALL, "type": "filters"}, "value"),
         Input({"name": ALL, "type": "unit-dropdown"}, "value"),
         Input({"name": ALL, "type": "graph_scalars_option"}, "value"),
         Input('load_filters', "value"),
@@ -143,11 +145,11 @@ app.clientside_callback(
     Input('save_filters', 'n_clicks'),
     [
         State(component_id="save_filters_name", component_property="value"),
-        State(component_id=f"graph_scalars_options", component_property='children'),
-        State(component_id=f"graph_timeseries_options", component_property='children'),
+        State(component_id="graph_scalars_options", component_property='children'),
+        State(component_id="graph_timeseries_options", component_property='children'),
         State(component_id="order_by", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
-        State(component_id=f"filters", component_property='children')
+        State(component_id="filters", component_property='children')
     ]
 )
 def save_filters(_, name, graph_scalars_options, graph_timeseries_options, order_by, agg_group_by, filter_div):
