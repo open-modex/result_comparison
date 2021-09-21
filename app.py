@@ -491,11 +491,11 @@ def show_logs():
     if len(infos) > MAX_INFOS:
         infos = infos[:MAX_INFOS]
         infos.append(f"Too many infos (>{MAX_INFOS}) - Skipping further infos...")
-    level = "info"
+    level = "infos"
     if errors:
         level = "errors"
     elif warnings:
-        level = "warning"
+        level = "warnings"
     return get_error_and_warnings_div(errors, warnings, infos), level
 
 
