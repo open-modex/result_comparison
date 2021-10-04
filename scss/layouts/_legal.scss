@@ -1,0 +1,9 @@
+.legal {
+    @include flex-row-justify-center;
+    padding: 2rem 1rem;
+
+    &> div {
+        width: 100%;
+        max-width: 1024px;
+    }
+}

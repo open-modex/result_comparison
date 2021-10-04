@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Union, List, Dict
 import pandas as pd
 
-VERSION = "0.13.0"
+VERSION = "0.14.0"
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
@@ -69,6 +69,7 @@ class GraphOption:
     from_filter: bool = True
     clearable: bool = False
     plotly_option: bool = True
+    category: str = "General"
 
 
 class GraphOptions:
@@ -110,42 +111,43 @@ GRAPHS_DEFAULT_OPTIONS = {
                 from_filter=False,
             ),
             facet_col=GraphOption("Subplots", "", clearable=True),
-            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
-            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
-            subplot_label=GraphOption("Subplot Title", "", type="input", plotly_option=False),
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            subplot_label=GraphOption("Subplot Title", "", type="input", plotly_option=False, category="Display"),
             showlegend=GraphOption(
                 "Show Legend",
                 default=[{"label": "Show Legend", "value": "showlegend"}],
                 type="bool",
                 from_filter=False,
-                plotly_option=False
+                plotly_option=False,
+                category="Display"
             ),
-            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
-            bargap=GraphOption("Bar Gap", "", type="number", plotly_option=False),
-            margin_l=GraphOption("Margin Left", "", type="number", plotly_option=False),
-            margin_r=GraphOption("Margin Right", "", type="number", plotly_option=False),
-            margin_t=GraphOption("Margin Top", "", type="number", plotly_option=False),
-            margin_b=GraphOption("Margin Bottom", "", type="number", plotly_option=False),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
+            bargap=GraphOption("Bar Gap", "", type="number", plotly_option=False, category="Display"),
+            margin_l=GraphOption("Margin Left", "", type="number", plotly_option=False, category="Display"),
+            margin_r=GraphOption("Margin Right", "", type="number", plotly_option=False, category="Display"),
+            margin_t=GraphOption("Margin Top", "", type="number", plotly_option=False, category="Display"),
+            margin_b=GraphOption("Margin Bottom", "", type="number", plotly_option=False, category="Display"),
         ),
         "radar": GraphOptions(
             r=GraphOption("Radius", "value"),
             theta=GraphOption("Theta", "technology"),
             color=GraphOption("Color", "source"),
-            axis_title=GraphOption("Radar Axis Title", "", type="input", plotly_option=False),
+            axis_title=GraphOption("Radar Axis Title", "", type="input", plotly_option=False, category="Display"),
         ),
         "dot": GraphOptions(
             x=GraphOption("X-Axis", "value"),
             y=GraphOption("Y-Axis", "technology"),
             color=GraphOption("Color", "source"),
-            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
-            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
         ),
     },
     "timeseries": {
         "line": GraphOptions(
-            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
-            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
-            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
         ),
         "box": GraphOptions(
             color=GraphOption("Color", "source"),
@@ -160,9 +162,9 @@ GRAPHS_DEFAULT_OPTIONS = {
                 plotly_option=False
             ),
             facet_col=GraphOption("Subplots", "", clearable=True),
-            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
-            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
-            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
         ),
         "heat_map": GraphOptions(
             x=GraphOption(
@@ -184,9 +186,9 @@ GRAPHS_DEFAULT_OPTIONS = {
                 from_filter=False,
                 plotly_option=False
             ),
-            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False),
-            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False),
-            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False),
+            xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False, category="Display"),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
         ),
     }
 }

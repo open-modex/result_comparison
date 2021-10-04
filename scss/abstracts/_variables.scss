@@ -1,0 +1,41 @@
+// Colors
+$primary-color-1: #1F567D;
+$primary-color-2: #000;
+$secondary-color-1: #06A77D;
+
+$color-white: #fff;
+$color-gray-1: #F6F8FA; // for backgrounds
+$color-gray-2: #C6CDD4; // for input borders
+$color-gray-3: #676C73;
+$color-gray-4: #E4E4E4; // for borders
+$color-blue: #839FB4;
+
+$text-color: $primary-color-2;
+
+$error-color: #DB2B39;
+$error-bg-color: #FBEAEB;
+$warning-color: #875D45;
+$warning-bg-color: #FBF6EA;
+
+// Text
+$font-size-large: 2.25rem; // 36px
+$font-size-medium: 1.25rem; // 20px
+$font-size-normal: 1rem; // 16px
+$font-size-small: 0.875rem; // 14rem
+
+// Media-queries
+$screen-width-small: 600px;
+$screen-width-medium: 1024px;
+$screen-width-regular: 1200px;
+$screen-width-large: 1400px;
+$screen-width-xlarge: 1600px;
+
+// Layout
+$margin-main: 1rem;
+$border-radius: 3px;
+
+// Styling
+$border-style: 1px solid $color-gray-4;
+
+// Pseudo classes
+$pseudo-classes: 'link', 'hover', 'focus', 'visited', 'focus';

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project tries to adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0] - 2021-10-04
+### Added
+- bootstrap design
+- graph tabs
+- chart/error tabs
+- filter tabs
+- dynamic error tab class 
+- empty pages for imprint and privacy
+- data view can be activated 
+
 ## [0.13.0] - 2021-08-30
 ### Changed
 - labels are applied before grouping

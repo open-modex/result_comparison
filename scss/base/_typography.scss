@@ -1,0 +1,25 @@
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: Lato, Roboto, Helvetica, sans-serif;
+  color: $text-color;
+  letter-spacing: 0.02rem;
+}
+
+div, p, ul, ol, label, span {
+  font-size: 1rem;
+  letter-spacing: 0.02rem;
+}
+
+a {
+  color: $primary-color-1;
+  font-weight: 700;
+}
+
+@each $pseudo-class in $pseudo-classes {
+  a:#{$pseudo-class} {
+    color: $primary-color-1;
+  }
+}

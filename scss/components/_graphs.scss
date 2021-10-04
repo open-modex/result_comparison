@@ -1,0 +1,156 @@
+$chart-options-width: 14rem;
+
+.charts {
+	&__item {
+		margin-bottom: 2rem;
+	}
+
+	@media only screen and (min-width: $screen-width-regular) {
+		flex: 1;
+	}
+
+	&__item {
+		@include box-style;
+        @include flex-row;
+		margin-left: 3rem;
+		margin-bottom: 3rem;
+	}
+}
+
+.graph {
+	padding: 1rem;
+
+    @media only screen and (min-width: $screen-width-regular) {
+		flex: 1;
+	}
+
+	&__view {
+		@include flex-row-justify-space-between;
+
+		input[type=checkbox] {
+			margin-right: 0.5rem;
+		}
+	}
+
+	.nav-tabs {
+		border-bottom: none;
+		height: 2.5rem;
+	}
+
+	.nav-tabs .nav-item {
+		cursor: default;
+		user-select: none;
+	}
+
+	.nav-tabs .nav-item .nav-link {
+		font-size: $font-size-small;
+		color: $primary-color-2;
+		border: none;
+		border-bottom: 3px solid $primary-color-2;
+		padding: .5rem 1.5rem;
+	}
+
+	.nav-tabs .nav-item .nav-link:not(.active) {
+		color: $primary-color-1;
+		cursor: pointer;
+	}
+
+	// errors, warnings and infos classes on .nav-item
+	/* .nav-tabs .nav-item.infos .nav-link {
+		color: $secondary-color-1;
+		border-bottom: 3px solid $secondary-color-1;
+	}
+
+	.nav-tabs .nav-item.errors .nav-link {
+		color: $error-color;
+		border-bottom: 3px solid $error-color;
+	}
+
+	.nav-tabs .nav-item.warnings .nav-link {
+		color: $warning-color;
+		border-bottom: 3px solid $warning-color;
+	}
+
+	.nav-tabs .nav-item.errors .nav-link:not(.active) {
+		border-bottom: none;
+	} */
+
+	// errors, warnings and infos classes on .nav-link
+	// start
+	.nav-tabs .nav-item .nav-link.infos {
+		color: $secondary-color-1;
+		border-bottom: 3px solid $secondary-color-1;
+	}
+
+	.nav-tabs .nav-item .nav-link.errors {
+		color: $error-color;
+		border-bottom: 3px solid $error-color;
+	}
+
+	.nav-tabs .nav-item .nav-link.warnings {
+		color: $warning-color;
+		border-bottom: 3px solid $warning-color;
+	}
+
+	.nav-tabs .nav-item .nav-link:not(.active).errors {
+		border-bottom: none;
+	}
+	// end
+
+	.nav-tabs .nav-item .nav-link:not(.active) {
+		border: none;
+	}
+}
+
+.chart-settings {
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin: 1rem 0;
+	
+	@media only screen and (min-width: $screen-width-regular) {
+		width: $chart-options-width;
+		border-left: $border-style;
+	}
+
+	&__title {
+		text-transform: uppercase;
+		text-align: center;
+		font-weight: 300;
+		padding-bottom: 1rem;
+	}
+
+	.nav-tabs {
+		border-bottom: none;
+	}
+
+	.nav-tabs .nav-item {
+		flex: 1;
+		cursor: default;
+		user-select: none;
+	}
+
+	.nav-tabs .nav-item .nav-link {
+		font-size: $font-size-small;
+		color: $primary-color-2;
+		text-align: center;
+		border: none;
+		border-bottom: 3px solid $primary-color-2;
+	}
+
+	.nav-tabs .nav-item .nav-link:not(.active) {
+		color: $primary-color-1;
+		cursor: pointer;
+		border: none;
+	}
+}
+
+#graph_scalars_plot_switch,
+#graph_timeseries_plot_switch {
+	label {
+		padding: 0 0.5rem;
+	}
+
+	input {
+		margin-right: 0.25rem;
+	}
+}
