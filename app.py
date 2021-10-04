@@ -245,7 +245,10 @@ def save_labels(_, name, str_labels):
         Output(component_id="order_by", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value")
     ] +
-    [Output(component_id={"name": filter_, "type": "filter-dropdown"}, component_property='value') for filter_ in SC_FILTERS] +
+    [
+        Output(component_id={"name": filter_, "type": "filter-dropdown"}, component_property='value')
+        for filter_ in SC_FILTERS
+    ] +
     [Output(component_id="save_load_errors", component_property="children")],
     Input('load_filters', "value"),
     State(component_id="dd_scenario", component_property="value"),
@@ -303,7 +306,10 @@ def load_labels(name):
 
 
 @app.callback(
-    [Output(component_id={"name": filter_, "type": "filter-dropdown"}, component_property="options") for filter_ in SC_FILTERS],
+    [
+        Output(component_id={"name": filter_, "type": "filter-dropdown"}, component_property="options")
+        for filter_ in SC_FILTERS
+    ],
     [Input(component_id="dd_scenario", component_property="value")],
 )
 def load_scenario(scenarios):
@@ -316,7 +322,7 @@ def load_scenario(scenarios):
 
 
 @app.callback(
-    [Output(component_id=f"graph_scalars_options", component_property="children")],
+    [Output(component_id="graph_scalars_options", component_property="children")],
     [
         Input(component_id="graph_scalars_plot_switch", component_property="value"),
         Input('load_filters', "value"),
@@ -338,7 +344,7 @@ def toggle_scalar_graph_options(plot_type, name):
 
 
 @app.callback(
-    [Output(component_id=f"graph_timeseries_options", component_property="children")],
+    [Output(component_id="graph_timeseries_options", component_property="children")],
     [
         Input(component_id="graph_timeseries_plot_switch", component_property="value"),
         Input('load_filters', "value"),
@@ -373,8 +379,8 @@ def toggle_timeseries_graph_options(plot_type, name):
     ],
     [
         State(component_id="units", component_property='children'),
-        State(component_id=f"graph_scalars_options", component_property='children'),
-        State(component_id=f"filters", component_property='children'),
+        State(component_id="graph_scalars_options", component_property='children'),
+        State(component_id="filters", component_property='children'),
         State(component_id="colors", component_property="value"),
         State(component_id="labels", component_property="value"),
         State(component_id="order_by", component_property="value"),
@@ -383,7 +389,9 @@ def toggle_timeseries_graph_options(plot_type, name):
     ],
     prevent_initial_call=True
 )
-def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, colors, labels, order_by, agg_group_by, scenarios):
+def scalar_graph(
+        _, show_data, units_div, graph_scalars_options, filter_div, colors, labels, order_by, agg_group_by, scenarios
+):
     if scenarios is None:
         raise PreventUpdate
     data = get_multiple_scenario_data(*scenarios, table="oed_scalars")
@@ -434,7 +442,7 @@ def scalar_graph(_, show_data, units_div, graph_scalars_options, filter_div, col
     [
         State(component_id="units", component_property='children'),
         State(component_id="graph_timeseries_options", component_property='children'),
-        State(component_id=f"filters", component_property='children'),
+        State(component_id="filters", component_property='children'),
         State(component_id="colors", component_property="value"),
         State(component_id="labels", component_property="value"),
         State(component_id="order_by", component_property="value"),
