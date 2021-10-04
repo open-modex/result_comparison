@@ -12,6 +12,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - filter tabs
 - dynamic error tab class 
 - empty pages for imprint and privacy
+- data view can be activated 
 
 ## [0.13.0] - 2021-08-30
 ### Changed

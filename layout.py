@@ -337,7 +337,7 @@ def get_scenario_column(scenarios):
             html.Label("Scenario"),
             dcc.Dropdown(
                 id="dd_scenario",
-                className="scenarios__dropdown",  # This is a dash component with additonal class name
+                className="scenarios__dropdown",
                 multi=True,
                 options=[
                     {
@@ -351,21 +351,7 @@ def get_scenario_column(scenarios):
                 "Reload",
                 id="scenario_reload",
                 className="scenarios__btn btn btn--refresh"
-            ), # This is bootstrap component with additional class
-            html.Div(
-                className="scenarios__views",
-                children=[
-                    html.Div(
-                        className="view view--dashboard active"
-                    ),
-                    html.Div(
-                        className="view view--data"
-                    ),
-                    html.Div(
-                        className="view view--dashboard-data"
-                    )
-                ]
-            )
+            ),
         ],
     )
 
@@ -582,7 +568,19 @@ def get_graph_column():
                             html.Div(
                                 className="graph__view",
                                 children=[
-                                    dcc.Checklist(id=f"show_{graph}_data", options=[{"label": "Show Data", "value": "True"}]),
+                                    html.Div(
+                                        className="scenarios__views",
+                                        children=[
+                                            html.Div(
+                                                id=f"view-dashboard_{graph}",
+                                                className="view view--dashboard active"
+                                            ),
+                                            html.Div(
+                                                id=f"view-dashboard-data_{graph}",
+                                                className="view view--dashboard-data"
+                                            )
+                                        ]
+                                    ),
                                     dcc.RadioItems(
                                         id=f"graph_{graph}_plot_switch",
                                         options=[
@@ -591,7 +589,7 @@ def get_graph_column():
                                         ],
                                         value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
                                     ),
-                                    html.Button(f"Refresh", id=f"refresh_{graph}", className="btn btn--refresh")
+                                    html.Button("Refresh", id=f"refresh_{graph}", className="btn btn--refresh")
                                 ]
                             ),
                             dcc.Loading(
@@ -620,14 +618,18 @@ def get_graph_column():
                                     ]
                                 )
                             ),
-                            dash_table.DataTable(
-                                id=f"table_{graph}",
-                                export_format="csv",
-                                style_header={'backgroundColor': 'rgb(30, 30, 30)'},
-                                style_cell={
-                                    'backgroundColor': 'rgb(50, 50, 50)',
-                                    'color': 'white'
-                                },
+                            html.Div(
+                                id=f"table_div_{graph}",
+                                style={"display": "none"},
+                                children=dash_table.DataTable(
+                                    id=f"table_{graph}",
+                                    export_format="csv",
+                                    style_header={'backgroundColor': 'rgb(30, 30, 30)'},
+                                    style_cell={
+                                        'backgroundColor': 'rgb(50, 50, 50)',
+                                        'color': 'white'
+                                    },
+                                )
                             )
                         ]
                     ),
