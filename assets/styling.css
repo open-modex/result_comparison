@@ -652,27 +652,27 @@ button.btn.btn--small {
   background-color: #1F567D;
 }
 
-.scenarios .view.view--dashboard {
+.view.view--dashboard {
   background-image: url("../assets/icons/i_graph_view_b.svg");
 }
 
-.scenarios .view.view--dashboard.active {
+.view.view--dashboard.active {
   background-image: url("../assets/icons/i_graph_view_w.svg");
 }
 
-.scenarios .view.view--data {
+.view.view--data {
   background-image: url("../assets/icons/i_data_view_b.svg");
 }
 
-.scenarios .view.view--data.active {
+.view.view--data.active {
   background-image: url("../assets/icons/i_data_view_w.svg");
 }
 
-.scenarios .view.view--dashboard-data {
+.view.view--dashboard-data {
   background-image: url("../assets/icons/i_all_views_b.svg");
 }
 
-.scenarios .view.view--dashboard-data.active {
+.view.view--dashboard-data.active {
   background-image: url("../assets/icons/i_all_views_w.svg");
 }
 
