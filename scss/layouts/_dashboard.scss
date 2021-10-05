@@ -42,13 +42,14 @@ $scenarios-dropdown-height: 39px;
 		background-position: center center;
 		background-repeat: no-repeat;
 		border: 1px solid $primary-color-1;
+		cursor: pointer;
 	}
 
 	&__views .view.active {
 		background-color: $primary-color-1;
 	}
 
-	.view.view--dashboard {
+	&__views .view.view--dashboard {
 		background-image: url("../assets/icons/i_graph_view_b.svg");
 
 		&.active {
@@ -56,7 +57,7 @@ $scenarios-dropdown-height: 39px;
 		}
 	}
 
-	.view.view--data {
+	&__views .view.view--data {
 		background-image: url("../assets/icons/i_data_view_b.svg");
 
 		&.active {
@@ -64,7 +65,7 @@ $scenarios-dropdown-height: 39px;
 		}
 	}
 
-	.view.view--dashboard-data {
+	&__views .view.view--dashboard-data {
 		background-image: url("../assets/icons/i_all_views_b.svg");
 
 		&.active {

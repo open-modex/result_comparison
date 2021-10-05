@@ -646,33 +646,34 @@ button.btn.btn--small {
   background-position: center center;
   background-repeat: no-repeat;
   border: 1px solid #1F567D;
+  cursor: pointer;
 }
 
 .scenarios__views .view.active {
   background-color: #1F567D;
 }
 
-.view.view--dashboard {
+.scenarios__views .view.view--dashboard {
   background-image: url("../assets/icons/i_graph_view_b.svg");
 }
 
-.view.view--dashboard.active {
+.scenarios__views .view.view--dashboard.active {
   background-image: url("../assets/icons/i_graph_view_w.svg");
 }
 
-.view.view--data {
+.scenarios__views .view.view--data {
   background-image: url("../assets/icons/i_data_view_b.svg");
 }
 
-.view.view--data.active {
+.scenarios__views .view.view--data.active {
   background-image: url("../assets/icons/i_data_view_w.svg");
 }
 
-.view.view--dashboard-data {
+.scenarios__views .view.view--dashboard-data {
   background-image: url("../assets/icons/i_all_views_b.svg");
 }
 
-.view.view--dashboard-data.active {
+.scenarios__views .view.view--dashboard-data.active {
   background-image: url("../assets/icons/i_all_views_w.svg");
 }
 
