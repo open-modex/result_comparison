@@ -304,6 +304,10 @@ button.btn.btn--small {
   width: 100%;
 }
 
+.dashboard .content .tab-content .save input {
+  width: 100%;
+}
+
 .dashboard .content .save-filters {
   display: -webkit-box;
   display: -ms-flexbox;

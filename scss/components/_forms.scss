@@ -16,8 +16,14 @@
     border-color: $color-gray-2;
   }
 
-  .tab-content label {
-    width: 100%;
+  .tab-content {
+    label {
+      width: 100%;
+    }
+
+    .save input {
+      width: 100%;
+    }
   }
 
   .save-filters {
