@@ -108,10 +108,18 @@ def get_multiple_scenario_data(*scenario_ids, table):
 
 
 @cache.memoize()
+def get_scenario_filters(scenario_id):
+    app.logger.info(f"Loading scenario data #{scenario_id} (not cached)...")
+    if USE_DUMMY_DATA:
+        return dev.get_dummy_filters(scenario_id)
+    return scenario.get_scenario_filters(scenario_id)
+
+
+@cache.memoize()
 def get_multiple_scenario_filters(*scenario_ids):
     app.logger.info("Merging scenario data (not cached)...")
     scenarios = [
-        scenario.get_scenario_filters(scenario_id) for scenario_id in scenario_ids
+        get_scenario_filters(scenario_id) for scenario_id in scenario_ids
     ]
     merged = scenario.merge_scenario_data(scenarios)
     app.logger.info("Merged scenario data")
