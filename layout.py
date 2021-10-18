@@ -626,7 +626,10 @@ def get_graph_column():
                                     id=f"table_{graph}",
                                     export_format="csv",
                                     style_table={'overflowX': 'auto'},
-                                    style_header={'backgroundColor': 'rgb(246, 248, 250)'}, 
+                                    style_header={
+                                        'backgroundColor': 'rgb(246, 248, 250)',
+                                        'textAlign': 'center'
+                                        }, 
                                     style_cell={
                                         'backgroundColor': 'rgb(255, 255, 255)',
                                         'color': 'rgb(50, 50, 50)',

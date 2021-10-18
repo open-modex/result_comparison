@@ -667,6 +667,7 @@ button.btn.btn--small {
 #view-dashboard_scalars,
 #view-dashboard_timeseries {
   background-image: url("../assets/icons/i_graph_view_b.svg");
+  cursor: pointer;
 }
 
 #view-dashboard_scalars.active,
@@ -677,6 +678,7 @@ button.btn.btn--small {
 #view-dashboard-data_scalars,
 #view-dashboard-data_timeseries {
   background-image: url("../assets/icons/i_all_views_b.svg");
+  cursor: pointer;
 }
 
 #view-dashboard-data_scalars.active,
