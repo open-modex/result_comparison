@@ -652,19 +652,27 @@ button.btn.btn--small {
   background-color: #1F567D;
 }
 
-#view-dashboard_scalars {
+.dash-spreadsheet-menu {
+  padding-bottom: 1rem;
+}
+
+#view-dashboard_scalars,
+#view-dashboard_timeseries {
   background-image: url("../assets/icons/i_graph_view_b.svg");
 }
 
-#view-dashboard_scalars.active {
+#view-dashboard_scalars.active,
+#view-dashboard_timeseries.active {
   background-image: url("../assets/icons/i_graph_view_w.svg");
 }
 
-#view-dashboard-data_scalars {
+#view-dashboard-data_scalars,
+#view-dashboard-data_timeseries {
   background-image: url("../assets/icons/i_all_views_b.svg");
 }
 
-#view-dashboard-data_scalars.active {
+#view-dashboard-data_scalars.active,
+#view-dashboard-data_timeseries.active {
   background-image: url("../assets/icons/i_all_views_w.svg");
 }
 

@@ -49,7 +49,12 @@ $scenarios-dropdown-height: 39px;
 	}
 }
 
-#view-dashboard_scalars {
+.dash-spreadsheet-menu {
+	padding-bottom: 1rem;
+}
+
+#view-dashboard_scalars,
+#view-dashboard_timeseries {
 	background-image: url("../assets/icons/i_graph_view_b.svg");
 
 	&.active {
@@ -57,7 +62,8 @@ $scenarios-dropdown-height: 39px;
 	}
 }
 
-#view-dashboard-data_scalars {
+#view-dashboard-data_scalars,
+#view-dashboard-data_timeseries {
 	background-image: url("../assets/icons/i_all_views_b.svg");
 
 	&.active {
