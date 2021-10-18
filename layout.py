@@ -629,7 +629,8 @@ def get_graph_column():
                                     style_header={'backgroundColor': 'rgb(246, 248, 250)'}, 
                                     style_cell={
                                         'backgroundColor': 'rgb(255, 255, 255)',
-                                        'color': 'rgb(50, 50, 50)'
+                                        'color': 'rgb(50, 50, 50)',
+                                        'textAlign': 'left'
                                     },
                                 )
                             )
