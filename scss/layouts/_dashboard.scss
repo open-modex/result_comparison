@@ -47,29 +47,21 @@ $scenarios-dropdown-height: 39px;
 	&__views .view.active {
 		background-color: $primary-color-1;
 	}
+}
 
-	.view.view--dashboard {
-		background-image: url("../assets/icons/i_graph_view_b.svg");
+#view-dashboard_scalars {
+	background-image: url("../assets/icons/i_graph_view_b.svg");
 
-		&.active {
-			background-image: url("../assets/icons/i_graph_view_w.svg");
-		}
+	&.active {
+		background-image: url("../assets/icons/i_graph_view_w.svg");
 	}
+}
 
-	.view.view--data {
-		background-image: url("../assets/icons/i_data_view_b.svg");
+#view-dashboard-data_scalars {
+	background-image: url("../assets/icons/i_all_views_b.svg");
 
-		&.active {
-			background-image: url("../assets/icons/i_data_view_w.svg");
-		}
-	}
-
-	.view.view--dashboard-data {
-		background-image: url("../assets/icons/i_all_views_b.svg");
-
-		&.active {
-			background-image: url("../assets/icons/i_all_views_w.svg");
-		}
+	&.active {
+		background-image: url("../assets/icons/i_all_views_w.svg");
 	}
 }
 
@@ -78,8 +70,8 @@ $scenarios-dropdown-height: 39px;
 
 	// Filters
 	&> div:first-child {
-		width: 20rem;
-		min-width: 20rem;
+		width: $dashboard-filters-box-width;
+		min-width: $dashboard-filters-box-width;
 		@include box-style;
 
 		.tab-content {
@@ -202,4 +194,8 @@ $scenarios-dropdown-height: 39px;
 	#filters {
 		padding: 1rem;
 	}
+}
+
+#table_div_scalars {
+	max-width: calc(100vw - #{$dashboard-filters-box-width} - #{$dashboard-chart-options-width} - #{$dashboard-space-between-filters-chart} - (#{$margin-main} * 5));
 }
