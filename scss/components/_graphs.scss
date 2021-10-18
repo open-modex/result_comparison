@@ -1,5 +1,3 @@
-$chart-options-width: 14rem;
-
 .charts {
 	&__item {
 		margin-bottom: 2rem;
@@ -12,13 +10,13 @@ $chart-options-width: 14rem;
 	&__item {
 		@include box-style;
         @include flex-row;
-		margin-left: 3rem;
+		margin-left: $dashboard-space-between-filters-chart;
 		margin-bottom: 3rem;
 	}
 }
 
 .graph {
-	padding: 1rem;
+	padding: $margin-main;
 
     @media only screen and (min-width: $screen-width-regular) {
 		flex: 1;
@@ -108,7 +106,7 @@ $chart-options-width: 14rem;
 	margin: 1rem 0;
 	
 	@media only screen and (min-width: $screen-width-regular) {
-		width: $chart-options-width;
+		width: $dashboard-chart-options-width;
 		border-left: $border-style;
 	}
 

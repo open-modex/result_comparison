@@ -2,7 +2,7 @@
 SECRET_KEY=Py.ju&mo87.
 
 DEBUG=True
-USE_DUMMY_DATA=True
+USE_DUMMY_DATA=False
 SKIP_TS=False
 
 REDIS_URL=redis://redis:6379/0

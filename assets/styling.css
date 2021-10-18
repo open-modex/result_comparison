@@ -652,27 +652,19 @@ button.btn.btn--small {
   background-color: #1F567D;
 }
 
-.view.view--dashboard {
+#view-dashboard_scalars {
   background-image: url("../assets/icons/i_graph_view_b.svg");
 }
 
-.view.view--dashboard.active {
+#view-dashboard_scalars.active {
   background-image: url("../assets/icons/i_graph_view_w.svg");
 }
 
-.view.view--data {
-  background-image: url("../assets/icons/i_data_view_b.svg");
-}
-
-.view.view--data.active {
-  background-image: url("../assets/icons/i_data_view_w.svg");
-}
-
-.view.view--dashboard-data {
+#view-dashboard-data_scalars {
   background-image: url("../assets/icons/i_all_views_b.svg");
 }
 
-.view.view--dashboard-data.active {
+#view-dashboard-data_scalars.active {
   background-image: url("../assets/icons/i_all_views_w.svg");
 }
 
@@ -831,6 +823,10 @@ button.btn.btn--small {
 
 .filter-panel #filters {
   padding: 1rem;
+}
+
+#table_div_scalars {
+  max-width: calc(100vw - 20rem - 14rem - 3rem - (1rem * 5));
 }
 
 .legal {

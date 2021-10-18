@@ -603,6 +603,7 @@ def get_graph_column():
                                                 figure=get_empty_fig(),
                                                 style={},
                                                 config={
+                                                    'responsive': True,
                                                     'toImageButtonOptions': {
                                                         'format': 'svg',
                                                     }
@@ -624,7 +625,8 @@ def get_graph_column():
                                 children=dash_table.DataTable(
                                     id=f"table_{graph}",
                                     export_format="csv",
-                                    style_header={'backgroundColor': 'rgb(30, 30, 30)'},
+                                    style_table={'overflowX': 'auto'},
+                                    style_header={'backgroundColor': 'rgb(30, 30, 30)'}, 
                                     style_cell={
                                         'backgroundColor': 'rgb(50, 50, 50)',
                                         'color': 'white'
