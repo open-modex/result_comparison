@@ -152,3 +152,10 @@
 		margin-right: 0.25rem;
 	}
 }
+
+#graph_scalars,
+#graph_timeseries {
+	.js-plotly-plot {
+		min-height: 30rem;
+	}
+}

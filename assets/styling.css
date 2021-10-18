@@ -506,6 +506,11 @@ button.btn.btn--small {
   margin-right: 0.25rem;
 }
 
+#graph_scalars .js-plotly-plot,
+#graph_timeseries .js-plotly-plot {
+  min-height: 30rem;
+}
+
 .header {
   display: -webkit-box;
   display: -ms-flexbox;
