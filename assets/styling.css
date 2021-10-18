@@ -592,6 +592,10 @@ button.btn.btn--small {
   max-width: calc(100vw - 20rem - 14rem - 3rem - (1rem * 5));
 }
 
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner tr th {
+  padding: 1rem;
+}
+
 .dashboard {
   padding: 1rem;
   background-color: #F6F8FA;

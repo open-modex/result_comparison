@@ -1,0 +1,7 @@
+#table_div_scalars {
+	max-width: calc(100vw - #{$dashboard-filters-box-width} - #{$dashboard-chart-options-width} - #{$dashboard-space-between-filters-chart} - (#{$margin-main} * 5));
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner tr th {
+    padding: 1rem;
+}
