@@ -573,23 +573,53 @@ button.btn.btn--small {
   background-color: #fff !important;
 }
 
-.header__nav.navbar .navbar-nav .nav-item a.nav-link:link {
+.header__nav.navbar .navbar-nav .nav-item a {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  text-decoration: none;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a:link {
   color: #1F567D;
 }
 
-.header__nav.navbar .navbar-nav .nav-item a.nav-link:hover {
+.header__nav.navbar .navbar-nav .nav-item a {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  text-decoration: none;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a:hover {
   color: #1F567D;
 }
 
-.header__nav.navbar .navbar-nav .nav-item a.nav-link:focus {
+.header__nav.navbar .navbar-nav .nav-item a {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  text-decoration: none;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a:focus {
   color: #1F567D;
 }
 
-.header__nav.navbar .navbar-nav .nav-item a.nav-link:visited {
+.header__nav.navbar .navbar-nav .nav-item a {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  text-decoration: none;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a:visited {
   color: #1F567D;
 }
 
-.header__nav.navbar .navbar-nav .nav-item a.nav-link:focus {
+.header__nav.navbar .navbar-nav .nav-item a {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  text-decoration: none;
+}
+
+.header__nav.navbar .navbar-nav .nav-item a:focus {
   color: #1F567D;
 }
 

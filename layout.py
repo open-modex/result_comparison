@@ -319,8 +319,8 @@ def get_header(app):
             dbc.NavbarSimple(
                 className="header__nav",
                 children=[
-                    dbc.NavItem(dbc.NavLink("About", href="#")),
-                    dbc.NavItem(dbc.NavLink("Contact", href="#"))
+                    dbc.NavItem(dcc.Link("About", href="/imprint")),
+                    dbc.NavItem(dcc.Link("Contact", href="/privacy"))
                 ],
                 dark=False,
                 expand="xl"
