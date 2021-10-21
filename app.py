@@ -12,7 +12,7 @@ import dash_bootstrap_components as dbc
 from flask import flash, get_flashed_messages
 from flask_caching import Cache
 
-from data import dev
+import dev
 import preprocessing
 from settings import (
     SECRET_KEY,
