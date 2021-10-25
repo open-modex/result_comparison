@@ -1,43 +1,5 @@
-import uuid
-import json
-from collections import ChainMap, defaultdict
-
-import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 import dash_html_components as html
-import dash_table
-
-from graphs import get_empty_fig
-from settings import (
-    VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LABELS
-)
-from models import get_model_options, Filter, Colors, Labels
-
-
-DEFAULT_LAYOUT = html.Div([
-    dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content')
-])
-
-IMPRINT_LAYOUT = html.Section(
-    className="legal",
-    children=[
-        html.Div(
-            children=[
-                html.Div(
-                    children=[
-                        html.H1("Imprint"),
-                        html.P(
-                            [
-                                "Publisher:",html.Br(),"This website is operated by the Reiner Lemoine Institut gGmbH",html.Br(),html.Br(),"Management:",html.Br(),"Dr. Kathrin Goldammer",html.Br(),html.Br(),"Postal address:",html.Br(),"Reiner Lemoine Institut gGmbH",html.Br(),"Rudower Chaussee 12",html.Br(),"12489 Berlin",html.Br(),html.Br(),"Telephone +49 (0)30 1208 434 0",html.Br(),"Fax +49 (0)30 1208 434 99",html.Br(),html.Br(),"Handelsregister Berlin – HRB 124659 B",html.Br(),html.Br(),"Tax number: 27/602/55211",html.Br(),html.Br(),"VAT-Id.: DE274491408",html.Br(),html.Br(),"Disclaimer:",html.Br(),html.Br(),"1. Haftungshinweis",html.Br(),"Die Inhalte sind mit größter Sorgfalt recherchiert. Dennoch übernimmt der Autor keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen. Haftungsansprüche gegen den Autor, welche sich auf Schäden materieller oder ideeller Art beziehen die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen, sofern seitens des Autors kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt. Alle Angebote sind freibleibend und unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.",html.Br(),html.Br(),"2. Verweise und Links",html.Br(),"Bei direkten oder indirekten Verweisen auf fremde Internetseiten („Links”), die außerhalb des Verantwortungsbereiches des Autors liegen, würde eine Haftungsverpflichtung ausschließlich in dem Fall in Kraft treten, in dem der Autor von den Inhalten Kenntnis hat und es ihm technisch möglich und zumutbar wäre, die Nutzung im Falle rechtswidriger Inhalte zu verhindern. Der Autor erklärt daher ausdrücklich, dass zum Zeitpunkt der Linksetzung die entsprechenden verlinkten Seiten frei von illegalen Inhalten waren. Der Autor hat keinerlei Einfluss auf die aktuelle und zukünftige Gestaltung und auf die Inhalte der gelinkten/verknüpften Seiten. Deshalb distanziert er sich hiermit ausdrücklich von allen Inhalten aller gelinkten /verknüpften Seiten, die nach der Linksetzung verändert wurden. Diese Feststellung gilt für alle innerhalb des eigenen Internetangebotes gesetzten Links und Verweise sowie für Fremdeinträge in vom Autor eingerichteten Gästebüchern, Diskussionsforen und Mailinglisten. Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der über Links auf die jeweilige Veröffentlichung lediglich verweist.",html.Br(),html.Br(),"3. Urheber- und Kennzeichenrecht",html.Br(),"Der Autor ist bestrebt, in allen Publikationen die Urheberrechte der verwendeten Grafiken, Tondokumente, Videosequenzen und Texte zu beachten, von ihm selbst erstellte Grafiken, Tondokumente, Videosequenzen und Texte zu nutzen oder auf lizenzfreie Grafiken, Tondokumente, Videosequenzen und Texte zurückzugreifen. Alle innerhalb des Internetangebotes genannten und ggf. durch Dritte geschützten Marken- und Warenzeichen unterliegen uneingeschränkt den Bestimmungen des jeweils gültigen Kennzeichenrechts und den Besitzrechten der jeweiligen eingetragenen Eigentümer. Allein aufgrund der bloßen Nennung ist nicht der Schluss zu ziehen, dass Markenzeichen nicht durch Rechte Dritter geschützt sind! Das Copyright für veröffentlichte, vom Autor selbst erstellte Objekte bleibt allein beim Autor der Seiten. Eine Vervielfältigung oder Verwendung solcher Grafiken, Tondokumente, Videosequenzen und Texte in anderen elektronischen oder gedruckten Publikationen ist ohne ausdrückliche Zustimmung des Autors nicht gestattet.",html.Br(),html.Br(),"4. Rechtswirksamkeit dieses Haftungsausschlusses",html.Br(),"Dieser Haftungsausschluss ist als Teil des Internetangebotes zu betrachten, von dem aus auf diese Seite verwiesen wurde. Sofern Teile oder einzelne Formulierungen dieses Textes der geltenden Rechtslage nicht, nicht mehr oder nicht vollständig entsprechen sollten, bleiben die übrigen Teile des Dokumentes in ihrem Inhalt und ihrer Gültigkeit davon unberührt."
-                            ]
-                        )
-                    ]
-                )
-            ]
-        )
-    ]
-)
 
 privacyDataProcessing = [
     "Informationen über den Browsertyp und die verwendete Version",
@@ -48,7 +10,6 @@ privacyDataProcessing = [
     "Websites, von denen das System der Nutzer*in auf unsere Internetseite gelangt",
     "Websites, die vom System der Nutzer*in über unsere Website aufgerufen werden"
     ]
-
 privacyCookies = [
     "Informationen über den Browsertyp und die verwendete Version",
     "Das Betriebssystem",
@@ -61,7 +22,6 @@ privacyCookies = [
     "Häufigkeit von Seitenaufrufen",
     "Inanspruchnahme von Website-Funktionen"
 ]
-
 privacyWebAnalysis = [
     "Zwei Bytes der IP-Adresse des aufrufenden Systems",
     "Die aufgerufene Webseite",
@@ -70,7 +30,6 @@ privacyWebAnalysis = [
     "Die Verweildauer auf der Webseite",
     "Die Häufigkeit des Aufrufs der Webseite"
 ]
-
 privacyRights = [
     "die Zwecke, zu denen die personenbezogenen Daten verarbeitet werden;",
     "die Kategorien von personenbezogenen Daten, welche verarbeitet werden;",
@@ -81,14 +40,12 @@ privacyRights = [
     "alle verfügbaren Informationen über die Herkunft der Daten, wenn die personenbezogenen Daten nicht bei der betroffenen Person erhoben werden;",
     "das Bestehen einer automatisierten Entscheidungsfindung einschließlich Profiling gemäß Art. 22 Abs. 1 und 4 DSGVO und – zumindest in diesen Fällen – aussagekräftige Informationen über die involvierte Logik sowie die Tragweite und die angestrebten Auswirkungen einer derartigen Verarbeitung für die betroffene Person."
 ]
-
 privacyDataProcessingRights = [
     "wenn Sie die Richtigkeit der Sie betreffenden personenbezogenen für eine Dauer bestreiten, die es den verantwortlichen Personen ermöglicht, die Richtigkeit der personenbezogenen Daten zu überprüfen;",
     "die Verarbeitung unrechtmäßig ist und Sie die Löschung der personenbezogenen Daten ablehnen und stattdessen die Einschränkung der Nutzung der personenbezogenen Daten verlangen;",
     "die verantwortliche Person die personenbezogenen Daten für die Zwecke der Verarbeitung nicht länger benötigt, Sie diese jedoch zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen benötigen, oder",
     "wenn Sie Widerspruch gegen die Verarbeitung gemäß Art. 21 Abs. 1 DSGVO eingelegt haben und noch nicht feststeht, ob die berechtigten Gründe der Verantwortlichen gegenüber Ihren Gründen überwiegen."
 ]
-
 privacyDataDeletion = [
     "Die Sie betreffenden personenbezogenen Daten sind für die Zwecke, für die sie erhoben oder auf sonstige Weise verarbeitet wurden, nicht mehr notwendig.",
     "Sie widerrufen Ihre Einwilligung, auf die sich die Verarbeitung gem. Art. 6 Abs. 1 lit. a oder Art. 9 Abs. 2 lit. a DSGVO stützte, und es fehlt an einer anderweitigen Rechtsgrundlage für die Verarbeitung.",
@@ -97,7 +54,6 @@ privacyDataDeletion = [
     "Die Löschung der Sie betreffenden personenbezogenen Daten ist zur Erfüllung einer rechtlichen Verpflichtung nach dem Unionsrecht oder dem Recht der Mitgliedstaaten erforderlich, dem die verantwortliche Person unterliegt.",
     "Die Sie betreffenden personenbezogenen Daten wurden in Bezug auf angebotene Dienste der Informationsgesellschaft gemäß Art. 8 Abs. 1 DSGVO erhoben."
 ]
-
 privacyDataDeletionExceptions = [
     "zur Ausübung des Rechts auf freie Meinungsäußerung und Information;",
     "zur Erfüllung einer rechtlichen Verpflichtung, die die Verarbeitung nach dem Recht der Union oder der Mitgliedstaaten, dem der Verantwortliche unterliegt, erfordert, oder zur Wahrnehmung einer Aufgabe, die im öffentlichen Interesse liegt oder in Ausübung öffentlicher Gewalt erfolgt, die dem Verantwortlichen übertragen wurde;",
@@ -105,27 +61,22 @@ privacyDataDeletionExceptions = [
     "für im öffentlichen Interesse liegende Archivzwecke, wissenschaftliche oder historische Forschungszwecke oder für statistische Zwecke gem. Art. 89 Abs. 1 DSGVO, soweit das unter Abschnitt a) genannte Recht voraussichtlich die Verwirklichung der Ziele dieser Verarbeitung unmöglich macht oder ernsthaft beeinträchtigt, oder",
     "zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen."
 ]
-
 privacyDataTransfer = [
     "die Verarbeitung auf einer Einwilligung gem. Art. 6 Abs. 1 lit. a DSGVO oder Art. 9 Abs. 2 lit. a DSGVO oder auf einem Vertrag gem. Art. 6 Abs. 1 lit. b DSGVO beruht und",
     "die Verarbeitung mithilfe automatisierter Verfahren erfolgt."
 ]
-
 privacyProfiling = [
     "für den Abschluss oder die Erfüllung eines Vertrags zwischen Ihnen und der verantwortlichen Person erforderlich ist,",
     "aufgrund von Rechtsvorschriften der Union oder der Mitgliedstaaten, denen der Verantwortliche unterliegt, zulässig ist und diese Rechtsvorschriften angemessene Maßnahmen zur Wahrung Ihrer Rechte und Freiheiten sowie Ihrer berechtigten Interessen enthalten oder",
     "mit Ihrer ausdrücklichen Einwilligung erfolgt."
 ]
-
 cookies_table_header = [
     html.Thead(html.Tr([html.Th("Cookie-Name"), html.Th("Zweck"), html.Th("Aufbewahrungszeit")]))
 ]
-
 row1 = html.Tr([html.Td("_pk_id.x.xxxx"), html.Td("Diese Cookies werden von der Open-Source-Software Matomo (Piwik) für die statistische Auswertung der Besucherzugriffe verwendet. Sollte sich ein Besucher gegen die statistische Auswertung seines Besucherzugriffs durch Matomo (Piwik) entscheiden, wird das Cookie piwik_ignore gesetzt."), html.Td("13 Monate")])
 row2 = html.Tr([html.Td("_pk_ses.x.xxxx"), html.Td("Diese Cookies werden von der Open-Source-Software Matomo (Piwik) für die statistische Auswertung der Besucherzugriffe verwendet. Sollte sich ein Besucher gegen die statistische Auswertung seines Besucherzugriffs durch Matomo (Piwik) entscheiden, wird das Cookie piwik_ignore gesetzt."), html.Td("30 Minuten")])
 row3 = html.Tr([html.Td("PIWIK_SESSID"), html.Td("ID der Sitzung des Analysediensts Matomo."), html.Td("Bis zum Ende der Browsersitzung")])
 row4 = html.Tr([html.Td("piwik_ignore"), html.Td("Sollte sich ein Besucher gegen die statistische Auswertung seines Besucherzugriffs durch Matomo (Piwik) entscheiden, wird dieses Cookie gesetzt."), html.Td("24 Monate")])
-
 cookies_table_body = [html.Tbody([row1, row2, row3, row4])]
 
 PRIVACY_LAYOUT = html.Section(
@@ -279,449 +230,3 @@ PRIVACY_LAYOUT = html.Section(
         )
     ]
 )
-
-
-def get_header(app):
-    return html.Section(
-        className="header",
-        children=[
-            html.Div(
-                className="header__content",
-                children=[
-                    html.Div(
-                        className="header__logo",
-                        children=[
-                            html.Img(
-                                src=app.get_asset_url("open_Modex-logo.png")
-                            )
-                        ],
-                    ),
-                    html.Div(
-                        className="header__heading",
-                        children=[
-                            html.P(
-                                children=f"Version v{VERSION}",
-                                className="version"
-                                ),
-                            html.H1(
-                                children="Energy Frameworks to Germany",
-                                className="title"
-                                ),
-                            html.P(
-                                children="How to efficiently sustain Germany's energy "
-                                "\n usage with efficient parameters based on regions.",
-                                className="subtitle"
-                            ),
-                        ],
-                    ),
-                ]
-            ),
-            dbc.NavbarSimple(
-                className="header__nav",
-                children=[
-                    dbc.NavItem(dbc.NavLink("About", href="#")),
-                    dbc.NavItem(dbc.NavLink("Contact", href="#"))
-                ],
-                dark=False,
-                expand="xl"
-            )
-        ],
-    )
-
-
-def get_scenario_column(scenarios):
-    return html.Div(
-        className="scenarios",
-        style={"padding-bottom": "50px"},
-        children=[
-            html.Label("Scenario"),
-            dcc.Dropdown(
-                id="dd_scenario",
-                className="scenarios__dropdown",
-                multi=True,
-                options=[
-                    {
-                        "label": f"{scenario['id']}, {scenario['scenario']}, {scenario['source']}",
-                        "value": scenario["id"],
-                    }
-                    for scenario in scenarios
-                ],
-            ),
-            dbc.Button(
-                "Reload",
-                id="scenario_reload",
-                className="scenarios__btn btn btn--refresh"
-            ),
-        ],
-    )
-
-
-def get_graph_options(data_type, graph_type, preset_options=None):
-    preset_options = preset_options or {}
-    chosen_options = ChainMap(preset_options, GRAPHS_DEFAULT_OPTIONS[data_type][graph_type].get_defaults())
-    if data_type == "scalars":
-        dd_options = [{"label": "value", "value": "value"}] + [
-            {"label": filter_, "value": filter_} for filter_ in SC_FILTERS
-        ]
-    else:
-        dd_options = [{"label": "series", "value": "series"}] + [
-            {"label": filter_, "value": filter_} for filter_ in TS_FILTERS
-        ]
-
-    tabs = defaultdict(list)
-    for option, value in chosen_options.items():
-        if GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].from_filter:
-            options = dd_options
-        else:
-            options = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].default
-        component_type = GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].type
-        if component_type == "dropdown":
-            component = dcc.Dropdown(
-                id={"name": option, "type": f"graph_{data_type}_option"},
-                options=options,
-                value=value,
-                clearable=GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].clearable
-            )
-        elif component_type in ("input", "number"):
-            component = dcc.Input(
-                id={"name": option, "type": f"graph_{data_type}_option"},
-                value=value,
-                type="text" if component_type == "input" else "number"
-            )
-        elif component_type == "bool":
-            component = dcc.Checklist(
-                id={"name": option, "type": f"graph_{data_type}_option"},
-                options=options,
-                value=[value],
-            )
-        else:
-            raise ValueError("Unknown dcc component")
-        tabs[GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].category] += [
-            html.Label(GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].label),
-            component
-        ]
-    tabs[next(iter(tabs.keys()))].insert(0, dcc.Input(type="hidden", name="graph_type", value=graph_type))
-    return dbc.Tabs(
-        [dbc.Tab(tab, label=label) for label, tab in tabs.items()]
-    )
-
-
-def get_save_load_column(app):
-    with app.server.app_context():
-        options = get_model_options(Filter)
-    return html.Div(
-        children=[
-            html.P(id=f"save_load_errors", children=""),
-            html.Label("Save filters as:"),
-            html.Div(
-                className="save-filters",
-                children=[
-                    dcc.Input(id="save_filters_name", type="text"),
-                    html.Button("Save", className="btn btn--small", id="save_filters")
-                ]
-            ),
-            html.Label("Load filters"),
-            dcc.Dropdown(
-                id="load_filters",
-                options=options,
-                clearable=True
-            )
-        ]
-    )
-
-
-def get_aggregation_order_column():
-    return html.Div(
-        className="filter-section",
-        children=[
-            html.P("Order/Aggregation"),
-            html.Label("Order-By:"),
-            dcc.Dropdown(
-                id="order_by",
-                multi=True,
-                clearable=True,
-                options=[{"label": filter_, "value": filter_} for filter_ in SC_FILTERS],
-            ),
-            html.Label("Group-By:"),
-            dcc.Dropdown(
-                id="aggregation_group_by",
-                multi=True,
-                clearable=True,
-                options=[{"label": filter_, "value": filter_} for filter_ in SC_FILTERS],
-            )
-        ]
-    )
-
-
-def get_units_column():
-    return html.Div(
-        id="units",
-        className="filter-section",
-        children=sum(
-            (
-                [
-                    html.Label(unit_name),
-                    dcc.Dropdown(
-                        id={"name": unit_name, "type": "unit-dropdown"},
-                        options=[
-                            {"label": unit, "value": unit}
-                            for unit in unit_data["units"]
-                        ],
-                        value=unit_data["default"],
-                        clearable=False,
-                    ),
-                ]
-                for unit_name, unit_data in UNITS.items()
-            ),
-            [html.P("Units")],
-        ),
-    )
-
-
-def get_filter_column():
-    return html.Div(
-        id="filters",
-        className="filter-section",
-        children=sum(
-            (
-                [
-                    html.Label(f"Filter {filter_.capitalize()}"),
-                    dcc.Dropdown(
-                        id={"name": filter_, "type": "filter-dropdown"}, multi=True, clearable=True
-                    ),
-                ]
-                for filter_ in SC_FILTERS
-            ),
-            [html.P("General")],
-        ),
-    )
-
-
-def get_color_column(app):
-    with app.server.app_context():
-        options = get_model_options(Colors)
-    return html.Div(
-        className="filter__colors",
-        children=[
-            html.Label(f"Color Map"),
-            dcc.Textarea(
-                id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP), style={"width": "100%", "height": "50px"}
-            ),
-            html.Label("Save colors as:"),
-            html.Div(
-                className="save",
-                children=[
-                    dcc.Input(id="save_colors_name", type="text"),
-                    html.Button("Save", id="save_colors"),
-                ]
-            ),
-            html.Label("Load colors"),
-            dcc.Dropdown(
-                id="load_colors",
-                options=options,
-                clearable=True
-            ),
-            html.P(id="colors_error", children="")
-        ]
-    )
-
-
-def get_label_column(app):
-    with app.server.app_context():
-        options = get_model_options(Labels)
-    return html.Div(
-        className="filter__labels",
-        children=[
-            html.Label(f"Labels"),
-            dcc.Textarea(
-                id="labels", value=json.dumps(GRAPHS_DEFAULT_LABELS), style={"width": "100%", "height": "50px"}
-            ),
-            html.Label("Save labels as:"),
-            html.Div(
-                className="save",
-                children=[
-                    dcc.Input(id="save_labels_name", type="text"),
-                    html.Button("Save", id="save_labels"),
-                ]
-            ),
-            html.Label("Load labels"),
-            dcc.Dropdown(
-                id="load_labels",
-                options=options,
-                clearable=True
-            ),
-            html.P(id="labels_error", children="")
-        ]
-    )
-
-
-def get_graph_column():
-    return html.Div(
-        className="charts",
-        children=[
-            html.Div(
-                className="charts__item",
-                children=[
-                    html.Div(
-                        className="graph",
-                        children=[
-                            html.Div(
-                                className="graph__view",
-                                children=[
-                                    html.Div(
-                                        className="scenarios__views",
-                                        children=[
-                                            html.Div(
-                                                id=f"view-dashboard_{graph}",
-                                                className="view view--dashboard active"
-                                            ),
-                                            html.Div(
-                                                id=f"view-dashboard-data_{graph}",
-                                                className="view view--dashboard-data"
-                                            )
-                                        ]
-                                    ),
-                                    dcc.RadioItems(
-                                        id=f"graph_{graph}_plot_switch",
-                                        options=[
-                                            {"label": graph_type.capitalize(), "value": graph_type}
-                                            for graph_type in GRAPHS_DEFAULT_OPTIONS[graph].keys()
-                                        ],
-                                        value=list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0]
-                                    ),
-                                    html.Button("Refresh", id=f"refresh_{graph}", className="btn btn--refresh")
-                                ]
-                            ),
-                            dcc.Loading(
-                                style={"padding-bottom": "30px"},
-                                type="default",
-                                children=dbc.Tabs(
-                                    [
-                                        dbc.Tab(
-                                            dcc.Graph(
-                                                id=f"graph_{graph}",
-                                                figure=get_empty_fig(),
-                                                style={},
-                                                config={
-                                                    'responsive': True,
-                                                    'toImageButtonOptions': {
-                                                        'format': 'svg',
-                                                    }
-                                                }
-                                            ),
-                                            label="Chart"
-                                        ),
-                                        dbc.Tab(
-                                            html.P(id=f"graph_{graph}_error", children=""),
-                                            id=f"tab_{graph}_error",
-                                            label="Errors",
-                                        ),
-                                    ]
-                                )
-                            ),
-                            html.Div(
-                                id=f"table_div_{graph}",
-                                style={"display": "none"},
-                                children=dash_table.DataTable(
-                                    id=f"table_{graph}",
-                                    export_format="csv",
-                                    style_table={'overflowX': 'auto'},
-                                    style_header={
-                                        'backgroundColor': 'rgb(246, 248, 250)',
-                                        'textAlign': 'center'
-                                        }, 
-                                    style_cell={
-                                        'backgroundColor': 'rgb(255, 255, 255)',
-                                        'color': 'rgb(50, 50, 50)',
-                                        'textAlign': 'left'
-                                    },
-                                )
-                            )
-                        ]
-                    ),
-                    html.Div(
-                        className="chart-settings",
-                        children=[
-                            html.Div(
-                                className="chart-settings__title",
-                                children="Chart settings"
-                            ),
-                            html.Div(
-                                className="chart-settings__form",
-                                id=f"graph_{graph}_options",
-                                children=get_graph_options(graph, list(GRAPHS_DEFAULT_OPTIONS[graph].keys())[0])
-                            )
-                        ]
-
-                    )
-                ]
-            )
-            for graph in ("scalars", "timeseries")
-        ],
-    )
-
-def get_footer():
-    return html.Div(
-        className="footer",
-        children=[
-            html.A("Imprint", href="#", className="nav-link"),
-            html.A("Data Privacy", href="#", className="nav-link")
-        ]
-    )
-
-def get_layout(app, scenarios):
-    session_id = str(uuid.uuid4())
-
-    return html.Div(
-        children=[
-            html.Div(session_id, id="session-id", style={"display": "none"}),
-            get_header(app),
-            html.Main(
-                className="dashboard",
-                children=[
-                    get_scenario_column(scenarios),
-                    html.Div(
-                        className="content",
-                        children=[
-                            dbc.Tabs(
-                                [
-                                    dbc.Tab(
-                                        [
-                                            get_filter_column(),
-                                            get_aggregation_order_column(),
-                                            get_save_load_column(app),
-                                            get_units_column(),
-                                        ],
-                                        className="test",
-                                        label="Filters"
-                                    ),
-                                    dbc.Tab(
-                                        [
-                                            get_color_column(app),
-                                            get_label_column(app),
-                                        ],
-                                        label="Presentation"
-                                    )
-                                ],
-                            ),
-                            get_graph_column()
-                        ]
-                    ),
-                    get_footer()
-                ],
-            ),
-        ],
-    )
-
-
-def get_error_and_warnings_div(errors=None, warnings=None, infos=None):
-    errors = errors or []
-    warnings = warnings or []
-    infos = infos or []
-    return html.Div(
-        children=(
-            [html.P(error, style={"color": "red"}) for error in errors] +
-            [html.P(warning, style={"color": "orange"}) for warning in warnings] +
-            [html.P(info) for info in infos]
-        )
-    )

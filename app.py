@@ -56,14 +56,15 @@ cache.init_app(server, config=CACHE_CONFIG)
 
 # Layout
 if not MANAGE_DB:
-    from layout import (
+    from layout.main import (
         DEFAULT_LAYOUT,
-        IMPRINT_LAYOUT,
-        PRIVACY_LAYOUT,
         get_layout,
         get_graph_options,
         get_error_and_warnings_div,
     )
+    from layout.imprint import IMPRINT_LAYOUT
+    from layout.privacy import PRIVACY_LAYOUT
+    from layout.paper import get_paper_layout
 
     app.layout = DEFAULT_LAYOUT
     app.validation_layout = html.Div(
@@ -72,6 +73,7 @@ if not MANAGE_DB:
             get_layout(app, scenarios=scenario.get_scenarios()),
             IMPRINT_LAYOUT,
             PRIVACY_LAYOUT,
+            get_paper_layout(app)
         ]
     )
 
@@ -86,6 +88,8 @@ def display_page(pathname):
         return IMPRINT_LAYOUT
     elif pathname == "/privacy":
         return PRIVACY_LAYOUT
+    elif pathname == "/paper":
+        return get_paper_layout(app)
     else:
         return get_layout(app, scenarios=scenario.get_scenarios())
 
