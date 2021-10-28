@@ -30,9 +30,7 @@ def get_header(app):
                     html.Div(
                         className="header__logo",
                         children=[
-                            html.Img(
-                                src=app.get_asset_url("open_Modex-logo.png")
-                            )
+                            dcc.Link(html.Img(src=app.get_asset_url("open_Modex-logo.png")), href="/")
                         ],
                     ),
                     html.Div(
@@ -58,8 +56,8 @@ def get_header(app):
             dbc.NavbarSimple(
                 className="header__nav",
                 children=[
-                    dbc.NavItem(dbc.NavLink("About", href="#")),
-                    dbc.NavItem(dbc.NavLink("Contact", href="#"))
+                    dbc.NavItem(dcc.Link("Imprint", href="/imprint")),
+                    dbc.NavItem(dcc.Link("Privacy", href="/privacy"))
                 ],
                 dark=False,
                 expand="xl"
@@ -150,7 +148,7 @@ def get_save_load_column(app):
         options = get_model_options(Filter)
     return html.Div(
         children=[
-            html.P(id=f"save_load_errors", children=""),
+            html.P(id="save_load_errors", children=""),
             html.Label("Save filters as:"),
             html.Div(
                 className="save-filters",
@@ -242,7 +240,7 @@ def get_color_column(app):
     return html.Div(
         className="filter__colors",
         children=[
-            html.Label(f"Color Map"),
+            html.Label("Color Map"),
             dcc.Textarea(
                 id="colors", value=json.dumps(GRAPHS_DEFAULT_COLOR_MAP), style={"width": "100%", "height": "50px"}
             ),
@@ -271,7 +269,7 @@ def get_label_column(app):
     return html.Div(
         className="filter__labels",
         children=[
-            html.Label(f"Labels"),
+            html.Label("Labels"),
             dcc.Textarea(
                 id="labels", value=json.dumps(GRAPHS_DEFAULT_LABELS), style={"width": "100%", "height": "50px"}
             ),
@@ -399,6 +397,7 @@ def get_graph_column():
         ],
     )
 
+
 def get_footer():
     return html.Div(
         className="footer",
@@ -407,6 +406,7 @@ def get_footer():
             html.A("Data Privacy", href="#", className="nav-link")
         ]
     )
+
 
 def get_layout(app, scenarios):
     session_id = str(uuid.uuid4())

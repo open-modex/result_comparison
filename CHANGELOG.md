@@ -8,6 +8,9 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Added
 - page to show MODEX figures from paper and its dashboard settings
 
+### Fixed
+- links to imprint and privacy page
+
 ## [0.14.0] - 2021-10-04
 ### Added
 - bootstrap design
