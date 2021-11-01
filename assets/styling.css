@@ -889,11 +889,29 @@ button.btn.btn--small {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  padding: 2rem 1rem;
+  padding: 5rem 1rem;
+  background-color: #F6F8FA;
 }
 
 .legal > div {
   width: 100%;
   max-width: 1024px;
+}
+
+.legal h1 {
+  padding-bottom: 2rem;
+}
+
+.legal h2 {
+  font-size: 1.75rem;
+  padding-top: 1rem;
+}
+
+.legal h3 {
+  font-size: 1.5rem;
+}
+
+.legal h4 {
+  font: 1.25rem;
 }
 /*# sourceMappingURL=styling.css.map */
