@@ -403,7 +403,7 @@ def get_footer():
         className="footer",
         children=[
             html.A("Imprint", href="#", className="nav-link"),
-            html.A("Data Privacy", href="#", className="nav-link")
+            html.A("Privacy", href="#", className="nav-link")
         ]
     )
 
