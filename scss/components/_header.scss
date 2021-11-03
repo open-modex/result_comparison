@@ -38,7 +38,13 @@
 
     .navbar-nav .nav-item {
       @each $pseudo-class in $pseudo-classes {
-        a.nav-link:#{$pseudo-class} {
+        a {
+          padding-right: 0.5rem;
+          padding-left: 0.5rem;
+          text-decoration: none;
+        }
+
+        a:#{$pseudo-class} {
           color: $primary-color-1;
         }
       }
