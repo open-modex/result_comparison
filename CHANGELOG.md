@@ -7,6 +7,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ## [Unreleased]
 ### Added
 - page to show MODEX figures from paper and its dashboard settings
+- filters can be deleted (server-side)
 
 ### Fixed
 - links to imprint and privacy page
