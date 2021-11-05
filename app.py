@@ -145,6 +145,7 @@ def reload_scenarios(_):
 app.clientside_callback(
     ClientsideFunction(namespace="clientside", function_name="update_refresh_elements"),
     Output(component_id="refresh_scalars", component_property="className"),
+    Output(component_id="refresh_timeseries", component_property="className"),
     [
         Input("dd_scenario", "value"),
         Input(component_id="order_by", component_property="value"),
@@ -152,6 +153,7 @@ app.clientside_callback(
         Input({"name": ALL, "type": "filters"}, "value"),
         Input({"name": ALL, "type": "unit-dropdown"}, "value"),
         Input({"name": ALL, "type": "graph_scalars_option"}, "value"),
+        Input({"name": ALL, "type": "graph_timeseries_option"}, "value"),
         Input("load_filters", "value"),
         Input("load_colors", "value"),
         Input("load_labels", "value"),
