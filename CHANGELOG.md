@@ -12,6 +12,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Fixed
 - links to imprint and privacy page
 - timeseries refresh button
+- loading of boolean graph options
 
 ## [0.14.0] - 2021-10-04
 ### Added
