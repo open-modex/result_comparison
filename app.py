@@ -270,25 +270,6 @@ def save_labels(_, name, str_labels):
     return get_model_options(Labels), "", show_logs()
 
 
-# @app.callback(
-#     [
-#         Output(component_id="view-dashboard_sclar", component_property="className"),
-#         Output(component_id="view-dashboard-data", component_property="className"),
-#     ],
-#     [
-#         Input("view-dashboard", "n_clicks"),
-#         Input("view-dashboard-data", "n_clicks"),
-#     ],
-#     prevent_initial_call=True,
-# )
-# def show_data(_, __):
-#     ctx = dash.callback_context
-#     if "view-dashboard-data" in ctx.triggered[0]["prop_id"]:
-#         return "view view--dashboard", "view view--dashboard-data active"
-#     else:
-#         return "view view--dashboard active", "view view--dashboard-data"
-
-
 @app.callback(
     [
         Output(component_id="graph_scalars_plot_switch", component_property="value"),
