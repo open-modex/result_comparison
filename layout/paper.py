@@ -25,12 +25,50 @@ class Figure:
 
 FIGURES = [
     Figure(
+        image="cost_all.svg",
+        title="ariable costs in 2016, 2030, and 2050 for all frameworks.",
+        figure_number=4,
+        page_number=11,
+        scenario_ids=BASE_SCENARIO_IDS,
+        filter_name="full_costs_V11",
+        color_map="three_cost",
+    ),
+    Figure(
+        image="emissions_all.svg",
+        title="CO2 emissions for base scenario 2016, 2030 and 2050",
+        figure_number=5,
+        page_number=12,
+        scenario_ids=BASE_SCENARIO_IDS,
+        filter_name="full_emissions_V11",
+        color_map="emissions",
+    ),
+    Figure(
+        image="capacity_all.svg",
+        title="Capacity for all power plants, storage and transmission of thebase scenario, divided into the years 2016, 2030, and 2050.",
+        figure_number=6,
+        page_number=14,
+        scenario_ids=BASE_SCENARIO_IDS,
+        filter_name="full_capacity_V11",
+        color_map="energy_sources_new",
+        labels="energies"
+    ),
+    Figure(
+        image="added_capacity_all.svg",
+        title="Added capacity for all power plants, storage and transmission of thebase scenario, divided into the years 2016, 2030, and 2050.",
+        figure_number=6,
+        page_number=14,
+        scenario_ids=BASE_SCENARIO_IDS,
+        filter_name="full_added_capacity_V11",
+        color_map="energy_sources_new",
+        labels="energies"
+    ),
+    Figure(
         image="generation_all.svg",
         title="Generation for all power plants of the base scenario, divided into the years 2016,2030, and 2050.",
         figure_number=7,
         page_number=15,
         scenario_ids=BASE_SCENARIO_IDS,
-        filter_name="full_generation_V1",
+        filter_name="full_generation_V11",
         color_map="energy_sources_new",
         labels="energies_new"
     ),
