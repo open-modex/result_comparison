@@ -57,7 +57,8 @@ def get_header(app):
                 className="header__nav",
                 children=[
                     dbc.NavItem(dcc.Link("Imprint", href="/imprint")),
-                    dbc.NavItem(dcc.Link("Privacy", href="/privacy"))
+                    dbc.NavItem(dcc.Link("Privacy", href="/privacy")),
+                    dbc.NavItem(dcc.Link("Modex Project", href="/paper"))
                 ],
                 dark=False,
                 expand="xl"

@@ -46,7 +46,7 @@ def get_paper_layout(app):
                 children=[
                     html.Div(
                         [
-                            html.H1("Modex results"),
+                            html.H1("Modex project"),
                             html.P(
                                 "Most figures from paper "
                                 "'Comparing Open Source energy system models - a case study focusing on the transition of the German power sector by applying emission reduction targets' "
