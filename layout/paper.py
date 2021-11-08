@@ -6,6 +6,10 @@ import dash_html_components as html
 from .main import get_header
 
 
+BASE_SCENARIO_IDS = [183, 184, 197, 214, 215, 216, 225, 230, 231, 237, 238, 239, 240, 241, 249, 250]
+SCENARIO_VARIATIONS_IDS = [208, 258, 259, 260, 261, 262, 263, 267, 268, 269, 270, 271]
+
+
 @dataclass
 class Figure:
     image: str
@@ -21,21 +25,15 @@ class Figure:
 
 FIGURES = [
     Figure(
-        image="cost_all.svg",
-        title="Variable costs in 2016, 2030, and 2050 for all frameworks.",
-        figure_number=4,
-        page_number=11,
-        scenario_ids=[3, 4, 5],
-        filter_name="cost"
+        image="generation_all.svg",
+        title="Generation for all power plants of the base scenario, divided into the years 2016,2030, and 2050.",
+        figure_number=7,
+        page_number=15,
+        scenario_ids=BASE_SCENARIO_IDS,
+        filter_name="full_generation_V1",
+        color_map="energy_sources_new",
+        labels="energies_new"
     ),
-    Figure(
-        image="cost_all.svg",
-        title="Variable costs in 2016, 2030, and 2050 for all frameworks.",
-        figure_number=4,
-        page_number=11,
-        scenario_ids=[3, 4, 5],
-        filter_name="cost"
-    )
 ]
 
 
