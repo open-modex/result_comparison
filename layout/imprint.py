@@ -14,7 +14,7 @@ def get_imprint_layout(app):
                         children=[
                             html.Div(
                                 children=[
-                                    html.H1("Imprint"),
+                                    html.H2("Imprint"),
                                     html.P(
                                         [
                                             "Publisher:",
