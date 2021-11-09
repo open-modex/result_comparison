@@ -914,4 +914,45 @@ button.btn.btn--small {
 .legal h4 {
   font: 1.25rem;
 }
+
+.paper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #F6F8FA;
+  padding: 5rem 1rem;
+}
+
+.paper > div {
+  width: 100%;
+  max-width: 1024px;
+}
+
+.paper > div:first-of-type {
+  padding-bottom: 3rem;
+}
+
+.paper__tables > div {
+  padding-bottom: 3rem;
+}
+
+.paper__tables img {
+  width: 100%;
+  padding-bottom: 0.75rem;
+}
+
+.paper__tables table {
+  font-size: 0.875rem;
+}
+
+.paper__tables tr td {
+  padding-right: 1rem;
+}
 /*# sourceMappingURL=styling.css.map */

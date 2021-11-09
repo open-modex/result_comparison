@@ -84,7 +84,7 @@ def get_paper_layout(app):
                 children=[
                     html.Div(
                         [
-                            html.H1("Modex project"),
+                            html.H2("Modex project"),
                             html.P(
                                 "Most figures from paper "
                                 "'Comparing Open Source energy system models - a case study focusing on the transition of the German power sector by applying emission reduction targets' "
@@ -104,10 +104,10 @@ def get_paper_layout(app):
                         ]
                     ),
                     html.Div(
-                        [
+                        className="paper__tables",
+                        children=[
                             html.Div(
                                 [
-                                    html.Hr(),
                                     html.Img(src=app.get_asset_url(f"figures/{figure.image}")),
                                     html.Table(
                                         [

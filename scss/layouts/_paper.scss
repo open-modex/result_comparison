@@ -1,0 +1,34 @@
+.paper {
+    @include flex-column;
+    align-items: center;
+    background-color: $color-gray-1;
+    padding: 5rem 1rem;
+
+    &> div {
+        width: 100%;
+        max-width: 1024px;
+    }
+
+    &> div:first-of-type {
+        padding-bottom: 3rem;
+    }
+
+    &__tables {
+        &> div {
+            padding-bottom: 3rem;
+        }
+
+        img {
+            width: 100%;
+            padding-bottom: 0.75rem;
+        }
+
+        table {
+            font-size: $font-size-small;
+        }
+
+        tr td {
+            padding-right: 1rem;
+        }
+    }
+}
