@@ -1,4 +1,3 @@
-
 from typing import List
 from dataclasses import dataclass
 
@@ -6,7 +5,24 @@ import dash_html_components as html
 from .main import get_header
 
 
-BASE_SCENARIO_IDS = [183, 184, 197, 214, 215, 216, 225, 230, 231, 237, 238, 239, 240, 241, 249, 250]
+BASE_SCENARIO_IDS = [
+    183,
+    184,
+    197,
+    214,
+    215,
+    216,
+    225,
+    230,
+    231,
+    237,
+    238,
+    239,
+    240,
+    241,
+    249,
+    250,
+]
 SCENARIO_VARIATIONS_IDS = [208, 258, 259, 260, 261, 262, 263, 267, 268, 269, 270, 271]
 
 
@@ -26,7 +42,7 @@ class Figure:
 FIGURES = [
     Figure(
         image="cost_all.svg",
-        title="ariable costs in 2016, 2030, and 2050 for all frameworks.",
+        title="Variable costs in 2016, 2030, and 2050 for all frameworks.",
         figure_number=4,
         page_number=11,
         scenario_ids=BASE_SCENARIO_IDS,
@@ -50,7 +66,7 @@ FIGURES = [
         scenario_ids=BASE_SCENARIO_IDS,
         filter_name="full_capacity_V11",
         color_map="energy_sources_new",
-        labels="energies"
+        labels="energies",
     ),
     Figure(
         image="added_capacity_all.svg",
@@ -60,7 +76,7 @@ FIGURES = [
         scenario_ids=BASE_SCENARIO_IDS,
         filter_name="full_added_capacity_V11",
         color_map="energy_sources_new",
-        labels="energies"
+        labels="energies",
     ),
     Figure(
         image="generation_all.svg",
@@ -70,7 +86,7 @@ FIGURES = [
         scenario_ids=BASE_SCENARIO_IDS,
         filter_name="full_generation_V11",
         color_map="energy_sources_new",
-        labels="energies_new"
+        labels="energies_new",
     ),
 ]
 
@@ -94,13 +110,23 @@ def get_paper_layout(app):
                             ),
                             html.Ul(
                                 [
-                                    html.Li("choose given scenario IDs in dropdown 'Scenario',"),
-                                    html.Li("load given filter name in dropdown 'Load filters' (left panel, tab 'FILTERS'),"),
-                                    html.Li("if color mapping is given, select color mapping in dropdown 'Load colors' (left panel, tab 'PRESENTATION'),"),
-                                    html.Li("if label mapping is given, select label mapping in dropdown 'Load labels' (left panel, tab 'PRESENTATION'),"),
-                                    html.Li("click on 'REFRESH' button at scalar chart.")
+                                    html.Li(
+                                        "choose given scenario IDs in dropdown 'Scenario',"
+                                    ),
+                                    html.Li(
+                                        "load given filter name in dropdown 'Load filters' (left panel, tab 'FILTERS'),"
+                                    ),
+                                    html.Li(
+                                        "if color mapping is given, select color mapping in dropdown 'Load colors' (left panel, tab 'PRESENTATION'),"
+                                    ),
+                                    html.Li(
+                                        "if label mapping is given, select label mapping in dropdown 'Load labels' (left panel, tab 'PRESENTATION'),"
+                                    ),
+                                    html.Li(
+                                        "click on 'REFRESH' button at scalar chart."
+                                    ),
                                 ]
-                            )
+                            ),
                         ]
                     ),
                     html.Div(
@@ -108,59 +134,69 @@ def get_paper_layout(app):
                         children=[
                             html.Div(
                                 [
-                                    html.Img(src=app.get_asset_url(f"figures/{figure.image}")),
+                                    html.Img(
+                                        src=app.get_asset_url(f"figures/{figure.image}")
+                                    ),
                                     html.Table(
                                         [
                                             html.Tr(
                                                 [
-                                                    html.Td("Reference:"),
-                                                    html.Td(f"Page {figure.page_number}, Fig. {figure.figure_number}")
-                                                ]
-                                            ),
-                                            html.Tr(
-                                                [
                                                     html.Td("Title:"),
-                                                    html.Td(figure.title)
+                                                    html.Td(figure.title),
                                                 ]
                                             ),
                                             html.Tr(
                                                 [
                                                     html.Td("Description:"),
-                                                    html.Td(figure.description)
+                                                    html.Td(figure.description),
+                                                ]
+                                            ),
+                                            html.Tr(
+                                                [
+                                                    html.Td("Reference:"),
+                                                    html.Td(
+                                                        f"Page {figure.page_number}, Fig. {figure.figure_number}"
+                                                    ),
                                                 ]
                                             ),
                                             html.Tr(
                                                 [
                                                     html.Td("Scenario IDs:"),
-                                                    html.Td(", ".join(map(str, figure.scenario_ids)))
+                                                    html.Td(
+                                                        ", ".join(
+                                                            map(
+                                                                str, figure.scenario_ids
+                                                            )
+                                                        )
+                                                    ),
                                                 ]
                                             ),
                                             html.Tr(
                                                 [
                                                     html.Td("Filter:"),
-                                                    html.Td(figure.filter_name)
+                                                    html.Td(figure.filter_name),
                                                 ]
                                             ),
                                             html.Tr(
                                                 [
                                                     html.Td("Color Map:"),
-                                                    html.Td(figure.color_map)
+                                                    html.Td(figure.color_map),
                                                 ]
                                             ),
                                             html.Tr(
                                                 [
                                                     html.Td("Labels:"),
-                                                    html.Td(figure.labels)
+                                                    html.Td(figure.labels),
                                                 ]
-                                            )
+                                            ),
                                         ]
-                                    )
+                                    ),
                                 ]
                             )
                             for figure in FIGURES
-                        ]
-                    )
-                ]
-            )
+                        ],
+                    ),
+                ],
+            ),
         ]
     )
