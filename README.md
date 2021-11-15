@@ -1,6 +1,16 @@
 # OpenModex Visualization
 
-## Running locally
+## About
+
+After selection of a scenario, the following steps are running within the application:
+
+| Loading | Processing | Plotting |
+|---------|------------|----------|
+| Data is loaded into application. Currently, this is done by loading data from OEP via oedatamodel_api.<br>Other sources could be implemented, i.e.:<br>- from files<br>- from different source in oedatamodel<br>- from datapackage<br>- etc. | Data is loaded into a `pandas.Dataframe` (one DF for each, scalars and timeseries). Afterwards, filtering, [ordering](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html), and [grouping](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) from pandas is applied, regarding the user input. | Charts are made using plotly. Plot-dependent options (labels, margins, colors, axis type, etc.) depending on chart type are applied to chart. |
+
+## Setup
+
+### Running locally
 
 (see running locally with docker below)
 
@@ -18,14 +28,14 @@ Following env variables should/can be set:
 - `DB_URL`: URL to local database
 - `SKIP_TS`: Timeseries are not (down-)loaded (this is not recommended for production!)
 
-## Running locally with docker:
+### Running locally with docker:
 
 ```
 sudo docker-compose -f local.yml up -d --build
 sudo docker-compose -f local.yml run --rm modex_visualization make create_db
 ```
 
-## Admin Mode:
+### Admin Mode:
 
 Create all tables in DB (must be done once - see above):
 `make cerate_db`
@@ -36,7 +46,7 @@ Filters, color maps and labels from DB can be deleted using the _Makefile_:
 - delete label: `make delete_label LABEL=<label>`
 
 
-## Developer Mode:
+### Developer Mode:
 
 If you want to use the dashboard without requesting data from OEP all the time, 
 you can download scenario data for specific scenario and run the dashboard using downloaded data, by following steps:
