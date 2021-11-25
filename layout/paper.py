@@ -102,6 +102,18 @@ def get_paper_layout(app):
                         [
                             html.H2("Modex project"),
                             html.P(
+                                children=[
+                                    "Within the open_MODEX project, five Open-Source frameworks for energysystem modelling are examined. ",
+                                    "Therefore, a given energysystem, shall be modeled and solved by each framework and optimization results shall be analyzed and compared afterwards. ",
+                                    "In order to analyze the framework results, a standardized input and output format (",
+                                    html.A("oedatamodel", href="https://github.com/open-modex/oedatamodel"),
+                                    ") is defined, which is used by all frameworks. ",
+                                    "Once the data is transformed into oedatamodel format, the data is uploaded to the ",
+                                    html.A("OpenEnergyPlatform", href="https://openenergy-platform.org"),
+                                    " [OEP] and can be publicly accessed."
+                                ]
+                            ),
+                            html.P(
                                 "Most figures from paper "
                                 "'Comparing Open Source energy system models - a case study focusing on the transition of the German power sector by applying emission reduction targets' "
                                 "have been created using the MODEX dashboard. "
