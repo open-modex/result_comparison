@@ -92,3 +92,16 @@ button.btn.btn--small {
     background-color: $primary-color-1;
     border: 1px solid $primary-color-1;
 }
+
+button.btn.btn--no-border {
+    border: none;
+    padding: 0;
+    color: $primary-color-1;
+}
+
+@each $pseudo-class in $pseudo-classes {
+    button.btn.btn--no-border:#{$pseudo-class} {
+        color: $primary-color-1;
+        box-shadow: none;
+    }
+}

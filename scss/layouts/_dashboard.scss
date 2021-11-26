@@ -161,6 +161,11 @@ $scenarios-dropdown-height: 39px;
 			color: $color-gray-3;
 		}
 	}
+
+	.filter--select-all {
+		float: right;
+		font-size: $font-size-small;
+	}
 	
 	.filter__colors {
 		padding-bottom: 1.5rem;
