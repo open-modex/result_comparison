@@ -64,7 +64,8 @@ if not MANAGE_DB:
     )
     from layout.imprint import get_imprint_layout
     from layout.privacy import get_privacy_layout
-    from layout.paper import get_paper_layout
+    from layout.results import get_results_layout
+    from layout.docs import get_docs_layout
 
     app.layout = DEFAULT_LAYOUT
     app.validation_layout = html.Div(
@@ -73,7 +74,8 @@ if not MANAGE_DB:
             get_layout(app, scenarios=scenario.get_scenarios()),
             get_imprint_layout(app),
             get_privacy_layout(app),
-            get_paper_layout(app)
+            get_results_layout(app),
+            get_docs_layout(app)
         ]
     )
 
@@ -88,8 +90,10 @@ def display_page(pathname):
         return get_imprint_layout(app)
     elif pathname == "/privacy":
         return get_privacy_layout(app)
-    elif pathname == "/paper":
-        return get_paper_layout(app)
+    elif pathname == "/documentation":
+        return get_docs_layout(app)
+    elif pathname == "/results":
+        return get_results_layout(app)
     else:
         return get_layout(app, scenarios=scenario.get_scenarios())
 

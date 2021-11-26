@@ -91,7 +91,7 @@ FIGURES = [
 ]
 
 
-def get_paper_layout(app):
+def get_results_layout(app):
     return html.Div(
         children=[
             get_header(app),
@@ -100,7 +100,7 @@ def get_paper_layout(app):
                 children=[
                     html.Div(
                         [
-                            html.H2("Modex project"),
+                            html.H2("open_MODEX Project Results"),
                             html.P(
                                 children=[
                                     "Within the open_MODEX project, five Open-Source frameworks for energysystem modelling are examined. ",

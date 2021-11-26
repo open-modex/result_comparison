@@ -3,7 +3,7 @@
 ## About
 
 This dashboard was developed by the [open_MODEX](https://reiner-lemoine-institut.de/open_modex/) project. 
-One goal of the project was, to compare scneario results from different energsystem modelling frameworks. 
+One goal of the project was, to compare scenario results from different energsystem modelling frameworks. 
 Therefore, a standardized input and output format ([oedatamodel](https://github.com/open-modex/oedatamodel)) has been defined, 
 which can be read by the dashboard. Afterwards, underlying data can be filtered and compared/analyzed using various charts and plotting options.
 
@@ -11,18 +11,18 @@ which can be read by the dashboard. Afterwards, underlying data can be filtered 
 
 A short introduction of how data is imported, processed and finally plotted, shall be given here.
 
-Note: At the moment, data import is fixed to Open_MODEX specific tables on the OEP. 
+**Note**: At the moment, data import is fixed to Open_MODEX specific tables on the OEP. 
 Other data sources, such as filesystem, different tables on OEP or datapackages could be easily implemented, 
 as all further processing steps are independent of the given source.
 
 At first, available scenarios are scanned from OEP using the [Advanced API](https://oep-data-interface.readthedocs.io/en/latest/api/advanced.html) of the OEP.
 After selection of a scenario, the following steps are running within the application:
 
-1. Loading<br>
+1. Loading  
 Data is loaded into application. Currently, this is done by loading data from OEP via oedatamodel_api.
-2. Processing<br>
+2. Processing  
 Data is loaded into a `pandas.Dataframe` (one DF for each, scalars and timeseries). Afterwards, filtering, [ordering](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html), and [grouping](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) from pandas is applied, regarding the user input.
-3. Plotting<br>
+3. Plotting  
 Charts are made using plotly. Plot-dependent options (labels, margins, colors, axis type, etc.) depending on chart type are applied to chart.
 
 ## Setup
