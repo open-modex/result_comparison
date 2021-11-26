@@ -268,6 +268,7 @@ button.btn.btn--small {
 button.btn.btn--no-border {
   border: none;
   padding: 0;
+  height: 1.75rem;
   color: #1F567D;
 }
 
@@ -839,7 +840,7 @@ button.btn.btn--no-border:focus {
 
 .content > div:first-child .filter-section {
   padding-top: 1.5rem;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
   border-bottom: 1px solid #E4E4E4;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -860,6 +861,10 @@ button.btn.btn--no-border:focus {
   margin-bottom: 0;
   font-size: 0.875rem;
   color: #676C73;
+}
+
+.content #filters label:not(:first-of-type) {
+  margin-top: 0;
 }
 
 .content .filter--select-all {

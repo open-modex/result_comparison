@@ -141,7 +141,7 @@ $scenarios-dropdown-height: 39px;
 
 		.filter-section {
 			padding-top: 1.5rem;
-			padding-bottom: 2rem;
+			padding-bottom: 3rem;
 			border-bottom: $border-style;
 			user-select: none;
 		}
@@ -160,6 +160,10 @@ $scenarios-dropdown-height: 39px;
 			font-size: $font-size-small;
 			color: $color-gray-3;
 		}
+	}
+
+	#filters label:not(:first-of-type) {
+		margin-top: 0;
 	}
 
 	.filter--select-all {
