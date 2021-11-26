@@ -8,11 +8,14 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Added
 - page to show MODEX figures from paper and its dashboard settings
 - filters can be deleted (server-side)
+- subplot wrap and spacing option
+- chart height option 
 
 ### Fixed
 - links to imprint and privacy page
 - timeseries refresh button
 - loading of boolean graph options
+- too many subplots
 
 ## [0.14.0] - 2021-10-04
 ### Added

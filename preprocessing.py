@@ -17,7 +17,8 @@ from settings import (
     TS_FILTERS,
     COLUMN_JOINER,
     GRAPHS_DEFAULT_COLOR_MAP,
-    GRAPHS_DEFAULT_LABELS
+    GRAPHS_DEFAULT_LABELS,
+    GRAPHS_DEFAULT_OPTIONS
 )
 
 
@@ -111,7 +112,7 @@ def extract_filters(type_, filter_div):
     return filter_kwargs
 
 
-def extract_graph_options(graph_div):
+def extract_graph_options(plot_type, graph_div):
     graph_type = jmespath.search("props.children[0].props.children[0].props.value", graph_div)
     raw_options = jmespath.search(
         "props.children[].props.children[] | [1:] | [?(type == 'Dropdown' || type == 'Input' || type == 'Checklist')]", graph_div)
@@ -119,6 +120,12 @@ def extract_graph_options(graph_div):
         "type": graph_type,  # FIXME: Remove scalar upfront
         "options": {item["props"]["id"]["name"]: None if (value := item["props"]["value"]) == "" else value for item in raw_options}
     }
+    for option, value in options["options"].items():
+        option_def = GRAPHS_DEFAULT_OPTIONS[plot_type][graph_type].options[option]
+        if option_def.type == "float" and value:
+            options["options"][option] = float(value)
+        if option_def.type == "int" and value:
+            options["options"][option] = int(value)
     return options
 
 

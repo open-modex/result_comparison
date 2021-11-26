@@ -3,7 +3,7 @@ import os
 import json
 import warnings
 from dataclasses import dataclass
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Optional
 import pandas as pd
 
 VERSION = "0.14.0"
@@ -66,6 +66,7 @@ class GraphOption:
     label: str
     default: Union[str, List[Dict[str, str]], bool]
     type: str = "dropdown"
+    step: Optional[str] = None
     from_filter: bool = True
     clearable: bool = False
     plotly_option: bool = True
@@ -111,6 +112,8 @@ GRAPHS_DEFAULT_OPTIONS = {
                 from_filter=False,
             ),
             facet_col=GraphOption("Subplots", "", clearable=True),
+            facet_col_wrap=GraphOption("Subplots per row", "5", type="int"),
+            height=GraphOption("Chart Height", "", type="int", category="Display"),
             xaxis_title=GraphOption("X-Axis Title", "", type="input", plotly_option=False, category="Display"),
             yaxis_title=GraphOption("Y-Axis Title", "", type="input", plotly_option=False, category="Display"),
             subplot_label=GraphOption("Subplot Title", "", type="input", plotly_option=False, category="Display"),
@@ -123,11 +126,12 @@ GRAPHS_DEFAULT_OPTIONS = {
                 category="Display"
             ),
             legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
-            bargap=GraphOption("Bar Gap", "", type="number", plotly_option=False, category="Display"),
-            margin_l=GraphOption("Margin Left", "", type="number", plotly_option=False, category="Display"),
-            margin_r=GraphOption("Margin Right", "", type="number", plotly_option=False, category="Display"),
-            margin_t=GraphOption("Margin Top", "", type="number", plotly_option=False, category="Display"),
-            margin_b=GraphOption("Margin Bottom", "", type="number", plotly_option=False, category="Display"),
+            bargap=GraphOption("Bar Gap", "", type="float", plotly_option=False, category="Display"),
+            margin_l=GraphOption("Margin Left", "", type="int", plotly_option=False, category="Display"),
+            margin_r=GraphOption("Margin Right", "", type="int", plotly_option=False, category="Display"),
+            margin_t=GraphOption("Margin Top", "", type="int", plotly_option=False, category="Display"),
+            margin_b=GraphOption("Margin Bottom", "", type="int", plotly_option=False, category="Display"),
+            facet_row_spacing=GraphOption("Subplot Spacing", "0.07", type="float", step="0.01", category="Display"),
         ),
         "radar": GraphOptions(
             r=GraphOption("Radius", "value"),

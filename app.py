@@ -192,8 +192,8 @@ def save_filters(
     filters = preprocessing.extract_filters("scalars", filter_div)
     filters["order_by"] = order_by
     filters["agg_group_by"] = agg_group_by
-    scalar_graph_options = preprocessing.extract_graph_options(graph_scalars_options)
-    ts_graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
+    scalar_graph_options = preprocessing.extract_graph_options("scalars", graph_scalars_options)
+    ts_graph_options = preprocessing.extract_graph_options("timeseries", graph_timeseries_options)
 
     db_filter = Filter(
         name=name,
@@ -473,7 +473,7 @@ def scalar_graph(
     data = get_multiple_scenario_data(*scenarios, table="oed_scalars")
     filters = preprocessing.extract_filters("scalars", filter_div)
     units = preprocessing.extract_unit_options(units_div)
-    graph_options = preprocessing.extract_graph_options(graph_scalars_options)
+    graph_options = preprocessing.extract_graph_options("scalars", graph_scalars_options)
     colors = preprocessing.extract_colors(colors)
     graph_options["options"]["color_discrete_map"] = colors
     labels = preprocessing.extract_labels(labels)
@@ -568,7 +568,7 @@ def timeseries_graph(
     data = get_multiple_scenario_data(*scenarios, table="oed_timeseries")
     filters = preprocessing.extract_filters("timeseries", filter_div)
     units = preprocessing.extract_unit_options(units_div)
-    graph_options = preprocessing.extract_graph_options(graph_timeseries_options)
+    graph_options = preprocessing.extract_graph_options("timeseries", graph_timeseries_options)
     colors = preprocessing.extract_colors(colors)
     graph_options["options"]["color_discrete_map"] = colors
     labels = preprocessing.extract_labels(labels)

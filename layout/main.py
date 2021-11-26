@@ -119,11 +119,12 @@ def get_graph_options(data_type, graph_type, preset_options=None):
                 value=value,
                 clearable=GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].clearable
             )
-        elif component_type in ("input", "number"):
+        elif component_type in ("input", "int", "float"):
             component = dcc.Input(
                 id={"name": option, "type": f"graph_{data_type}_option"},
                 value=value,
-                type="text" if component_type == "input" else "number"
+                type="text" if component_type == "input" else "number",
+                step=GRAPHS_DEFAULT_OPTIONS[data_type][graph_type][option].step
             )
         elif component_type == "bool":
             component = dcc.Checklist(
