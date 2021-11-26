@@ -10,6 +10,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - filters can be deleted (server-side)
 - subplot wrap and spacing option
 - chart height option 
+- button to select all values for a filter 
 
 ### Fixed
 - links to imprint and privacy page

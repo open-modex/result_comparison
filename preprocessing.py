@@ -74,9 +74,10 @@ class PreprocessingError(Exception):
     """Error is thrown if preprocessing goes wrong"""
 
 
-def get_filter_options(scenario_data):
+def get_filter_options(scenario_data, filter_list=None, as_options=True):
+    filter_list = filter_list or SC_FILTERS
     filters = {}
-    for filter_, filter_format in SC_FILTERS.items():
+    for filter_, filter_format in filter_list.items():
         jmespath_str = f"[].{filter_}"
         if filter_format["type"] == "list":
             jmespath_str += "[]"
@@ -89,6 +90,8 @@ def get_filter_options(scenario_data):
                     jmespath_str, scenario_data
                 )
             }
+    if not as_options:
+        return filters
 
     output = (
         [

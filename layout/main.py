@@ -224,9 +224,14 @@ def get_filter_column():
             (
                 [
                     html.Label(f"Filter {filter_.capitalize()}"),
-                    dcc.Dropdown(
-                        id={"name": filter_, "type": "filter-dropdown"}, multi=True, clearable=True
-                    ),
+                    html.Div(
+                        children=[
+                            dcc.Dropdown(
+                                id={"name": filter_, "type": "filter-dropdown"}, multi=True, clearable=True
+                            ),
+                            html.Button("Select All", id=f"all_{filter_}")
+                        ]
+                    )
                 ]
                 for filter_ in SC_FILTERS
             ),

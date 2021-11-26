@@ -270,6 +270,8 @@ def save_labels(_, name, str_labels):
     return get_model_options(Labels), "", show_logs()
 
 
+# TODO: Fixed arg number can possibly fixed with Dash 2.0 allowing for keyword args,
+#  but Dash 2.0 breaks CSS styles
 @app.callback(
     [
         Output(component_id="graph_scalars_plot_switch", component_property="value"),
@@ -285,22 +287,52 @@ def save_labels(_, name, str_labels):
         for filter_ in SC_FILTERS
     ]
     + [Output(component_id="save_load_errors", component_property="children")],
-    Input("load_filters", "value"),
+    [
+        Input("load_filters", "value"),
+    ] +
+    [Input(f"all_{filter_}", "n_clicks") for filter_ in SC_FILTERS],
     State(component_id="dd_scenario", component_property="value"),
     prevent_initial_call=True,
 )
-def load_filters(name, scenarios):
-    if not name:
-        raise PreventUpdate
+def load_filters(name, _, __, ___, ____, _____, ______, _______, ________, scenarios):
     if not scenarios:
         flash("No scenario selected - cannot load filters without scenario", "error")
         return (
             no_update,
             no_update,
             no_update,
+            no_update,
             *([no_update] * len(SC_FILTERS)),
             show_logs(),
         )
+
+    ctx = dash.callback_context
+
+    # All Button clicked:
+    if ctx.triggered[0]["prop_id"].endswith("n_clicks"):
+        current_filter = ctx.triggered[0]["prop_id"][4:-9]
+        raw_filter_values = get_multiple_scenario_filters(*scenarios)
+        scan_filters = {current_filter: SC_FILTERS[current_filter]}
+        current_filter_options = preprocessing.get_filter_options(
+            raw_filter_values,
+            filter_list=scan_filters,
+            as_options=False
+        )
+        filter_options = [no_update] * len(SC_FILTERS)
+        current_filter_index = list(SC_FILTERS.keys()).index(current_filter)
+        filter_options[current_filter_index] = list(current_filter_options[current_filter])
+        return (
+            no_update,
+            no_update,
+            no_update,
+            no_update,
+            *filter_options,
+            show_logs(),
+        )
+
+    # Load filters:
+    if not name:
+        raise PreventUpdate
     db_filter = Filter.query.filter_by(name=name).first()
     filters = [db_filter.filters.get(filter_, None) for filter_ in SC_FILTERS]
     flash("Successfully loaded filters", "info")
