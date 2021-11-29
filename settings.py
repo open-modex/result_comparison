@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Union, List, Dict, Optional
 import pandas as pd
 
-VERSION = "0.14.0"
+VERSION = "0.15.0"
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:

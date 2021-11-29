@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project tries to adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.15.0] - 2021-11-29
 ### Added
 - page to show MODEX figures from paper and its dashboard settings
 - filters can be deleted (server-side)
 - subplot wrap and spacing option
 - chart height option 
 - button to select all values for a filter 
+- usage section in README
 
 ### Fixed
 - links to imprint and privacy page
