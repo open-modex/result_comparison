@@ -225,14 +225,10 @@ def get_filter_column():
             (
                 [
                     html.Label(f"Filter {filter_.capitalize()}"),
-                    html.Div(
-                        children=[
-                            dcc.Dropdown(
-                                id={"name": filter_, "type": "filter-dropdown"}, multi=True, clearable=True
-                            ),
-                            html.Button("Select All", className="btn btn--no-border filter--select-all", id=f"all_{filter_}")
-                        ]
-                    )
+                    dcc.Dropdown(
+                        id={"name": filter_, "type": "filter-dropdown"}, multi=True, clearable=True
+                    ),
+                    html.Button("Select All", className="btn btn--no-border filter--select-all", id=f"all_{filter_}")
                 ]
                 for filter_ in SC_FILTERS
             ),
