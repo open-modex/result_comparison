@@ -41,12 +41,11 @@ def get_header(app):
                                 className="version"
                                 ),
                             html.H1(
-                                children="Energy Frameworks to Germany",
+                                children="Open Energy Dashboard",
                                 className="title"
                                 ),
                             html.P(
-                                children="How to efficiently sustain Germany's energy "
-                                "\n usage with efficient parameters based on regions.",
+                                children="Comparison and analysis of multiple energysystem modelling results",
                                 className="subtitle"
                             ),
                         ],
