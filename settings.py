@@ -37,6 +37,16 @@ with open(f"{DATA_PATH}/{DATAPACKAGE}", 'r') as datapackage_file:
     datapackage = json.loads(datapackage_file.read())
     MODEX_OUTPUT_SCHEMA = {resource["name"]: resource["schema"] for resource in datapackage["resources"]}
 
+with open("README.md", "r") as readme_file:
+    doc_lines = []
+    for i, line in enumerate(readme_file.readlines()):
+        if i < 3:
+            continue
+        if line.startswith("## Setup"):
+            break
+        doc_lines.append(line)
+DOCUMENTATION = "".join(doc_lines)
+
 
 # FILTERS
 

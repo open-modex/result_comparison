@@ -26,5 +26,8 @@ def get_dummy_filters(scenario_id):
 
 
 if __name__ == "__main__":
-    sc_id = os.environ["SCENARIO_ID"]
-    create_dummy_data(sc_id)
+    sc_id = os.environ["SCENARIO_IDS"]
+    IDS = [237, 249, 250, 214, 215, 216, 225, 264, 265, 219, 220, 221, 238, 184, 183]
+    for i, id_ in enumerate(IDS):
+        print(f"Getting {i + 1}/{len(IDS)}: ID #{id_}")
+        create_dummy_data(id_)

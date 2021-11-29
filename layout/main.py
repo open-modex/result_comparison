@@ -56,6 +56,7 @@ def get_header(app):
             dbc.NavbarSimple(
                 className="header__nav",
                 children=[
+                    dbc.NavItem(dcc.Link("Documentation", href="/documentation")),
                     dbc.NavItem(dcc.Link("Imprint", href="/imprint")),
                     dbc.NavItem(dcc.Link("Privacy", href="/privacy")),
                 ],
