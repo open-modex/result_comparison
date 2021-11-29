@@ -170,9 +170,6 @@ def sum_series(series):
 
 
 def prepare_data(data, order_by, group_by, aggregation_func, units, filters, labels):
-    # Apply labels:
-    data = data.applymap(apply_label, labels=labels)
-
     if filters:
         conditions = []
         for filter_, filter_value in filters.items():
@@ -190,6 +187,9 @@ def prepare_data(data, order_by, group_by, aggregation_func, units, filters, lab
             flash(f"Unknown unit '{unit_}' found in data.", category="warning")
     for unit_ in units:
         data = data.apply(convert_units, axis=1, convert_to=unit_)
+
+    # Apply labels:
+    data = data.applymap(apply_label, labels=labels)
 
     # Aggregate:
     if group_by:

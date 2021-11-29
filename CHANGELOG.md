@@ -17,6 +17,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - timeseries refresh button
 - loading of boolean graph options
 - too many subplots
+- filtering for labeled parameters 
 
 ## [0.14.0] - 2021-10-04
 ### Added
