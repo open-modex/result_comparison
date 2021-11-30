@@ -1,7 +1,7 @@
 
 import dash_html_components as html
 from .main import get_header
-
+from .main import get_footer
 
 def get_imprint_layout(app):
     return html.Div(
@@ -13,6 +13,7 @@ def get_imprint_layout(app):
                     html.Div(
                         children=[
                             html.Div(
+                                className="legal__wrap",
                                 children=[
                                     html.H2("Imprint"),
                                     html.P(
@@ -74,7 +75,8 @@ def get_imprint_layout(app):
                                         ]
                                     ),
                                 ]
-                            )
+                            ),
+                            get_footer()
                         ]
                     )
                 ],

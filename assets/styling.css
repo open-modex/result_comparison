@@ -927,6 +927,10 @@ button.btn.btn--no-border:focus {
   max-width: 1024px;
 }
 
+.legal__wrap {
+  padding-bottom: 4rem;
+}
+
 .paper {
   display: -webkit-box;
   display: -ms-flexbox;
