@@ -404,8 +404,8 @@ def get_footer():
     return html.Div(
         className="footer",
         children=[
-            html.A("Imprint", href="#", className="nav-link"),
-            html.A("Privacy", href="#", className="nav-link")
+            html.A("Imprint", href="/imprint", className="nav-link"),
+            html.A("Privacy", href="/privacy", className="nav-link")
         ]
     )
 
