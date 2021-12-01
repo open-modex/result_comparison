@@ -12,6 +12,7 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 - chart height option 
 - button to select all values for a filter 
 - usage section in README
+- add footer to all pages
 
 ### Fixed
 - links to imprint and privacy page

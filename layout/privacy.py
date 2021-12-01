@@ -2,6 +2,7 @@ import dash_bootstrap_components as dbc
 import dash_html_components as html
 
 from .main import get_header
+from .main import get_footer
 
 privacyDataProcessing = [
     "Informationen über den Browsertyp und die verwendete Version",
@@ -81,7 +82,6 @@ row3 = html.Tr([html.Td("PIWIK_SESSID"), html.Td("ID der Sitzung des Analysedien
 row4 = html.Tr([html.Td("piwik_ignore"), html.Td("Sollte sich ein Besucher gegen die statistische Auswertung seines Besucherzugriffs durch Matomo (Piwik) entscheiden, wird dieses Cookie gesetzt."), html.Td("24 Monate")])
 cookies_table_body = [html.Tbody([row1, row2, row3, row4])]
 
-
 def get_privacy_layout(app):
     return html.Div(
         children=[
@@ -92,6 +92,7 @@ def get_privacy_layout(app):
                     html.Div(
                         children=[
                             html.Div(
+                                className="legal__wrap",
                                 children=[
                                     html.H2("Data Protection"),
                                     html.H3("I. Name und Anschrift der Verantwortlichen"),
@@ -232,7 +233,8 @@ def get_privacy_layout(app):
                                         ]
                                     )
                                 ]
-                            )
+                            ),
+                            get_footer()
                         ]
                     )
                 ]
