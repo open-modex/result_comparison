@@ -131,6 +131,8 @@ def get_multiple_scenario_filters(*scenario_ids):
     ]
     merged = scenario.merge_scenario_data(scenarios)
     app.logger.info("Merged scenario data")
+    for m in merged:
+        m["tags"] = m["tags"]["scenario"] if m["tags"] and "scenario" in m["tags"] else "None"
     return merged
 
 
@@ -325,7 +327,7 @@ def save_scenarios(_, name, scenario_ids):
     State(component_id="dd_scenario", component_property="value"),
     prevent_initial_call=True,
 )
-def load_filters(name, _, __, ___, ____, _____, ______, _______, ________, scenarios):
+def load_filters(name, _, __, ___, ____, _____, ______, _______, ________, _________, scenarios):
     if not scenarios:
         flash("No scenario selected - cannot load filters without scenario", "error")
         return (

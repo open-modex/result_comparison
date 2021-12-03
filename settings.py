@@ -51,6 +51,7 @@ DOCUMENTATION = "".join(doc_lines)
 # FILTERS
 
 SC_FILTERS = {
+    "tags": {"type": "str"},
     "year": {"type": "int"},
     "region": {"type": "str"},
     "technology": {"type": "str"},

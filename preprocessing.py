@@ -220,6 +220,7 @@ def prepare_data(data, order_by, group_by, aggregation_func, units, filters, lab
 
 def prepare_scalars(data, order_by, group_by, units, filters, labels):
     df = pandas.DataFrame(data)
+    df["tags"] = df["tags"].apply(lambda x: x["scenario"] if x and "scenario" in x else "None")
     df = df.loc[:, [column for column in SC_COLUMNS]]
     if order_by:
         order_by = order_by if isinstance(order_by, list) else [order_by]
