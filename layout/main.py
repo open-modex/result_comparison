@@ -11,7 +11,7 @@ from graphs import get_empty_fig
 from settings import (
     VERSION, SC_FILTERS, TS_FILTERS, UNITS, GRAPHS_DEFAULT_OPTIONS, GRAPHS_DEFAULT_COLOR_MAP, GRAPHS_DEFAULT_LABELS
 )
-from models import get_model_options, Filter, Colors, Labels
+from models import get_model_options, Filter, Colors, Labels, Scenarios
 
 
 DEFAULT_LAYOUT = html.Div([
@@ -66,7 +66,9 @@ def get_header(app):
     )
 
 
-def get_scenario_column(scenarios):
+def get_scenario_column(app, scenarios):
+    with app.server.app_context():
+        options = get_model_options(Scenarios)
     return html.Div(
         className="scenarios",
         style={"padding-bottom": "50px"},
@@ -89,6 +91,21 @@ def get_scenario_column(scenarios):
                 id="scenario_reload",
                 className="scenarios__btn btn btn--refresh"
             ),
+            html.Label("Save scenarios as:"),
+            html.Div(
+                className="save-filters",
+                children=[
+                    dcc.Input(id="save_scenarios_name", type="text"),
+                    html.Button("Save", className="btn btn--small", id="save_scenarios")
+                ]
+            ),
+            html.Label("Load Scenarios"),
+            dcc.Dropdown(
+                id="load_scenarios",
+                options=options,
+                clearable=True
+            ),
+            html.P(id="scenarios_error", children="")
         ],
     )
 
@@ -420,7 +437,7 @@ def get_layout(app, scenarios):
             html.Main(
                 className="dashboard",
                 children=[
-                    get_scenario_column(scenarios),
+                    get_scenario_column(app, scenarios),
                     html.Div(
                         className="content",
                         children=[

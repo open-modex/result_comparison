@@ -1,4 +1,5 @@
 
+from sqlalchemy.dialects.postgresql import ARRAY
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -34,3 +35,8 @@ class Labels(db.Model):
 
     def __repr__(self):
         return '<Label %r>' % self.name
+
+
+class Scenarios(db.Model):
+    name = db.Column(db.String, primary_key=True)
+    ids = db.Column(ARRAY(db.Integer))

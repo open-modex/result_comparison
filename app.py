@@ -28,7 +28,7 @@ from settings import (
 )
 import scenario
 import graphs
-from models import db, get_model_options, Filter, Colors, Labels
+from models import db, get_model_options, Filter, Colors, Labels, Scenarios
 
 urllib3.disable_warnings()
 
@@ -141,7 +141,7 @@ def get_multiple_scenario_filters(*scenario_ids):
 def reload_scenarios(_):
     scenarios = scenario.get_scenarios()
     return [
-        {"label": f"{sc['id']}, {sc['scenario']}, {sc['source']}", "value": sc["id"],}
+        {"label": f"{sc['id']}, {sc['scenario']}, {sc['source']}", "value": sc["id"]}
         for sc in scenarios
     ]
 
@@ -274,6 +274,29 @@ def save_labels(_, name, str_labels):
     return get_model_options(Labels), "", show_logs()
 
 
+@app.callback(
+    [
+        Output(component_id="load_scenarios", component_property="options"),
+        Output(component_id="save_scenarios_name", component_property="value"),
+        Output(component_id="scenarios_error", component_property="children"),
+    ],
+    Input("save_scenarios", "n_clicks"),
+    [
+        State(component_id="save_scenarios_name", component_property="value"),
+        State(component_id="dd_scenario", component_property="value"),
+    ],
+)
+def save_scenarios(_, name, scenario_ids):
+    if not name or not scenario_ids:
+        raise PreventUpdate
+
+    db_scenarios = Scenarios(name=name, ids=scenario_ids,)
+    db.session.add(db_scenarios)
+    db.session.commit()
+
+    return get_model_options(Scenarios), "", show_logs()
+
+
 # TODO: Fixed arg number can possibly fixed with Dash 2.0 allowing for keyword args,
 #  but Dash 2.0 breaks CSS styles
 @app.callback(
@@ -374,6 +397,19 @@ def load_labels(name):
 
     db_labels = Labels.query.filter_by(name=name).first()
     return json.dumps(db_labels.labels)
+
+
+@app.callback(
+    Output(component_id="dd_scenario", component_property="value"),
+    Input("load_scenarios", "value"),
+    prevent_initial_call=True,
+)
+def load_scenarios(name):
+    if not name:
+        raise PreventUpdate
+
+    db_scenarios = Scenarios.query.filter_by(name=name).first()
+    return db_scenarios.ids
 
 
 @app.callback(
