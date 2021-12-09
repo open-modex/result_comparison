@@ -169,6 +169,16 @@ def sum_series(series):
         return summed_series
 
 
+def unify_strings(series):
+    """
+    Unify strings in order to allow better ordering
+    """
+    try:
+        return series.apply(lambda x: x.lower())
+    except AttributeError:
+        return series
+
+
 def prepare_data(data, order_by, group_by, aggregation_func, units, filters, labels):
     if filters:
         conditions = []
@@ -203,7 +213,7 @@ def prepare_data(data, order_by, group_by, aggregation_func, units, filters, lab
 
     # Order:
     if order_by:
-        data = data.sort_values(order_by)
+        data = data.sort_values(order_by, key=unify_strings)
 
     return data
 

@@ -8,6 +8,9 @@ and this project tries to adhere to [Semantic Versioning](https://semver.org/spe
 ### Added
 - scenarios can be saved in DB
 
+### Changed
+- order-by function lowers strings before comparison
+
 ## [0.15.0] - 2021-11-29
 ### Added
 - page to show MODEX figures from paper and its dashboard settings
