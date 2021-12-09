@@ -1,4 +1,4 @@
-from app import server, db, Filter, Colors, Labels
+from app import server, db, Filter, Colors, Labels, Scenarios
 
 
 def create_all():
@@ -23,6 +23,10 @@ def delete_filter(filter_name):
 
 def delete_color_map(color_map):
     delete_entry(Colors, color_map)
+
+
+def delete_scenarios(scenario):
+    delete_entry(Scenarios, scenario)
 
 
 def delete_label(label):

@@ -10,3 +10,6 @@ delete_color_map:
 
 delete_label:
 	python3 -c "import manage; manage.delete_label('$(LABEL)')"
+
+delete_scenarios:
+	python3 -c "import manage; manage.delete_scenarios('$(SCENARIO)')"
