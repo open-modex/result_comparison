@@ -178,6 +178,7 @@ app.clientside_callback(
         State(component_id="graph_timeseries_options", component_property="children"),
         State(component_id="order_by", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
+        State(component_id="normalize", component_property="value"),
         State(component_id="filters", component_property="children"),
     ],
 )
@@ -188,6 +189,7 @@ def save_filters(
     graph_timeseries_options,
     order_by,
     agg_group_by,
+    normalize,
     filter_div,
 ):
     if not name:
@@ -196,6 +198,7 @@ def save_filters(
     filters = preprocessing.extract_filters("scalars", filter_div)
     filters["order_by"] = order_by
     filters["agg_group_by"] = agg_group_by
+    filters["normalize"] = normalize
     scalar_graph_options = preprocessing.extract_graph_options("scalars", graph_scalars_options)
     ts_graph_options = preprocessing.extract_graph_options("timeseries", graph_timeseries_options)
 
@@ -234,13 +237,13 @@ def save_colors(_, name, str_colors):
             f"Could not read color mapping. Input must be valid JSON. (Error: {je})",
             "error",
         )
-        return get_model_options(Colors), "", show_logs()
+        return get_model_options(Colors), "", show_logs()[0]
 
     db_colors = Colors(name=name, colors=colors,)
     db.session.add(db_colors)
     db.session.commit()
 
-    return get_model_options(Colors), "", show_logs()
+    return get_model_options(Colors), "", show_logs()[0]
 
 
 @app.callback(
@@ -265,13 +268,13 @@ def save_labels(_, name, str_labels):
         flash(
             f"Could not read labels. Input must be valid JSON. (Error: {je})", "error"
         )
-        return get_model_options(Labels), "", show_logs()
+        return get_model_options(Labels), "", show_logs()[0]
 
     db_labels = Labels(name=name, labels=labels,)
     db.session.add(db_labels)
     db.session.commit()
 
-    return get_model_options(Labels), "", show_logs()
+    return get_model_options(Labels), "", show_logs()[0]
 
 
 @app.callback(
@@ -294,7 +297,7 @@ def save_scenarios(_, name, scenario_ids):
     db.session.add(db_scenarios)
     db.session.commit()
 
-    return get_model_options(Scenarios), "", show_logs()
+    return get_model_options(Scenarios), "", show_logs()[0]
 
 
 # TODO: Fixed arg number can possibly fixed with Dash 2.0 allowing for keyword args,
@@ -305,6 +308,7 @@ def save_scenarios(_, name, scenario_ids):
         Output(component_id="graph_timeseries_plot_switch", component_property="value"),
         Output(component_id="order_by", component_property="value"),
         Output(component_id="aggregation_group_by", component_property="value"),
+        Output(component_id="normalize", component_property="value"),
     ]
     + [
         Output(
@@ -329,8 +333,9 @@ def load_filters(name, _, __, ___, ____, _____, ______, _______, ________, scena
             no_update,
             no_update,
             no_update,
+            no_update,
             *([no_update] * len(SC_FILTERS)),
-            show_logs(),
+            show_logs()[0],
         )
 
     ctx = dash.callback_context
@@ -353,8 +358,9 @@ def load_filters(name, _, __, ___, ____, _____, ______, _______, ________, scena
             no_update,
             no_update,
             no_update,
+            no_update,
             *filter_options,
-            show_logs(),
+            show_logs()[0],
         )
 
     # Load filters:
@@ -368,8 +374,9 @@ def load_filters(name, _, __, ___, ____, _____, ______, _______, ________, scena
         db_filter.ts_graph_options["type"],
         db_filter.filters.get("order_by", []),
         db_filter.filters["agg_group_by"],
+        db_filter.filters["normalize"] if "normalize" in db_filter.filters else no_update,
         *filters,
-        show_logs(),
+        show_logs()[0],
     )
 
 
@@ -506,6 +513,7 @@ def toggle_timeseries_graph_options(plot_type, name):
         State(component_id="labels", component_property="value"),
         State(component_id="order_by", component_property="value"),
         State(component_id="aggregation_group_by", component_property="value"),
+        State(component_id="normalize", component_property="value"),
         State(component_id="dd_scenario", component_property="value"),
     ],
     prevent_initial_call=True,
@@ -522,6 +530,7 @@ def scalar_graph(
     labels,
     order_by,
     agg_group_by,
+    normalize,
     scenarios,
 ):
     if scenarios is None:
@@ -560,6 +569,8 @@ def scalar_graph(
         flash("No data for current filter settings", "warning")
         log_div, log_level = show_logs()
         return graphs.get_empty_fig(), [], [], log_div, log_level, *data_div_cls
+    if normalize:
+        preprocessed_data = preprocessing.normalize_data(preprocessed_data, graph_options)
     try:
         fig = graphs.get_scalar_plot(preprocessed_data, graph_options)
     except graphs.PlottingError:

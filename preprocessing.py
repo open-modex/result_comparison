@@ -279,6 +279,19 @@ def concat_timeseries(ts):
     return pandas.DataFrame(), fixed_timeseries
 
 
+def normalize_data(data, graph_options):
+    columns = []
+    if graph_options["options"]["facet_col"]:
+        columns.append(graph_options["options"]["facet_col"])
+    if graph_options["options"]["orientation"] == "h":
+        columns.append(graph_options["options"]["y"])
+    else:
+        columns.append(graph_options["options"]["x"])
+    max_value = data.groupby(columns).aggregate("sum")["value"].max()
+    data["value"] = data["value"] / max_value
+    return data
+
+
 def apply_label(value, labels):
     try:
         return labels.get(value, value)

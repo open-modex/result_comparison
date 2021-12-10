@@ -203,6 +203,12 @@ def get_aggregation_order_column():
                 multi=True,
                 clearable=True,
                 options=[{"label": filter_, "value": filter_} for filter_ in SC_FILTERS],
+            ),
+            html.Label("Normalize Data:"),
+            dcc.Checklist(
+                id="normalize",
+                options=[{"label": "Normalize", "value": "normalize"}],
+                value=[],
             )
         ]
     )
