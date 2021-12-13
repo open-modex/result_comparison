@@ -13,3 +13,6 @@ delete_label:
 
 delete_scenarios:
 	python3 -c "import manage; manage.delete_scenarios('$(SCENARIO)')"
+
+download_scenarios:
+	python3 -c "import manage; manage.download_scenarios('$(SCENARIOS)')"

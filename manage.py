@@ -1,4 +1,5 @@
 from app import server, db, Filter, Colors, Labels, Scenarios
+from data import dev
 
 
 def create_all():
@@ -31,3 +32,10 @@ def delete_scenarios(scenario):
 
 def delete_label(label):
     delete_entry(Labels, label)
+
+
+def download_scenarios(scenarios_raw):
+    scenarios = scenarios_raw.split(",")
+    for i, id_ in enumerate(scenarios):
+        print(f"Getting {i + 1}/{len(scenarios)}: ID #{id_}")
+        dev.create_dummy_data(id_)
