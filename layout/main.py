@@ -365,9 +365,10 @@ def get_graph_column():
                                                 figure=get_empty_fig(),
                                                 style={},
                                                 config={
-                                                    'responsive': True,
-                                                    'toImageButtonOptions': {
-                                                        'format': 'svg',
+                                                    "responsive": True,
+                                                    "toImageButtonOptions": {
+                                                        "format": "svg",
+                                                        "scale": 1.4
                                                     }
                                                 }
                                             ),
