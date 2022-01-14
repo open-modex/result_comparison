@@ -186,8 +186,17 @@ def radar_plot(data, options):
         **fig_options
     )
 
+    fig.update_traces(line={"width": 4})
+
     fig.update_layout(
         template=GRAPHS_DEFAULT_TEMPLATE,
+        polar={
+            "radialaxis": {"gridwidth": 4, "linewidth": 4,},
+            "angularaxis": {
+                "gridwidth": 4,
+                "linewidth": 4,
+            },
+        },
         **layout,
         **GRAPHS_DEFAULT_LAYOUT
     )
