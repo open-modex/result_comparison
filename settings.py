@@ -243,6 +243,9 @@ GRAPHS_DEFAULT_TEMPLATE = "plotly_white"
 GRAPHS_DEFAULT_LAYOUT = {
     "legend": {
         "font": {"size": 14},
+    },
+    "font": {
+        "size": 14
     }
 }
 GRAPHS_DEFAULT_XAXES_LAYOUT = {
