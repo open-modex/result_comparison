@@ -156,31 +156,39 @@ def bar_plot(data, options):
 
 
 def radar_plot(data, options):
+    def normalize_by_theta(series, tm):
+        series["value"] = series["value"] / tm[series[options["theta"]]]
+        return series
+
     axis_title = options.pop("axis_title") or add_unit_to_label(options["r"], data)
+    layout = {
+        "showlegend": "showlegend" in options.pop("showlegend"),
+        "legend_title": options.pop("legend_title"),
+        "margin_l": options.pop("margin_l"),
+        "margin_r": options.pop("margin_r"),
+        "margin_t": options.pop("margin_t"),
+        "margin_b": options.pop("margin_b"),
+    }
+    normalize_theta = "normalize" in options.pop("normalize_theta")
+    if normalize_theta:
+        theta_max = data[[options["theta"], "value"]].groupby(options["theta"]).max()["value"]
+        data = data.apply(normalize_by_theta, axis=1, args=[theta_max])
 
-    categories = data[options["theta"]].unique()
+    fig_options = ChainMap(
+        options,
+        GRAPHS_DEFAULT_OPTIONS["scalars"]["radar"].get_defaults(exclude_non_plotly_options=True)
+    )
 
-    fig = go.Figure()
-    for ellipse in data[options["color"]].unique():
-        fig.add_trace(
-            go.Scatterpolar(
-                r=data[data[options["color"]] == ellipse][options["r"]],
-                theta=categories,
-                fill='toself',
-                name=ellipse
-            )
-        )
+    fig = px.line_polar(
+        data,
+        line_close=True,
+        title=axis_title,
+        **fig_options
+    )
 
     fig.update_layout(
-        polar={
-            "radialaxis": {
-                "title": axis_title,
-                "visible": True,
-                "range": [data[options["r"]].min(), data[options["r"]].max()]
-            }
-        },
-        showlegend=False,
         template=GRAPHS_DEFAULT_TEMPLATE,
+        **layout,
         **GRAPHS_DEFAULT_LAYOUT
     )
     fig.update_xaxes(GRAPHS_DEFAULT_XAXES_LAYOUT)

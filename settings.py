@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Union, List, Dict, Optional
 import pandas as pd
 
-VERSION = "0.15.0"
+VERSION = "0.16.0"
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
@@ -147,7 +147,28 @@ GRAPHS_DEFAULT_OPTIONS = {
             r=GraphOption("Radius", "value"),
             theta=GraphOption("Theta", "technology"),
             color=GraphOption("Color", "source"),
+            normalize_theta=GraphOption(
+                "Normalize Theta",
+                default=[{"label": "Normalize Theta", "value": "normalize"}],
+                type="bool",
+                from_filter=False,
+                plotly_option=False,
+            ),
             axis_title=GraphOption("Radar Axis Title", "", type="input", plotly_option=False, category="Display"),
+            showlegend=GraphOption(
+                "Show Legend",
+                default=[{"label": "Show Legend", "value": "showlegend"}],
+                type="bool",
+                from_filter=False,
+                plotly_option=False,
+                category="Display"
+            ),
+            legend_title=GraphOption("Legend Title", "", type="input", plotly_option=False, category="Display"),
+            height=GraphOption("Chart Height", "", type="int", category="Display"),
+            margin_l=GraphOption("Margin Left", "", type="int", plotly_option=False, category="Display"),
+            margin_r=GraphOption("Margin Right", "", type="int", plotly_option=False, category="Display"),
+            margin_t=GraphOption("Margin Top", "", type="int", plotly_option=False, category="Display"),
+            margin_b=GraphOption("Margin Bottom", "", type="int", plotly_option=False, category="Display"),
         ),
         "dot": GraphOptions(
             x=GraphOption("X-Axis", "value"),
