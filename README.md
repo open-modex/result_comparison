@@ -1,4 +1,4 @@
-# OpenModex Visualization
+# Open_MODEX Dashboard for Visualization
 
 ## About
 
