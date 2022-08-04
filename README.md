@@ -2,7 +2,7 @@
 
 ## About
 
-This dashboard was developed by the [open_MODEX](https://reiner-lemoine-institut.de/open_modex/) project. 
+This [dashboard](https://modex-results.rl-institut.de/) was developed by the [open_MODEX](https://reiner-lemoine-institut.de/open_modex/) project. 
 One goal of the project was, to compare scenario results from different energsystem modelling frameworks. 
 Therefore, a standardized input and output format ([oedatamodel](https://github.com/open-modex/oedatamodel)) has been defined, 
 which can be read by the dashboard. Afterwards, underlying data can be filtered, compared and analyzed using various charts and plotting options. 
